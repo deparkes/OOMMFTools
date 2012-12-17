@@ -32,8 +32,8 @@ def main():
         os.chdir(start_dir)
     
     # For debugging. If I run this script in a windows command window the following will stop the window from closing before I can read the error message.
-    print "Press return to continue"
-    a=raw_input()    
+    # print "Press return to continue"
+    # a=raw_input()    
 
     
 if __name__=="__main__":
