@@ -68,7 +68,8 @@ def get_args(args = False):
     
     parser = argparse.ArgumentParser(description='Command line interface for odtchomp')
     parser.add_argument("in_file", type=str, help="specify .odt file to load")
-    parser.add_argument('-f', type=str, action='store', dest='fields', help='File with required headers')
+    parser.add_argument('-f', type=str, action='store', dest='fields', help='File with required headers', nargs='?')
+    parser.add_argument('-b', type=str, action='store', dest='batch_path', help='Specify batch path', nargs='?')
     parser.add_argument('-p', action="store_true", dest='show_headers', default=False, help='show headers')
     parser.add_argument('-o', dest='out_file', help='Set output file')
     parser.add_argument('out_file',nargs='?', help='Set output file', type=str)
