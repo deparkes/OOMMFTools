@@ -126,19 +126,3 @@ def get_args(args = False):
         return parser.parse_args()
     else:
         return parser.parse_args(args)
-
-def get_args_b(args = False):
-    
-    parser = argparse.ArgumentParser(description='Command line interface for odtchomp')
-    parser.add_argument("batch_path", type=str, help="specify .odt batch path")
-    parser.add_argument('-f', type=str, action='store', dest='fields', help='File with required headers')
-    parser.add_argument('-o', dest='out_file', help='Set output file')
-    parser.add_argument('out_file',nargs='?', help='Set output file', type=str)
-    parser.add_argument("-v", "--verbose", help="increase output verbosity",action="store_true")
-    parser.add_argument('-s', dest='save_headers', help='save headers')
-    parser.add_argument('-d', dest='delim', help='specify output delimiter: tab, comma, space', default='tab',nargs='?', choices=['tab','comma','space'])
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
-    if not args:
-        return parser.parse_args()
-    else:
-        return parser.parse_args(args)
