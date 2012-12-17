@@ -18,10 +18,23 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 """
-import chomper
-def main():
-   
-    chomper.do_chomp(chomper.get_args())
 
+def main():
+    import chomper
+    import os
+    import sys
+    args = chomper.get_args()
+    if not args.batch_path:
+        chomper.do_chomp(args)
+    else:
+        start_dir = os.path.dirname(sys.argv[0])
+        chomper.do_chomp_batch(args)
+        os.chdir(start_dir)
+    
+    # For debugging. If I run this script in a windows command window the following will stop the window from closing before I can read the error message.
+    print "Press return to continue"
+    a=raw_input()    
+
+    
 if __name__=="__main__":
     main()

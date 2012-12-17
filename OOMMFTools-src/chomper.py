@@ -2,6 +2,20 @@ from odtchomp import chomp, write
 from pprint import pprint
 import argparse
 import sys
+import glob
+import os
+
+def get_odt(path):
+    # A function to find the odt data files in a particular folder.
+    # Since I only want one I have an if statement to try and protect things. Needs improvements.
+    # Use os.path.basename(path) to strip away everything but the file name from the path.
+
+    omf_path = '%s/*.odt' % (path)
+    #create an array of file names based on the search for omf files.
+    files_array = glob.glob(omf_path)
+    # Files are ordered alphabetically take first one.
+##    files = os.path.basename(files_array[0])
+    return files_array
 
 def get_delim(delim):
     if delim == 'comma':
@@ -28,6 +42,8 @@ def print_headers(fields):
 def get_fields(headerfile):
     fields = open(headerfile).read().splitlines()
     return fields
+
+
 
 def do_chomp(args):
 	in_file = args.in_file
@@ -63,7 +79,36 @@ def do_chomp(args):
 		if not fields:
 			fields = odtfile.getNames()
 	write(out_file, odtfile, delim, fields)
-        
+
+
+
+def do_chomp_batch(args):
+    batch_dir = args.batch_path
+    headerfile = args.fields
+
+    # If there is a header file specified, use it
+    if headerfile:
+
+        headerfile = start_dir + '\\' + headerfile
+ # Work through all the folders in the 
+    for root, dirs, files in os.walk(batch_dir):
+
+        # make sure that we are at the end of the path
+        # i.e. that there are no subdirectories
+        if len(dirs) == 0:
+            files_array = get_odt(root)
+            # loop through all odt files in the folder
+            for files in files_array:               
+                os.chdir(root)
+                print files
+                out_file = '%s.txt' % (files)         
+                if headerfile:
+                    chomper_args = '%s %s -f %s' % (files, out_file, headerfile )
+                else:
+                    chomper_args = '%s %s' % (files, out_file )
+                chomper_args = chomper_args.split()
+                do_chomp(get_args(chomper_args))
+      
 def get_args(args = False):
     
     parser = argparse.ArgumentParser(description='Command line interface for odtchomp')
