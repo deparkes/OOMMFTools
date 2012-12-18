@@ -18,17 +18,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 """
 
-import oommfdecode as decode
 import sys
-import pickle
-from pprint import pprint
-
+import decoder
 
 def main():
-
-    array, headers, extra = decode.unpackFile(sys.argv[1])
-    decode.matlabifyArray(array, headers, extra, 'filename_matlab.mat')
-    decode.pickleArray(array, headers, extra, 'filename_pickle.mat')
+    args = decoder.get_args()
+    decoder.do_decode(args)
    
 if __name__=="__main__":
     main()
