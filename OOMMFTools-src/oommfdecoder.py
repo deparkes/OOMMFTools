@@ -20,15 +20,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import sys
 import decoder
-
+import os
 def main():
     args = decoder.get_args()
-    in_file = args.in_file
-    if not in_file.lower().endswith(('.omf', '.ohf', '.oef', '.ovf')):
-        print "Please enter valid OOMMF file: ['.omf', '.ohf', '.oef', '.ovf']"
-        sys.exit(1)
-    decoder.do_decode(args)
-   
+    
+    if not args.batch_path:
+        if not args.in_file.lower().endswith(('.omf', '.ohf', '.oef', '.ovf')):
+            print "Please enter valid OOMMF file: ['.omf', '.ohf', '.oef', '.ovf']"
+            sys.exit(1)
+        decoder.do_decode(args)
+    else:
+        start_dir = os.path.dirname(sys.argv[0])
+        decoder.batch_decoder(args)
+        os.chdir(start_dir)
 if __name__=="__main__":
     main()
 
