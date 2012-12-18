@@ -25,6 +25,8 @@ def main():
     args = decoder.get_args()
     
     if not args.batch_path:
+        # The batch processor only finds compatible files. This makes sure the user
+        # doesn't try to convert the wrong type of file.
         if not args.in_file.lower().endswith(('.omf', '.ohf', '.oef', '.ovf')):
             print "Please enter valid OOMMF file: ['.omf', '.ohf', '.oef', '.ovf']"
             sys.exit(1)
