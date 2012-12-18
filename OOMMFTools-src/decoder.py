@@ -8,19 +8,22 @@ def do_decode(args):
     out_file = args.out_file
     if not out_file:
         out_file = in_file + '.mat'
+##        out_file = in_file + '.pkl' # For numpy output
         
     array, headers, extra = oommfdecode.unpackFile(in_file)
     oommfdecode.matlabifyArray(array, headers, extra, out_file)
-    oommfdecode.pickleArray(array, headers, extra, out_file)
+    #oommfdecode.pickleArray(array, headers, extra, 'out.mat')
     
 def batch_decoder(args):
     batch_path = args.batch_path
     for r,d,f in os.walk(batch_path):
         for files in f:
             if files.endswith(('.omf', '.ohf', '.oef', '.ovf')):
-##                 print os.path.join(r,files)
-                args.in_file = os.path.join(r,files)
-                do_decode(args)
+                for avf in files.split():
+##                    print 'new line'
+##                    print os.path.join(r,avf)
+                    args.in_file = os.path.join(r,avf)
+                    do_decode(args)
 
 def get_args(args = False):
     
