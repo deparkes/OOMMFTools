@@ -27,8 +27,6 @@ def batch_decoder(args):
         for files in f:
             if files.endswith(('.omf', '.ohf', '.oef', '.ovf')):
                 for avf in files.split():
-##                    print 'new line'
-##                    print os.path.join(r,avf)
                     args.in_file = os.path.join(r,avf)
                     do_decode(args)
 
