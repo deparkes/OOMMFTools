@@ -23,6 +23,10 @@ import decoder
 
 def main():
     args = decoder.get_args()
+    in_file = args.in_file
+    if not in_file.lower().endswith(('.omf', '.ohf', '.oef', '.ovf')):
+        print "Please enter valid OOMMF file: ['.omf', '.ohf', '.oef', '.ovf']"
+        sys.exit(1)
     decoder.do_decode(args)
    
 if __name__=="__main__":
