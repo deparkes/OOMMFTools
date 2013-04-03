@@ -1,8 +1,24 @@
 
 """
 ODTChomper
-Copyright (C) 2012  Duncan Parkes
+Basic Usage: 
+For batch operation on a whole folder:
+odtchomper.py
 
+For operating on a single file:
+odtchomper.py my_file.odt
+
+If you don't specify an output name, the program will use the basename of the
+input file as the output filename, with a .dat file extension.
+
+Specify output file:
+odtchomper.py my_file.odt -o out_file_name.dat
+
+For further help:
+odtchomper.py -h
+
+
+Copyright (C) 2012  Duncan Parkes
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
@@ -24,12 +40,14 @@ import sys
 def main():
 
     args = chomper.get_args()
-    if not args.batch_path:
+    if args.in_file:
         chomper.do_chomp(args)
     else:
-        start_dir = os.path.dirname(sys.argv[0])
-        chomper.do_chomp_batch(args)
-        os.chdir(start_dir)
+		for i, filename in enumerate(chomper.get_odt(os.getcwd())): # loop through each file
+			args.in_file = filename
+			chomper.do_chomp(args)
+		
+
     
     # For debugging. If I run this script in a windows command window the following will stop the window from closing before I can read the error message.
     # print "Press return to continue"
