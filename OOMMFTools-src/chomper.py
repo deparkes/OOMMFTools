@@ -47,7 +47,12 @@ def get_fields(headerfile):
 
 def do_chomp(args):
 	in_file = args.in_file
-	out_file = args.out_file
+	if exists args.out_file:
+		out_file = args.out_file
+	else:
+		in_file_strip, file_extension = os.path.splitext(in_file)
+		out_file = in_file_strip + '.dat'
+		
 	verbosity = args.verbose
 	show_headers=args.show_headers
 	save_headers=args.save_headers    
