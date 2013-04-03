@@ -84,36 +84,7 @@ def do_chomp(args):
 		if not fields:
 			fields = odtfile.getNames()
 	write(out_file, odtfile, delim, fields)
-
-
-
-def do_chomp_batch(args):
-    batch_dir = args.batch_path
-    headerfile = args.fields
-
-    # If there is a header file specified, use it
-    if headerfile:
-
-        headerfile = start_dir + '\\' + headerfile
- # Work through all the folders in the 
-    for root, dirs, files in os.walk(batch_dir):
-
-        # make sure that we are at the end of the path
-        # i.e. that there are no subdirectories
-        if len(dirs) == 0:
-            files_array = get_odt(root)
-            # loop through all odt files in the folder
-            for files in files_array:               
-                os.chdir(root)
-                print files
-                out_file = '%s.txt' % (files)         
-                if headerfile:
-                    chomper_args = '%s %s -f %s' % (files, out_file, headerfile )
-                else:
-                    chomper_args = '%s %s' % (files, out_file )
-                chomper_args = chomper_args.split()
-                do_chomp(get_args(chomper_args))
-      
+     
 def get_args(args = False):
     
     parser = argparse.ArgumentParser(description='Command line interface for odtchomp')
