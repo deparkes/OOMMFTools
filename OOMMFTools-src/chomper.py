@@ -47,7 +47,12 @@ def get_fields(headerfile):
 
 def do_chomp(args):
 	in_file = args.in_file
-	out_file = args.out_file
+	if args.out_file:
+		out_file = args.out_file
+	else:
+		in_file_strip, file_extension = os.path.splitext(in_file)
+		out_file = in_file_strip + '.dat'
+		
 	verbosity = args.verbose
 	show_headers=args.show_headers
 	save_headers=args.save_headers    
@@ -79,44 +84,13 @@ def do_chomp(args):
 		if not fields:
 			fields = odtfile.getNames()
 	write(out_file, odtfile, delim, fields)
-
-
-
-def do_chomp_batch(args):
-    batch_dir = args.batch_path
-    headerfile = args.fields
-
-    # If there is a header file specified, use it
-    if headerfile:
-
-        headerfile = start_dir + '\\' + headerfile
- # Work through all the folders in the 
-    for root, dirs, files in os.walk(batch_dir):
-
-        # make sure that we are at the end of the path
-        # i.e. that there are no subdirectories
-        if len(dirs) == 0:
-            files_array = get_odt(root)
-            # loop through all odt files in the folder
-            for files in files_array:               
-                os.chdir(root)
-                print files
-                out_file = '%s.txt' % (files)         
-                if headerfile:
-                    chomper_args = '%s %s -f %s' % (files, out_file, headerfile )
-                else:
-                    chomper_args = '%s %s' % (files, out_file )
-                chomper_args = chomper_args.split()
-                do_chomp(get_args(chomper_args))
-      
-def get_args(args = False):
-    
+     
+def get_args(args = False):    
     parser = argparse.ArgumentParser(description='Command line interface for odtchomp')
-    parser.add_argument('-b', type=str, action='store', dest='batch_path', help='Specify batch path')
     parser.add_argument("in_file", type=str, help="specify .odt file to load", nargs='?')
     parser.add_argument('-f', type=str, action='store', dest='fields', help='File with required headers')    
     parser.add_argument('-p', action="store_true", dest='show_headers', default=False, help='show headers')
-    parser.add_argument('-o', dest='out_file', help='Set output file')
+    parser.add_argument('-o', dest='out_file', help='Set output file', nargs='?')
     parser.add_argument('out_file',nargs='?', help='Set output file', type=str)
     parser.add_argument("-v", "--verbose", help="increase output verbosity",action="store_true")
     parser.add_argument('-s', dest='save_headers', help='save headers')
