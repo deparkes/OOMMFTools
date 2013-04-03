@@ -165,3 +165,7 @@ pip-log.txt
 # Matlab
 *.asv
 *.mat
+
+#ignore logs
+log.txt
+*.log
