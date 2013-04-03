@@ -116,7 +116,7 @@ def get_args(args = False):
     parser.add_argument("in_file", type=str, help="specify .odt file to load", nargs='?')
     parser.add_argument('-f', type=str, action='store', dest='fields', help='File with required headers')    
     parser.add_argument('-p', action="store_true", dest='show_headers', default=False, help='show headers')
-    parser.add_argument('-o', dest='out_file', help='Set output file')
+    parser.add_argument('-o', dest='out_file', help='Set output file', nargs='?')
     parser.add_argument('out_file',nargs='?', help='Set output file', type=str)
     parser.add_argument("-v", "--verbose", help="increase output verbosity",action="store_true")
     parser.add_argument('-s', dest='save_headers', help='save headers')
