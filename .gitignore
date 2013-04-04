@@ -166,6 +166,11 @@ pip-log.txt
 *.asv
 *.mat
 
+<<<<<<< HEAD
 #ignore logs
 log.txt
 *.log
+=======
+# Log files
+log.txt
+>>>>>>> origin/feature-bmp2avi
