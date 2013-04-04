@@ -10,8 +10,8 @@ Requires ffmpeg to be on the path.
 Doing this conversion on a big stack of bitmaps may take a while.
 TODO:
 - have command line control over ffmpeg options e.g. frame rate
-- sort out ffmpeg_command (I think the
-- put on github
+- sort out ffmpeg_command
++ put on github
 """
 
 def get_bmp(path):
@@ -54,7 +54,7 @@ for i, filename in enumerate(get_bmp(tmp_dir)): # loop through each file
     except:
         break
     
-ffmpeg_command = 'ffmpeg -f image2 -i ./bmp2avitmp/img%03d.bmp -r 7 video.avi'
+ffmpeg_command = 'ffmpeg -f image2 -i ./bmp2avitmp/img%03d.bmp -r 15 video.avi'
 subprocess.call(ffmpeg_command)
 
 # Clean up by deleting the temporary folder
