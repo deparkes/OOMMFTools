@@ -1,22 +1,28 @@
 
 """
-ODTChomper
+odt2dat.py
 Basic Usage: 
 For batch operation on a whole folder:
-odtchomper.py
+odt2dat.py
 
 For operating on a single file:
-odtchomper.py my_file.odt
+odt2dat.py my_file.odt
 
 If you don't specify an output name, the program will use the basename of the
 input file as the output filename, with a .dat file extension.
 
 Specify output file:
-odtchomper.py my_file.odt -o out_file_name.dat
+odt2dat.py my_file.odt -o out_file_name.dat
 
 For further help:
-odtchomper.py -h
+odt2dat.py -h
 
+The business end of this script is based on 'odtchomp' from the OOMMFTools.
+
+Requirements:
+Python 2.7
+chomper.py
+odtchomp.py
 
 Copyright (C) 2012  Duncan Parkes
 This program is free software; you can redistribute it and/or
