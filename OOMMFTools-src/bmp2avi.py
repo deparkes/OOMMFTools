@@ -32,16 +32,6 @@ def get_bmp(path):
     files_array = glob.glob(omf_path)
     return files_array
 
-##def enumerate_bmp(bmp_list):
-##    temp_dir = './tmp/'
-##    if not os.path.exists(temp_dir):
-##        os.makedirs(temp_dir)
-##    for i, item in enumerate(bmp_list):
-##        
-##        bmp_list[i] = "%s/%s.bmp" % (temp_dir,i)
-
-
-
 # Make tmp dir to put movie processing files in 
 tmp_dir = './bmp2avitmp'
 if not os.path.exists(tmp_dir):
