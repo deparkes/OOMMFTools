@@ -1,7 +1,35 @@
 """
-OOMMFDecoder
-Copyright (C) 2012  Duncan Parkes
+omf2mat.py
 
+Usage:
+Display help 
+omf2mat.py -h 
+usage: omf2mat.py [-h] [-b BATCH_PATH] [-o OUT_FILE]
+                  [-t [{matlab,pickle,both}]] [--version]
+                  [in_file] [out_file]
+
+Command line interface for oommfdecode
+
+positional arguments:
+  in_file               specify oommf vector file to load
+  out_file              Set output file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -b BATCH_PATH         Specify batch path
+  -o OUT_FILE           Set output file
+  -t [{matlab,pickle,both}]
+                        specify output file types
+  --version             show program's version number and exit
+
+Examples:
+
+Requirements:
+- Python 2.7
+- decoder.py
+- oommfdecode.py
+
+Copyright (C) 2012  Duncan Parkes
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
