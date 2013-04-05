@@ -8,10 +8,17 @@ import shutil
 Use ffmpeg to convert a series of bmp files to an avi video.
 Requires ffmpeg to be on the path.
 Doing this conversion on a big stack of bitmaps may take a while.
+
+Usage:
+Run on all bmp files in current folder
+bmp2avi.py
+
+Requirements:
+python 2.x
+ffmpeg folder on $PATH
+
 TODO:
-- have command line control over ffmpeg options e.g. frame rate
-- sort out ffmpeg_command
-+ put on github
+- Have command line option for changing framerate
 """
 
 def get_bmp(path):
