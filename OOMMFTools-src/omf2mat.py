@@ -2,6 +2,14 @@
 omf2mat.py
 
 Usage:
+Basic usage
+omf2mat.py target_file.omf
+
+Specify output filename (if not specified uses input filename as basis)
+
+Run on all vector (omf, ohf etc.) files in the current folder 
+omf2mat.py -b .
+
 Display help 
 omf2mat.py -h 
 usage: omf2mat.py [-h] [-b BATCH_PATH] [-o OUT_FILE]
@@ -22,12 +30,15 @@ optional arguments:
                         specify output file types
   --version             show program's version number and exit
 
-Examples:
-
 Requirements:
 - Python 2.7
 - decoder.py
 - oommfdecode.py
+
+TODO:
+- Make usage the same as bmp2avi and odt2dat, i.e. default behaviour is to
+	operate on all possible files in the current folder.
+- Say output filename in screen output.
 
 Copyright (C) 2012  Duncan Parkes
 This program is free software; you can redistribute it and/or
