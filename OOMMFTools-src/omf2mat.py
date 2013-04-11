@@ -38,6 +38,8 @@ TODO:
 - Make usage the same as bmp2avi and odt2dat, i.e. default behaviour is to
 	operate on all possible files in the current folder.
 - Say output filename in screen output.
+- Strip out omf/ohf etc. file type
+- Sort out the bit that actually calls to oommfdecode - this could be tidier.
 
 Copyright (C) 2012  Duncan Parkes
 ppxdep@nottingham.ac.uk
@@ -67,22 +69,35 @@ def do_decode(args):
     in_file = args.in_file
     out_file = args.out_file
     file_type = args.file_type
-
+				
     if not out_file:
         out_file = in_file
-    
+        
+	
     array, headers, extra = oommfdecode.unpackFile(in_file)
-    
+    # It's not good that there is all this repitition of lines.    
     if file_type == 'matlab':
         print 'Generating matlab compatible output'
-        oommfdecode.matlabifyArray(array, headers, extra, out_file + '.mat')
+        out_dir = '../mat/'
+        if not os.path.exists(out_dir):
+			os.makedirs(out_dir)
+        oommfdecode.matlabifyArray(array, headers, extra, out_dir + out_file + '.mat')
     elif file_type == 'pickle':
+        out_dir = '../pkl/'
+        if not os.path.exists(out_dir):
+			os.makedirs(out_dir)
         print 'Generating numpy compatible output'
-        oommfdecode.pickleArray(array, headers, extra, out_file + '.pkl')
+        oommfdecode.pickleArray(array, headers, extra, out_dir + out_file + '.pkl')
     else:
         print 'Generating output compatible with numpy and matlab'
-        oommfdecode.pickleArray(array, headers, extra, out_file + '.pkl')
-        oommfdecode.matlabifyArray(array, headers, extra, out_file + '.mat')
+        out_dir = '../mat/'
+        if not os.path.exists(out_dir):
+			os.makedirs(out_dir)
+        oommfdecode.pickleArray(array, headers, extra, out_dir + out_file + '.pkl')
+        out_dir = '../pkl/'
+        if not os.path.exists(out_dir):
+			os.makedirs(out_dir)
+        oommfdecode.matlabifyArray(array, headers, extra, out_dir + out_file + '.mat')
             
 def batch_decoder(args):
     batch_path = args.batch_path
