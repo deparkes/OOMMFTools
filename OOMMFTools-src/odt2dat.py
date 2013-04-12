@@ -24,6 +24,8 @@ Python 2.7
 chomper.py
 odtchomp.py
 
+TODO: 
+
 Copyright (C) 2012  Duncan Parkes
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -69,13 +71,14 @@ def get_delim(delim):
     else:
         print "Bad delimiter"
 
-def write_headers(fields, header_out):
-    if not header_out:
-        header_out = 'headers.txt'
-    headerfile = open(header_out, 'w')
-    for item in fields:
-        headerfile.write("%s\n" % item)
-    print "Headers written to %s\n" % header_out
+def write_headers(fields, args):
+	in_file = args.in_file
+	header_strip, file_extension = os.path.splitext(in_file)
+	header_out = header_strip + '_headers.txt'       
+	headerfile = open(header_out, 'w')     
+	for line_num, item in enumerate(fields):
+		headerfile.write("%s\t%s\n" % (line_num + 1, item))		
+	print "Headers written to %s\n" % header_out
 
 def print_headers(fields):
     pprint(fields)
@@ -113,13 +116,13 @@ def do_chomp(args):
 #            print_headers(odtfile.getNames())
 			print_headers(odtfile.getNames())
 		if save_headers:
-			write_headers(odtfile.getNames(), save_headers)
+			write_headers(odtfile.getNames(), args)
 	else:
 		odtfile = chomp(in_file)
 		if show_headers:
 			print_headers(odtfile.getNames())
 		if save_headers:
-			write_headers(odtfile.getNames(), save_headers)
+			write_headers(odtfile.getNames(), args)
                
         #Output new file
 	if out_file:
@@ -135,7 +138,7 @@ def get_args(args = False):
     parser.add_argument('-o', dest='out_file', help='Set output file', nargs='?')
     parser.add_argument('out_file',nargs='?', help='Set output file', type=str)
     parser.add_argument("-v", "--verbose", help="increase output verbosity",action="store_true")
-    parser.add_argument('-s', dest='save_headers', help='save headers')
+    parser.add_argument('-s', action="store_true", dest='save_headers', default=True, help='save headers')
     parser.add_argument('-d', dest='delim', help='specify output delimiter: tab, comma, space', default='tab',nargs='?', choices=['tab','comma','space'])
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     if not args:
