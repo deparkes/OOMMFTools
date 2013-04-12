@@ -100,7 +100,7 @@ def do_chomp(args):
 		
 	verbosity = args.verbose
 	show_headers=args.show_headers
-	save_headers=args.save_headers    
+	   
 	if args.fields:
 		fields = get_fields(args.fields)
 	else:
@@ -113,16 +113,13 @@ def do_chomp(args):
 		odtfile = chomp(in_file)
 		sys.stdout = save_stdout
 		if show_headers:
-#            print_headers(odtfile.getNames())
 			print_headers(odtfile.getNames())
-		if save_headers:
-			write_headers(odtfile.getNames(), args)
+		write_headers(odtfile.getNames(), args)
 	else:
 		odtfile = chomp(in_file)
 		if show_headers:
 			print_headers(odtfile.getNames())
-		if save_headers:
-			write_headers(odtfile.getNames(), args)
+		write_headers(odtfile.getNames(), args)
                
         #Output new file
 	if out_file:
@@ -138,7 +135,6 @@ def get_args(args = False):
     parser.add_argument('-o', dest='out_file', help='Set output file', nargs='?')
     parser.add_argument('out_file',nargs='?', help='Set output file', type=str)
     parser.add_argument("-v", "--verbose", help="increase output verbosity",action="store_true")
-    parser.add_argument('-s', action="store_true", dest='save_headers', default=True, help='save headers')
     parser.add_argument('-d', dest='delim', help='specify output delimiter: tab, comma, space', default='tab',nargs='?', choices=['tab','comma','space'])
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
     if not args:
