@@ -9,7 +9,7 @@ Specify output filename (if not specified uses input filename as basis)
 
 Run on all vector (omf, ohf etc.) files in the current folder 
 omf2mat.py -b .
-
+The default ouput location is ../mat/
 Display help 
 omf2mat.py -h 
 usage: omf2mat.py [-h] [-b BATCH_PATH] [-o OUT_FILE]
