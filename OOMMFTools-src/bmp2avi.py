@@ -18,7 +18,7 @@ python 2.x
 ffmpeg folder on $PATH
 
 TODO:
-- Have command line option for changing framerate
+- Have command line option for changing framerate (or make all videos default to a standard length e.g. 1 minute.
 """
 
 def get_bmp(path):
@@ -51,7 +51,9 @@ for i, filename in enumerate(get_bmp(tmp_dir)): # loop through each file
     except:
         break
     
-ffmpeg_command = 'ffmpeg -f image2 -i ./bmp2avitmp/img%03d.bmp -r 15 video.avi'
+#ffmpeg_command = 'ffmpeg -f image2 -i ./bmp2avitmp/img%03d.bmp -r 15 video.avi'
+# -vcodec huffyuv
+ffmpeg_command = 'ffmpeg -i ./bmp2avitmp/img%03d.bmp -r 15 -vcodec rawvideo video_huffyuv.avi'
 subprocess.call(ffmpeg_command)
 
 # Clean up by deleting the temporary folder
