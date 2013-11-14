@@ -174,3 +174,8 @@ log.txt
 # Log files
 log.txt
 >>>>>>> origin/feature-bmp2avi
+
+# OOMMF outputs
+*.omf
+*.odt
+*.ohf
