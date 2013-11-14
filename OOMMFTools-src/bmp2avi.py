@@ -8,17 +8,12 @@ import shutil
 Use ffmpeg to convert a series of bmp files to an avi video.
 Requires ffmpeg to be on the path.
 Doing this conversion on a big stack of bitmaps may take a while.
-
-Usage:
-Run on all bmp files in current folder
-bmp2avi.py
-
-Requirements:
-python 2.x
-ffmpeg folder on $PATH
+Usage: >bmp2avi.py #converts all bmp images in current folder to avi.
 
 TODO:
-- Have command line option for changing framerate (or make all videos default to a standard length e.g. 1 minute.
+- have command line control over ffmpeg options e.g. frame rate
+- sort out ffmpeg_command
++ put on github
 """
 
 def get_bmp(path):
@@ -32,17 +27,31 @@ def get_bmp(path):
     files_array = glob.glob(omf_path)
     return files_array
 
+##def enumerate_bmp(bmp_list):
+##    temp_dir = './tmp/'
+##    if not os.path.exists(temp_dir):
+##        os.makedirs(temp_dir)
+##    for i, item in enumerate(bmp_list):
+##        
+##        bmp_list[i] = "%s/%s.bmp" % (temp_dir,i)
+
+
+
 # Make tmp dir to put movie processing files in 
+print "Making temporary directory..."
 tmp_dir = './bmp2avitmp'
 if not os.path.exists(tmp_dir):
     os.makedirs(tmp_dir)
 
 # Copy bitmaps to this tmp dir
+print "Copying bmp files to temp directory"
 current_dir = os.getcwd()
 for i, filename in enumerate(get_bmp(current_dir)): # loop through each file
+    print "Copying file: " + filename
     shutil.copy(filename, tmp_dir)
 
 # Rename these files into a format good for ffmpeg
+print "Renaming temp bmp files for ffmpeg processing"
 for i, filename in enumerate(get_bmp(tmp_dir)): # loop through each file
     count = "%03d" % i
     newname = "./%s/img%s.bmp" % (tmp_dir,count) # create a function that does step 2, above
@@ -51,10 +60,11 @@ for i, filename in enumerate(get_bmp(tmp_dir)): # loop through each file
     except:
         break
     
-#ffmpeg_command = 'ffmpeg -f image2 -i ./bmp2avitmp/img%03d.bmp -r 15 video.avi'
-# -vcodec huffyuv
-ffmpeg_command = 'ffmpeg -i ./bmp2avitmp/img%03d.bmp -r 15 -vcodec rawvideo video_huffyuv.avi'
+print "Running ffmpeg"
+ffmpeg_command = 'ffmpeg -f image2 -i ./bmp2avitmp/img%03d.bmp -r 15 video.avi'
 subprocess.call(ffmpeg_command)
 
 # Clean up by deleting the temporary folder
+print "Removing temporary directory"
 shutil.rmtree(tmp_dir)
+print "Done"
