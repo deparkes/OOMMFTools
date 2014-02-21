@@ -9,6 +9,8 @@
 # - Make a argparser
 # - Make it easier to change the config file used (see argparser)
 # - Sort out 'file exists' error
+# - Have command line argument to turn on or off labelling of output bmp files.
+# - Currently throws up an error when trying to label an already existing file.
 import subprocess
 import os
 import sys
@@ -56,7 +58,7 @@ if not os.path.exists(bmp_dir):
 # move bitmaps to this tmp dir
 current_dir = os.getcwd()
 for i, filename in enumerate(get_bmp(current_dir)): # loop through each file
-	label_image(filename)
+#	label_image(filename)
 	shutil.move(filename, bmp_dir)
     
 
