@@ -24,7 +24,7 @@ array set plot_config {
     pixel,colormap     Black-Gray-White
     pixel,colorcount   100
     pixel,opaque       1
-    pixel,quantity     y
+    pixel,quantity     x
     pixel,colorphase   0
     pixel,colorreverse 0
     pixel,autosample   0
