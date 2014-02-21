@@ -1,13 +1,14 @@
 OOMMFTools
 ==========
 
-OOMMFTools is a set of utilities designed to assist OOMMF postprocessing
+OOMMFTools is a set of utilities designed to assist OOMMF postprocessing.
+Originally developed by Mark Mascaro.
 
 Different branches have different levels of features/maturity:
 
 Master: The original OOMMFTools. GUI only.
 
-Release-1.1: As the master branch, but with added commandline functionality.
+Release-1.1: As the master branch, but with added commandline functionality for easy batch processing.
 
 Develop: Newer features/updates. Possibly more bugs than Release version.
 
