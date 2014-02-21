@@ -12,7 +12,14 @@ same way.
 Requires editing of the individual files
 
 Requirements:
-Python 2.7
+- Python (2.7) [All]
+- wxPython (Unicode) [GUI Programs]
+- ...
+- numpy [OOMMFDecode]
+- scipy [OOMMFDecode]
+- FFmpeg [OOMMFConvert, bmp2avi]
+- OOMMF [OOMMFConvert, avf2bmp]
+- Tcl/Tk [OOMMFConvert, avf2bmp]
 Imagemagick (for making videos, converting and labelling images)
 
 Installation/setup
@@ -31,7 +38,3 @@ Possible ways of doing this include:
 		"open command window here"
 	- open the target directory, click in the address bar and type 'cmd'.
 From this command line run the relevant command.
-
-For details on each command see...
-
-
