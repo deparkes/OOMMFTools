@@ -14,6 +14,18 @@ Different branches have different levels of features/maturity:
 
 - Develop: Newer features/updates. Possibly more bugs than Release version.
 
+## Requirements:
+- OOMMF
+- Tcl/Tk
+- Python 2.7 (command line)
+- Scipy
+- Numpy
+- ffmpeg (Imagemagick)
+
+I've been using Enthought Python Distribution which provides python 2.7, plus a load of scientific
+modules. You might also want to consider Spyder.
+
+
 ## Functionality:
 
 ###GUI:
