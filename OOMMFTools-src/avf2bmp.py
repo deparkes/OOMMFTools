@@ -6,11 +6,12 @@
 # name/blah folder tree and make a new folder ../bmp
 # Otherwise it will make ./bmp and put the output bmp files there.
 # TODO: 
-# - Make a argparser
+# - Make an argparser
 # - Make it easier to change the config file used (see argparser)
 # - Sort out 'file exists' error
 # - Have command line argument to turn on or off labelling of output bmp files.
 # - Currently throws up an error when trying to label an already existing file.
+# - Improve error checking/reporting for labelling and moving files.
 import subprocess
 import os
 import sys
@@ -37,7 +38,7 @@ def label_image(filename):
 # avf2ppm.configHIGHRES: Makes high res images for cropping to a region
 # avf2ppm.configAUTO: uses automatic settings
 # avf2ppm.configBW: uses automatic settings
-cmd_to_run = 'tclsh C:/oommf-1.2a5/oommf.tcl avf2ppm -config C:/oommf-1.2a5/avf2ppm.configBW -format B24 -ipat %s' % sys.argv[1]
+cmd_to_run = 'tclsh C:/oommf-1.2a5/oommf.tcl avf2ppm -config C:/oommf-1.2a5/avf2ppm.configAUTO -format B24 -ipat %s' % sys.argv[1]
 subprocess.call(cmd_to_run, shell=True)
 
 # Create a folder in which to store the images (unless it already exists)
@@ -56,8 +57,13 @@ if not os.path.exists(bmp_dir):
     os.makedirs(bmp_dir)
 
 # move bitmaps to this tmp dir
+# Use glob to find the original files sent to sys.argv[1].
+# Remove file extension from vector file (e.g. .omf) and replace it with .bmp
+# Move the newly created files of this name to a new folder.
 current_dir = os.getcwd()
-for i, filename in enumerate(get_bmp(current_dir)): # loop through each file
+for i, filename in enumerate(glob.glob(sys.argv[1])): # loop through each file
+	filename, fileExtension = os.path.splitext(filename)
+	filename = filename + '.bmp'
 #	label_image(filename)
 	shutil.move(filename, bmp_dir)
     
