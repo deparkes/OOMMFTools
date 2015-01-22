@@ -161,3 +161,21 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+# Matlab
+*.asv
+*.mat
+
+<<<<<<< HEAD
+#ignore logs
+log.txt
+*.log
+=======
+# Log files
+log.txt
+>>>>>>> origin/feature-bmp2avi
+
+# OOMMF outputs
+*.omf
+*.odt
+*.ohf
