@@ -64,7 +64,7 @@ Imagemagick (for making videos, converting and labelling images)
 **********************
 
 Installation/setup
-1. Download OOMMFTools Release 2.0 from github
+1. Download OOMMFTools from github
 2. Add OOMMFTools directory to system path
 3. a) Set correct path to OOMMF in avf2bmp.py and oommf.bat
    b) Set correct path to tcl in avf2bmp.py and oommf.bat
