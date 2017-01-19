@@ -1,14 +1,5 @@
 OOMMFTools
 ==========
-http://web.mit.edu/daigohji/projects/OOMMFTools/
-https://github.com/deparkes/OOMMFTools
-
-Mark Mascaro
-doublemark@mit.edu
-
-Duncan Parkes
-ppxdep@nottingham.ac.uk
-
 Introduction
 ============
 
@@ -289,6 +280,15 @@ Once a file has been loaded and data fields have been chosen, any files dragged 
 with Batch Mode enabled will have the specified fields extracted. The output will be placed in the same
 folder as the dropped file, with the same filename and the ".txt" extension. Currently, dropping directories
 is not supported and they will not be recursed.
+
+Contributors
+============
+http://web.mit.edu/daigohji/projects/OOMMFTools/
+https://github.com/deparkes/OOMMFTools
+
+[Mark Mascaro](doublemark@mit.edu) _original work_
+
+[Duncan Parkes](deparkes.co.uk) _additional features_
 
 License
 =======
