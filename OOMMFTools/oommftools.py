@@ -48,10 +48,10 @@ class MainFrame(wx.Frame):
         mainsizer.Add(wx.StaticText(panel, -1, "Manage, reduce and convert ODT files"), 1, wx.ALIGN_CENTER_VERTICAL | wx.BOTTOM, 20)
         self.Bind(wx.EVT_BUTTON, self.makeChomp, id=30)
 
-        mainsizer.AddGrowableCol(1,1)
+	mainsizer.AddGrowableCol(1,1)
 
         panel.SetSizer(mainsizer)
-        panel.Fit()
+	panel.Fit()
         self.Center()
         self.Show(True)
 
