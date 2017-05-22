@@ -38,6 +38,20 @@ available at http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html. In the inte
 with the FFmpeg license to the letter, the source code is available at
 http://web.mit.edu/daigohji/projects/OOMMFTools/ffmpeg-0.6.tar.gz
 
+# Installing Python Modules
+## Anaconda Python Distribution
+Probably the easiest way to install the modules needed for OOMMFTools is to use the [Anaconda Distribution](https://www.continuum.io/downloads).
+
+    >>> Conda install numpy scipy wxpython
+    >>> python Oommftools.py
+
+## Install with Pip Only
+If you would pred
+    >>> pip install numpy
+    >>> pip install scipy
+    >>> pip install wxpython
+
+On windows you may struggle to install numpy and scipy using the usual pip channels. If this is the case, then you may need to install these packages by first downloading pre-compiled whl files.
 
 # OOMMFDecode
 OOMMFDecode batch-processes vector files (omf, ovf, oef, ohf) into numpy arrays.
