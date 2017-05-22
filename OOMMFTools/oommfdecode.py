@@ -170,14 +170,12 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #Let's start by finding the original indices - making a copy is key
         originalTimeIndex = list(extra["SimTime"])
         if len(set(extra["MIFSource"])) == 1:
-            if not -1 in extra["SimTime"]:
-                decoratedArrays = zip(originalTimeIndex, arrays)
-                decoratedArrays.sort(key = lambda x: x[0])
-        	extra["SimTime"], arrays = zip(*decoratedArrays)
-        	#Sadly, the cleverness ends here - the rest must be bruteforced.
-	        for key in extra:
-                    if not key == "SimTime": #We did that one.
-                        junk, extra[key] = zip(*sorted(zip(originalTimeIndex, extra[key])))
+	        if not -1 in extra["SimTime"]:
+	        	extra["SimTime"], arrays = zip(*sorted(zip(originalTimeIndex, arrays)))
+	        	#Sadly, the cleverness ends here - the rest must be bruteforced.
+		        for key in extra:
+		        	if not key == "SimTime": #We did that one.
+		        		junk, extra[key] = zip(*sorted(zip(originalTimeIndex, extra[key])))
 
         self.parent.gatherData(arrays, headers, extra)
 
