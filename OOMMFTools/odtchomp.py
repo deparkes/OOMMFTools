@@ -491,21 +491,42 @@ def namepolish(name, uniquenessCheck):
     #This is pretty ugly, but the key point is this: it filters
     #down to the minimum amount of information necessary to uniquely identify a quantity
     #It makes things more human-readable
+    # If the quantity is duplicated
     if len(_filterOnPos(uniquenessCheck, quantity, 2)) > 1:
+        # If there is a givenName present
         if givenName:
+            # Take the output from the quantity filter (which we know is > 1 now)
+            # filter this output and check for duplicates of the givenName.
             if len(_filterOnPos(_filterOnPos(uniquenessCheck, quantity, 2), givenName, 1)) > 1:
+                # Quantity and givenName are both duplicated. We need to keep
+                # the evolver name to distinguish between fields. 
+                # If the evolver should be protected, put it second.
+                # It's not clear why the evolver should be first or second
+                # position.
                 if protectEvolver:
                     newname = givenName + " " + evolver + " " + quantity
+                # if evolver should not be protected, put it first.
                 else:
                     newname = evolver + " " + givenName + " " + quantity
+            # There is a given name present, but no duplicates found. 
+            # As there are no givenName duplicates, we should be able to 
+            # uniquely identify the fields without the evolver.
+            # We may want to protect the evolver - in this case, include it 
+            # after the givenName
             elif protectEvolver:
                 newname = givenName + " " + evolver + " " + quantity
+            # If there are no duplicates in the givenName (the 'quantity' is 
+            # duplicated), and the evolver is not protected, drop the evolver.
             else:
                 newname = givenName + " " + quantity
+        # givenName not present. In this case just output evolver and quantity.
         else:
             newname = evolver + " " + quantity
+    # Quantity is not duplicated. Each quantity label is unique, so can identify
+    # the field usuing quantity alone.
     else:
         newname = quantity
+        1
     for item in ALWAYS_CLEAR:
         newname = newname.replace(item, "")
     log("Readability adaptation: %s to %s" % (name, newname))
