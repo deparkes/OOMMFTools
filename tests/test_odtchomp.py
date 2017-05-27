@@ -48,42 +48,52 @@ class Test_namepolish(unittest.TestCase):
         Name polish is called by headers_prettify.
         '''
         name = 'evolver:givenName:quantity'
-        # 
-        uniquenessCheck = [['evolver2', 'givenName', 'quantity'], ['evolver2', 'givenName2', 'quantity']]
+        # This uniquenessCheck is created by adding each of the keys found
+        uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver2', 'givenName2', 'quantity2']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        self.assertEqual(new_name, 'givenName quantity')
+        # In this case the quantity on its own is enough to distinguish it
+        # from the other keys. We only need to keep quantity.
+        self.assertEqual(new_name, 'quantity')
 
-    def test2_namepolish_evolver_givenName_quantity(self):
+    def test2_namepolish_givenName_quantity(self):
         '''
         Name polish is called by headers_prettify.
         '''
         name = 'evolver:givenName:quantity'
         # no unique elements, so take full thing to describe
-        uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver', 'givenName', 'quantity']]
+        uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver2', 'givenName2', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        self.assertEqual(new_name, 'evolver givenName quantity')
+        # Quantity is duplicated, but there are distinct givenNames.
+        # We can distinguish between keys with just givenName and quantity
+        self.assertEqual(new_name, 'givenName quantity')
 
-    def test3_namepolish_quantity(self):
+    def test3_namepolish_givenName_quantity(self):
         '''
         Name polish is called by headers_prettify.
         '''
+        # name is one particular key. This particular key would be one of those in the uniquenessCheck list
         name = 'evolver:givenName:quantity'
         # 'quantity' is unique, so doesn't need any more descriptors
-        uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver2', 'givenName2', 'quantity2']]
+        uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver2', 'givenName', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        self.assertEqual(new_name, 'quantity')
+        # Only the evolver is distinct. We need to use the evolver, the 
+        # givenName and the quantity to distinguish between keys.
+        # As protectEvolver isn't true here, the output order is
+        # evolver givenname quantity
+        self.assertEqual(new_name, 'evolver givenName quantity')
 
-    def test4_namepolish_evolver_givenName_quantity2(self):
+    def test4_namepolish_givenName_quantity(self):
         '''
         Name polish is called by headers_prettify.
         '''
         name = 'evolver:givenName:quantity'
         # evolvers are 
-        uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver2', 'givenName', 'quantity']]
+        uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver', 'givenName', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
+        # There is key clash here. Not sure what the best way to catch this is.
         self.assertEqual(new_name, 'evolver givenName quantity')
 
-    def test5_namepolish_givenName_evolver_quantity_protectEvolver(self):
+    def test5_namepolish_givenName_quantity(self):
         '''
         Name polish is called by headers_prettify.
         '''
@@ -91,9 +101,36 @@ class Test_namepolish(unittest.TestCase):
         name = 'evolver_prot:givenName:quantity'
         uniquenessCheck = [['evolver_prot', 'givenName', 'quantity'], ['evolver2', 'givenName', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        self.assertEqual(new_name, 'givenName evolver quantity')
+        # for reasons I don't understand, the evolver and givenName are
+        # switched when the evolver name is protected.
+        self.assertEqual(new_name, 'givenName evolver_prot quantity')
 
+    def test6_namepolish_givenName_quantity(self):
+        '''
+        Name polish is called by headers_prettify.
+        '''
+        odtchomp.PROTECTED_NAMES = ["evolver_prot"]
+        name = 'evolver_prot:givenName:quantity'
+        uniquenessCheck = [['evolver_prot', 'givenName', 'quantity'], ['evolver2', 'givenName2', 'quantity']]
+        new_name = odtchomp.namepolish(name, uniquenessCheck)
+        # for reasons I don't understand, the evolver and givenName are
+        # switched when the evolver name is protected.
+        self.assertEqual(new_name, 'givenName evolver_prot quantity')
 
+    def test7_namepolish_givenName_quantity(self):
+        '''
+        Name polish is called by headers_prettify.
+        '''
+        name = 'evolver::quantity'
+        uniquenessCheck = [['evolver', 'quantity'], ['evolver', 'quantity']]
+        new_name = odtchomp.namepolish(name, uniquenessCheck)
+        # for reasons I don't understand, the evolver and givenName are
+        # switched when the evolver name is "protected".
+        self.assertEqual(new_name, 'givenName quantity')
+
+    def test_remove_Oxs(self):
+        pass
+        
 class Test_filterOnPos(unittest.TestCase):
     '''
     Returns list if a string is found in a particular position in that list.
@@ -105,10 +142,17 @@ class Test_filterOnPos(unittest.TestCase):
         item = 'item1'
         dex = 0
         ret = odtchomp._filterOnPos(inList, item, dex)
+        print(len(ret))
+        # If the length of 'ret' is more than 1, it means that there is a 
+        # duplicate of the target item in the indicated position.
+        # It seems to be called 'filter on pos' as it returns lists only
+        # if the target value is found in the position specified within
+        # the lists supplied.
         self.assertEqual(ret, [['item1', 'item2', 'item3'], ['item1', 'item5', 'item6']])
         
     def test_filterOnPos_item_in_one_of_two_sublists(self):
         '''
+        Target item found in specified position in one of the input lists.
         '''
         inList = [['item1', 'item2', 'item3'], ['item4', 'item5', 'item6']]
         item = 'item1'
