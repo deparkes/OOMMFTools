@@ -526,7 +526,6 @@ def namepolish(name, uniquenessCheck):
     # the field usuing quantity alone.
     else:
         newname = quantity
-        1
     for item in ALWAYS_CLEAR:
         newname = newname.replace(item, "")
     log("Readability adaptation: %s to %s" % (name, newname))
