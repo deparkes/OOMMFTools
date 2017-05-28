@@ -480,6 +480,27 @@ def headers_prettify(inDict):
     return outDict
 
 def namepolish(name, uniquenessCheck):
+    """Summary line.
+
+    Extended description of function.
+
+    Parameters
+    ----------
+    arg1 : int
+        Description of arg1
+    arg2 : str
+        Description of arg2
+
+    Returns
+    -------
+    bool
+        Description of return value
+
+    Examples
+    --------
+    >>> func(1, "a")
+    True
+    """
     evolver, givenName, quantity = name.split(":")
 
     protectEvolver = False
