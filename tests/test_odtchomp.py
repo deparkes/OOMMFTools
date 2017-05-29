@@ -1,4 +1,5 @@
 import sys, os
+import StringIO
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
@@ -203,7 +204,11 @@ class Test_log(unittest.TestCase):
     to put in some initial tests.
     """
     def test_print_to_console(self):
-        pass
+        capturedOutput = StringIO.StringIO()          # Create StringIO object
+        sys.stdout = capturedOutput                   #  and redirect stdout.
+        odtchomp.log('test')                          # Call unchanged function.
+        self.assertEqual(capturedOutput.getvalue(), 'test\n')
+        sys.stdout = sys.__stdout__                   # Reset redirect.
         
 class Test_write(unittest.TestCase):
     """
