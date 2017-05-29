@@ -31,4 +31,4 @@ install:
 
 script:
   # Your test script goes here
-  unittest discover
+  python -m unittest discover
