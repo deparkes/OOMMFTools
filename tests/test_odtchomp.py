@@ -48,11 +48,8 @@ class Test_namepolish(unittest.TestCase):
         Name polish is called by headers_prettify.
         '''
         name = 'evolver:givenName:quantity'
-        # This uniquenessCheck is created by adding each of the keys found
         uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver', 'givenName', 'quantity2']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        # In this case the quantity on its own is enough to distinguish it
-        # from the other keys. We only need to keep quantity.
         self.assertEqual(new_name, 'quantity')
 
     def test2_givenName_quantity(self):
@@ -60,26 +57,17 @@ class Test_namepolish(unittest.TestCase):
         Name polish is called by headers_prettify.
         '''
         name = 'evolver:givenName:quantity'
-        # no unique elements, so take full thing to describe
         uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver', 'givenName2', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        # Quantity is duplicated, but there are distinct givenNames.
-        # We can distinguish between keys with just givenName and quantity
         self.assertEqual(new_name, 'givenName quantity')
 
     def test3_evolver_givenName_quantity(self):
         '''
         Name polish is called by headers_prettify.
         '''
-        # name is one particular key. This particular key would be one of those in the uniquenessCheck list
         name = 'evolver:givenName:quantity'
-        # 'quantity' is unique, so doesn't need any more descriptors
         uniquenessCheck = [['evolver', 'givenName', 'quantity'], ['evolver2', 'givenName', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        # Only the evolver is distinct. We need to use the evolver, the 
-        # givenName and the quantity to distinguish between keys.
-        # As protectEvolver isn't true here, the output order is
-        # evolver givenname quantity
         self.assertEqual(new_name, 'evolver givenName quantity')
 
     def test4_givenName_evolver_quantity(self):
@@ -90,8 +78,6 @@ class Test_namepolish(unittest.TestCase):
         name = 'evolver_prot:givenName:quantity'
         uniquenessCheck = [['evolver_prot', 'givenName', 'quantity'], ['evolver2', 'givenName', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        # for reasons I don't understand, the evolver and givenName are
-        # switched when the evolver name is protected.
         self.assertEqual(new_name, 'givenName evolver_prot quantity')
 
     def test5_givenName_evolver_quantity(self):
@@ -102,8 +88,6 @@ class Test_namepolish(unittest.TestCase):
         name = 'evolver_prot:givenName:quantity'
         uniquenessCheck = [['evolver_prot', 'givenName', 'quantity'], ['evolver2', 'givenName2', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        # for reasons I don't understand, the evolver and givenName are
-        # switched when the evolver name is protected.
         self.assertEqual(new_name, 'givenName evolver_prot quantity')
 
     def test6_evolver_quantity(self):
@@ -113,8 +97,6 @@ class Test_namepolish(unittest.TestCase):
         name = 'evolver::quantity'
         uniquenessCheck = [['evolver', '','quantity'], ['evolver', '', 'quantity']]
         new_name = odtchomp.namepolish(name, uniquenessCheck)
-        # for reasons I don't understand, the evolver and givenName are
-        # switched when the evolver name is "protected".
         self.assertEqual(new_name, 'evolver quantity')
 
     def test_remove_Oxs(self):
