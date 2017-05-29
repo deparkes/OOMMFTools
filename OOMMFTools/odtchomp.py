@@ -480,26 +480,30 @@ def headers_prettify(inDict):
     return outDict
 
 def namepolish(name, uniquenessCheck):
-    """Summary line.
+    """Uniquely identify quantity fields.
 
-    Extended description of function.
+    This is pretty ugly, but the key point is this: it filters
+    down to the minimum amount of information necessary to uniquely identify a quantity
+    It makes things more human-readable
 
     Parameters
     ----------
-    arg1 : int
-        Description of arg1
-    arg2 : str
-        Description of arg2
+    name : str
+        One particular 'key' from header output
+    uniquenessCheck : list[[list]]
+        A list of lists of strings where there are duplicates.
 
     Returns
     -------
-    bool
-        Description of return value
+    str
+        A string of simplified field headers.
 
     Examples
     --------
-    >>> func(1, "a")
-    True
+    >>> namepolish('evolver:givenName:quantity', 
+                    [['evolver', 'givenName', 'quantity'], 
+                    ['evolver', 'givenName', 'quantity2']])
+    'quantity'
     """
     evolver, givenName, quantity = name.split(":")
 
@@ -548,11 +552,21 @@ def namepolish(name, uniquenessCheck):
     else:
         newname = quantity
     for item in ALWAYS_CLEAR:
+        # Remove evolver prefixes to improve readability
         newname = newname.replace(item, "")
     log("Readability adaptation: %s to %s" % (name, newname))
     return newname
 
 def _filterOnPos(inList, item, dex):
+    """Return list (of lists) if a string is found in a particular position in 
+    that list.
+    
+    If the length of 'ret' is more than 1, it means that there is a 
+    duplicate of the target item in the indicated position.
+    It seems to be called 'filter on pos' as it returns lists only
+    if the target value is found in the position specified within
+    the lists supplied.
+    """
     ret = []
     for compare in inList:
         if compare[dex] == item:
@@ -560,6 +574,7 @@ def _filterOnPos(inList, item, dex):
     return ret
 
 def prefix_punt(data):
+    # Drop prefix (with _ separator)
     return data.split("_")[-1]
 
 ########
