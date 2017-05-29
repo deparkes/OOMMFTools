@@ -99,8 +99,14 @@ class Test_namepolish(unittest.TestCase):
         new_name = odtchomp.namepolish(name, uniquenessCheck)
         self.assertEqual(new_name, 'evolver quantity')
 
-    def test_remove_Oxs(self):
-        pass
+    def test_remove_evolver_prefix(self):
+        '''
+        Name polish is called by headers_prettify.
+        '''
+        name = 'Oxs_evolver::quantity'
+        uniquenessCheck = [['Oxs_evolver', '','quantity'], ['Oxs_evolver', '', 'quantity']]
+        new_name = odtchomp.namepolish(name, uniquenessCheck)
+        self.assertEqual(new_name, 'evolver quantity')
         
 class Test_filterOnPos(unittest.TestCase):
     '''
@@ -145,3 +151,15 @@ class Test_filterOnPos(unittest.TestCase):
         Needs to fail nicely when given empty lists
         '''
         pass
+        
+class Test_prefix_punt(unittest.TestCase):
+    def test_prefix_punt_no_element(self):
+        data = "Oxs_"
+        prefix = odtchomp.prefix_punt(data)
+        self.assertEqual(prefix, "")
+        
+    def test_prefix_punt_an_element(self):
+        data = "Oxs_prefix"
+        prefix = odtchomp.prefix_punt(data)
+        self.assertEqual(prefix, "prefix")
+        
