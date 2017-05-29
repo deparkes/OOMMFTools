@@ -189,3 +189,39 @@ class Test_Interpreter(unittest.TestCase):
             # not be matched, and it would be good to test for behaviour in that
             # case.
             pass
+            
+class Test_chomp(unittest.TestCase):
+    """
+    """
+    def test_chomp(self):
+        pass
+        
+class Test_log(unittest.TestCase):
+    """
+    log(str) is just a simple print function at the moment.
+    It could potentially be exented to more complete logging outputs, so I want
+    to put in some initial tests.
+    """
+    def test_print_to_console(self):
+        pass
+        
+class Test_write(unittest.TestCase):
+    """
+    File IO etc.
+    """
+    def test_write(self):
+        pass
+        
+class Test_resolve(unittest.TestCase):
+    """
+    """
+    def test_resolve(self):
+        pass
+        
+class Test_split_densify(unittest.TestCase):
+    """
+    """
+    def test_split_densify(self):
+        pass
+        
+        
