@@ -163,3 +163,29 @@ class Test_prefix_punt(unittest.TestCase):
         prefix = odtchomp.prefix_punt(data)
         self.assertEqual(prefix, "prefix")
         
+class Test_Interpreter(unittest.TestCase):
+        """
+        """
+        
+        def setUp(self):
+            self.interpreter = odtchomp.Interpreter({'key1 part1 part2': 'Zed', 'key2 part1 part2': 39, 'key3 part1 part2': 9}, ['key1 part1 part2', 'key2 part1 part2', 'key3 part1 part2'])
+        
+           
+        def test_getNames(self):
+            keys = self.interpreter.getNames()
+            self.assertEqual(keys, ['key1 part1 part2', 'key2 part1 part2', 'key3 part1 part2'])
+        
+        def test_getData(self):
+            data = self.interpreter.getData()
+            self.assertEqual(data, {'key1 part1 part2': 'Zed', 'key2 part1 part2': 39, 'key3 part1 part2': 9})
+            
+        def test_getDataLength(self):
+            dataLength = self.interpreter.getDataLength()
+            self.assertEqual(dataLength, 3)
+            
+        def test_mismatched_keys_and_dict(self):
+            # It seems like Interpreter assumes that keys and dict are 'matched'
+            # as they are in the above tests. It may be possible for them to
+            # not be matched, and it would be good to test for behaviour in that
+            # case.
+            pass
