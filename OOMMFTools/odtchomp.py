@@ -356,6 +356,9 @@ def write(filename, interpreter, delim, fields):
     f.close()
 
 def resolve(lst, keys):
+    """
+    Return a list of values from a dictionary corresponding to keys provided
+    """
     out = []
     for key in keys:
         out.append(lst[key])
