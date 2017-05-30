@@ -1,5 +1,6 @@
 import sys, os
 import StringIO
+import tempfile
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
@@ -191,6 +192,10 @@ class Test_Interpreter(unittest.TestCase):
             # case.
             pass
             
+        def test_values_as_list(self):
+            # This is how the data is stored for real.
+            pass
+            
 class Test_chomp(unittest.TestCase):
     """
     """
@@ -214,8 +219,28 @@ class Test_write(unittest.TestCase):
     """
     File IO etc.
     """
-    def test_write(self):
+    def setUp(self):
+        self.interpreter = odtchomp.Interpreter({'key1 part1 part2': [1,2,3], 'key2 part1 part2': [4,5,6], 'key3 part1 part2': [7,8,9]}, ['key1 part1 part2', 'key2 part1 part2', 'key3 part1 part2'])
+    
+    
+    def test_write_print_to_screen(self):
         pass
+    
+    def test_write_cleanup(self):
+        pass
+    
+    def test_write_log(self):
+        pass
+        
+    def test_write_outfile(self):
+        outfile = tempfile.mkstemp()[1]
+        # NOTE: Alternatively, for Python 2.6+, you can use
+        # tempfile.SpooledTemporaryFile, e.g.,
+        #outfile = tempfile.SpooledTemporaryFile(10 ** 9)
+        odtchomp.write(outfile, self.interpreter, ",", ["key1 part1 part2", "key2 part1 part2", "key3 part1 part2"])
+        with open(outfile) as f:
+            content = f.read()
+        self.assertEqual(content, "key1 part1 part2, key2 part1 part2, key3 part1 part2\n")
         
 class Test_resolve(unittest.TestCase):
     """
@@ -231,7 +256,14 @@ class Test_resolve(unittest.TestCase):
 class Test_split_densify(unittest.TestCase):
     """
     """
-    def test_split_densify(self):
-        pass
+    def test_split_densify_default_delim(self):
+        rets = odtchomp.split_densify("word1 word2 word3")
+        self.assertEqual(rets, ["word1", "word2", "word3"])
+
+    def test_split_densify_extra_whitespace(self):
+        rets = odtchomp.split_densify("word1\t word2  word3")
+        self.assertEqual(rets, ["word1", "word2", "word3"])
         
-        
+    def test_split_densify_tab_delim(self):
+        rets = odtchomp.split_densify("word1\tword2\tword3", "\t")
+        self.assertEqual(rets, ["word1", "word2", "word3"])        
