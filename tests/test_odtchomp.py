@@ -199,7 +199,39 @@ class Test_Interpreter(unittest.TestCase):
 class Test_chomp(unittest.TestCase):
     """
     """
-    def test_chomp(self):
+
+    def setUp(self):
+        with tempfile.NamedTemporaryFile(delete=False) as self.temp:
+            # odt output file from /local_tests/2dpbc_film.odt
+            self.temp.write('# ODT 1.0\n# Table Start\n# Title: mmArchive Data Table, Thu Dec 15 01:13:45 EST 2011\n# Columns: {Oxs_EulerEvolve::Total energy} {Oxs_EulerEvolve::Energy calc count} {Oxs_EulerEvolve::Max dm/dt} Oxs_EulerEvolve::dE/dt {Oxs_EulerEvolve::Delta E} PBC_Exchange_2D::Energy PBC_Demag_2D::Energy Oxs_TimeDriver::Iteration {Oxs_TimeDriver::Stage iteration} Oxs_TimeDriver::Stage Oxs_TimeDriver::mx   Oxs_TimeDriver::my   Oxs_TimeDriver::mz   {Oxs_TimeDriver::Last time step} {Oxs_TimeDriver::Simulation time}\n# Units:                  J                                 {}                             deg/ns                     J/s                       J                         J                     J                      {}                            {}                          {}                   {}                   {}                   {}                          s                                 s                \n                 0                                  1                                0                         0                        0                        0                      0                      0                             0                           0                     1                    0                    0                          0                                0                         \n# Table End\n')
+            self.temp.flush()
+
+    def test_chomp_headers(self):
+        chomper = odtchomp.chomp(self.temp.name)
+        test_output = ['Total energy', 'Energy calc count', 'Max dm/dt', 'dE/dt', 'Delta E', 'PBC_Exchange_2D Energy', 'PBC_Demag_2D Energy', 'Iteration', 'Stage iteration', 'Stage', 'mx', 'my', 'mz', 'Last time step', 'Simulation time']
+        self.assertEqual(chomper.getNames(), test_output)
+
+    def test_chomp_data(self):
+        #chomper = odtchomp.chomp(f.name)
+        chomper = odtchomp.chomp(self.temp.name)
+        test_output = "{'Delta E': array([ 0.]), 'Energy calc count': array([ 1.]), 'Stage iteration': array([ 0.]), 'Simulation time': array([ 0.]), 'Iteration': array([ 0.]), 'Last time step': array([ 0.]), 'PBC_Demag_2D Energy': array([ 0.]), 'PBC_Exchange_2D Energy': array([ 0.]), 'Max dm/dt': array([ 0.]), 'dE/dt': array([ 0.]), 'Stage': array([ 0.]), 'my': array([ 0.]), 'mx': array([ 1.]), 'Total energy': array([ 0.]), 'mz': array([ 0.])}"
+        self.assertEqual(str(chomper.getData()), test_output)
+
+    def test_chomp_length_data(self):
+        chomper = odtchomp.chomp(self.temp.name)
+        test_output = "1"
+        self.assertEqual(str(chomper.getDataLength()), test_output)
+
+    def test_chomp_absolute_path(self):
+        """
+        There seemed to be a problem with loading files from abolute path
+        """
+        pass
+        
+    def test_chomp_with_parent(self):
+        """
+        There is the capability to load in from wx widget
+        """
         pass
         
 class Test_log(unittest.TestCase):
@@ -233,6 +265,9 @@ class Test_write(unittest.TestCase):
         pass
         
     def test_write_outfile(self):
+        """
+        Not sure if this is dropping a line from the end...
+        """
         outfile = tempfile.mkstemp()[1]
         # NOTE: Alternatively, for Python 2.6+, you can use
         # tempfile.SpooledTemporaryFile, e.g.,
@@ -240,7 +275,7 @@ class Test_write(unittest.TestCase):
         odtchomp.write(outfile, self.interpreter, ",", ["key1 part1 part2", "key2 part1 part2", "key3 part1 part2"])
         with open(outfile) as f:
             content = f.read()
-        self.assertEqual(content, "key1 part1 part2, key2 part1 part2, key3 part1 part2\n")
+        self.assertEqual(content, "key1 part1 part2, key2 part1 part2, key3 part1 part2\n1, 4, 7\n2, 5, 8\n")
         
 class Test_resolve(unittest.TestCase):
     """
