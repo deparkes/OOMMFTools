@@ -220,8 +220,13 @@ class Test_write(unittest.TestCase):
 class Test_resolve(unittest.TestCase):
     """
     """
-    def test_resolve(self):
-        pass
+    def test_resolve_single_key(self):
+        out = odtchomp.resolve({"key": "value"}, ["key"])
+        self.assertEqual(out, ["value"])
+        
+    def test_resolve_two_keys(self):
+        out = odtchomp.resolve({"key1": "value1", "key2": "value2"}, ["key1", "key2"])
+        self.assertEqual(out, ["value1", "value2"])
         
 class Test_split_densify(unittest.TestCase):
     """
