@@ -1,28 +1,5 @@
-name: oommftools
-channels:
-- conda-forge
-- defaults
-dependencies:
-- arrow=0.10.0=py27_0
-- binaryornot=0.4.3=py27_2
-- certifi=2017.4.17=py27_0
-- chardet=3.0.2=py27_1
-- click=6.7=py27_0
-- cookiecutter=1.5.1=py27_0
-- future=0.16.0=py27_0
-- git=2.12.2=4
-- jinja2=2.9.5=py27_0
-- jinja2-time=0.2.0=py27_1
-- markupsafe=0.23=py27_1
-- pip=9.0.1=py27_0
-- poyo=0.4.1=py27_0
-- python=2.7.13=1
-- python-dateutil=2.6.0=py27_0
-- setuptools=33.1.1=py27_0
-- six=1.10.0=py27_1
-- wheel=0.29.0=py27_0
-- whichcraft=0.4.1=py27_0
-- wincertstore=0.2=py27_0
-- vs2008_runtime=9.00.30729.5054=0
-prefix: C:\Users\Duncan\Anaconda3\envs\oommftools
+python=2.7
+numpy
+scipy
+wxpython
 
