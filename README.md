@@ -46,7 +46,8 @@ Probably the easiest way to install the modules needed for OOMMFTools is to use 
     >>> python Oommftools.py
 
 ## Install with Pip Only
-If you would pred
+If you would prefer to install with pip then you can with:
+
     >>> pip install numpy
     >>> pip install scipy
     >>> pip install wxpython
