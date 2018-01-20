@@ -7,6 +7,7 @@ sys.path.insert(0, PROJECT_DIR)
 
 import unittest
 from OOMMFTools import odtchomp
+import numpy as np
 class Test_headers_prettify(unittest.TestCase):
     def test_headers_prettify(self):
         '''
@@ -220,8 +221,22 @@ class Test_chomp(unittest.TestCase):
     def test_chomp_data(self):
         #chomper = odtchomp.chomp(f.name)
         chomper = odtchomp.chomp(self.temp.name)
-        test_output = "{'Delta E': array([ 0.]), 'Energy calc count': array([ 1.]), 'Stage iteration': array([ 0.]), 'Simulation time': array([ 0.]), 'Iteration': array([ 0.]), 'Last time step': array([ 0.]), 'PBC_Demag_2D Energy': array([ 0.]), 'PBC_Exchange_2D Energy': array([ 0.]), 'Max dm/dt': array([ 0.]), 'dE/dt': array([ 0.]), 'Stage': array([ 0.]), 'my': array([ 0.]), 'mx': array([ 1.]), 'Total energy': array([ 0.]), 'mz': array([ 0.])}"
-        self.assertEqual(str(chomper.getData()), test_output)
+        test_output = {'Delta E': np.array([ 0.]), 
+                        'Energy calc count': np.array([ 1.]), 
+                        'Stage iteration': np.array([ 0.]),
+                        'Simulation time': np.array([ 0.]), 
+                        'Iteration': np.array([ 0.]), 
+                        'Last time step': np.array([ 0.]), 
+                        'PBC_Demag_2D Energy': np.array([ 0.]), 
+                        'PBC_Exchange_2D Energy': np.array([ 0.]), 
+                        'Max dm/dt': np.array([ 0.]), 
+                        'dE/dt': np.array([ 0.]), 
+                        'Stage': np.array([ 0.]), 
+                        'my': np.array([ 0.]), 
+                        'mx': np.array([ 1.]), 
+                        'Total energy': np.array([ 0.]), 
+                        'mz': np.array([ 0.])}
+        self.assertDictEqual(chomper.getData(), test_output)
 
     def test_chomp_length_data(self):
         chomper = odtchomp.chomp(self.temp.name)
