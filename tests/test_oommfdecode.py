@@ -12,23 +12,23 @@ class Test_OOMMFSelectiveTarget(unittest.TestCase):
     def setUp(self):
         app = wx.App(redirect=True, filename="oommfdecode.log")
         self.main = oommfdecode.MainFrame()
-       
-    
-    def test_OnDropFilesGoodFiles(self):
-        x = 1
-        y = 1
-        self.main.doNumpy.SetValue(True)
-        filenames = ['test.omf','test.ohf']
-        self.assertTrue(self.main.dt.OnDropFiles(x,y,filenames))
-
-    def test_OnDropFilesBadFile(self):
-        x = 1
-        y = 1
-        filenames = ['test.ozf','test.ohf']
-        self.main.doNumpy.SetValue(True)
-        self.assertEqual(self.main.dt.OnDropFiles(x,y,filenames), None)
-        
-
+#       
+#    
+#    def test_OnDropFilesGoodFiles(self):
+#        x = 1
+#        y = 1
+#        self.main.doNumpy.SetValue(True)
+#        filenames = ['test.omf','test.ohf']
+#        self.assertTrue(self.main.dt.OnDropFiles(x,y,filenames))
+#
+#    def test_OnDropFilesBadFile(self):
+#        x = 1
+#        y = 1
+#        filenames = ['test.ozf','test.ohf']
+#        self.main.doNumpy.SetValue(True)
+#        self.assertEqual(self.main.dt.OnDropFiles(x,y,filenames), None)
+#        
+#
 #    def test_groupUnpack(self):
 #        pass
 #        
