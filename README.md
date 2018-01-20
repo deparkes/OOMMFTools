@@ -42,7 +42,8 @@ http://web.mit.edu/daigohji/projects/OOMMFTools/ffmpeg-0.6.tar.gz
 ## Anaconda Python Distribution
 Probably the easiest way to install the modules needed for OOMMFTools is to use the [Anaconda Distribution](https://www.continuum.io/downloads).
 
-    >>> Conda install numpy scipy wxpython
+    >>> conda install numpy scipy
+    >>> conda install -c conda-forge wxpython 
     >>> python Oommftools.py
 
 ## Install with Pip Only
