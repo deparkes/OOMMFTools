@@ -211,7 +211,7 @@ class MainFrame(wx.Frame):
                 self.exportButton.Enable()
 
     def importFile(self, evt):
-        dlg = wx.FileDialog(self, "Import ODT File", os.getcwd(), "", "OOMMF ODT Data (*.odt)|*.odt",wx.OPEN)
+        dlg = wx.FileDialog(self, "Import ODT File", os.getcwd(), "", "OOMMF ODT Data (*.odt)|*.odt",wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK and dlg.GetPath():
             #self.fileLabel.SetLabel("Open: " + os.getcwd() + os.path.sep + dlg.GetFilename())
             self._importFile(dlg.GetPath())
@@ -235,7 +235,7 @@ class MainFrame(wx.Frame):
         return (chomp(filename), os.path.dirname(filename))
 
     def exportFile(self, evt):
-        dlg = wx.FileDialog(self, 'Export Translated File', self.exportPath, "", "Plaintext ODT Data (*.txt)|*.txt", wx.SAVE)
+        dlg = wx.FileDialog(self, 'Export Translated File', self.exportPath, "", "Plaintext ODT Data (*.txt)|*.txt", wx.FD_SAVE)
         if dlg.ShowModal() == wx.ID_OK and dlg.GetPath():
             filename = dlg.GetPath()
             self.exportPath = os.path.dirname(dlg.GetPath())
