@@ -272,7 +272,7 @@ the Free Software Foundation, either version 2 of the License, or
         wx.AboutBox(info)
 
     def GUILocateOOMMF(self, evt):
-        dlg = wx.FileDialog(self, "Find OOMMF Location", os.getcwd(), "", "OOMMF TCL File (*.tcl)|*.tcl",wx.OPEN)
+        dlg = wx.FileDialog(self, "Find OOMMF Location", os.getcwd(), "", "OOMMF TCL File (*.tcl)|*.tcl",wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK and dlg.GetFilename():
             filename = dlg.GetPath()
             #self.fileLabel.SetLabel("Open: " + os.getcwd() + os.path.sep + dlg.GetFilename())
@@ -292,7 +292,7 @@ the Free Software Foundation, either version 2 of the License, or
             print "wx.Panel.SendSizeEvent() missed - probably using old wxPython. Cosmetic bug will result."
 
     def GUILocateConf(self, evt):
-        dlg = wx.FileDialog(self, "Select Configuration File", os.getcwd(), "", "mmDisp Config File (*.config)|*.config",wx.OPEN)
+        dlg = wx.FileDialog(self, "Select Configuration File", os.getcwd(), "", "mmDisp Config File (*.config)|*.config",wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK and dlg.GetFilename():
             filename = dlg.GetPath()
             #self.fileLabel.SetLabel("Open: " + os.getcwd() + os.path.sep + dlg.GetFilename())
