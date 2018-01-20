@@ -98,11 +98,14 @@ class MainFrame(wx.Frame):
         global LASTPATH
         #Outputs are array, headers, filenam
         if self.doNumpy.GetValue():
-            dlg = wx.FileDialog(self, 'Export Pickled numpy Data', LASTPATH, "", "Pickled Data (*.pnp)|*.pnp", wx.FD_SAVE)
-            if dlg.ShowModal() == wx.ID_OK and dlg.GetFilename():
-                filename = dlg.GetPath()
-                LASTPATH = os.path.dirname(filename)
-                pickleArray(data, headers, extraData, filename)
+            with wx.FileDialog(self, 'Export Pickled numpy Data', LASTPATH, "", "Pickled Data (*.pnp)|*.pnp", wx.FD_SAVE) as dlg:
+                if dlg.ShowModal() == wx.ID_OK and dlg.GetFilename():
+                    filename = dlg.GetPath()
+                    LASTPATH = os.path.dirname(filename)
+                    pickleArray(data, headers, extraData, filename)
+                elif dlg.ShowModal() == wx.ID_CANCEL:
+                    return # the user changed their mind
+
         if self.doMATLAB.GetValue():
             with wx.FileDialog(self, 'Export MATLAB Data', LASTPATH, "", "MATLAB Data (*.mat)|*.mat", wx.FD_SAVE) as dlg:
                 if dlg.ShowModal() == wx.ID_OK and dlg.GetFilename():
