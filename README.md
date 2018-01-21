@@ -149,7 +149,7 @@ The radio buttons between the two panels choose the delimiting symbol for the va
 
 Finally, the export button writes the selected columns in the selected order to a plaintext file.
 
-# 2. Batch Mode
+## 2. Batch Mode
 
 The checkbox just above the Export button enables Batch Mode. Batch Mode is designed to extract the same data fields from a large group of ODT files using drag-and-drop. Batch Mode can only be used once one file has already been loaded and export data has been selected. Even if Batch Mode is checked, if no file has previously been loaded, the first file drop will give non-batch behavior.
 
