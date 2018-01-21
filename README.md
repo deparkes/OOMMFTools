@@ -4,7 +4,9 @@
 OOMMFTools is a set of utilities designed to assist OOMMF postprocessing with an intuitive, graphical interface. It includes the following subcomponents:
 
 -[OOMMFDecode](#oommfdecode) : Converts OOMMF vector files into numpy arrays and/or MATLAB data files
+
 -[OOMMFConvert](#oommfconvert): Converts OOMMF vector files into bitmaps and movies
+
 -[ODTChomp](#odtchomp) : Converts ODT files or subsets thereof into normally-delimited text files
 
 OOMMFTools was original developed by [Mark Mascaro](http://web.mit.edu/daigohji/projects/OOMMFTools/). The version hosted here incorporates some additional code and compatability with recent libraries.
