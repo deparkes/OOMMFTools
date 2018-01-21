@@ -3,11 +3,11 @@
 # Introduction
 OOMMFTools is a set of utilities designed to assist OOMMF postprocessing with an intuitive, graphical interface. It includes the following subcomponents:
 
--OOMMFDecode - Converts OOMMF vector files into numpy arrays and/or MATLAB data files
--OOMMFConvert- Converts OOMMF vector files into bitmaps and movies
--ODTChomp    - Converts ODT files or subsets thereof into normally-delimited text files
+-[OOMMFDecode](#oommfdecode) : Converts OOMMF vector files into numpy arrays and/or MATLAB data files
+-[OOMMFConvert](#oommfconvert): Converts OOMMF vector files into bitmaps and movies
+-[ODTChomp](#odtchomp) : Converts ODT files or subsets thereof into normally-delimited text files
 
-OOMMFTools was original developed by Mark Mascaro [http://web.mit.edu/daigohji/projects/OOMMFTools/]. The version hosted here incorporates some additional code and compatability with recent libraries.
+OOMMFTools was original developed by [Mark Mascaro](http://web.mit.edu/daigohji/projects/OOMMFTools/). The version hosted here incorporates some additional code and compatability with recent libraries.
 
 Bug reports and feature requests should logged on github.
 
@@ -23,9 +23,9 @@ OOMMFTools has the following dependencies:
 - wxPython
 - numpy
 - scipy
-- FFmpeg [For video creation]
-- OOMMF [OOMMFConvert]
-- Tcl/Tk [OOMMFConvert]
+- FFmpeg - needed for [OOMMFConvert](#oommfconvert)
+- OOMMF - needed for [OOMMFConvert](#oommfconvert)
+- Tcl/Tk - needed for [OOMMFConvert](#oommfconvert)
 
 ### Anaconda Python Distribution
 Probably the easiest way to install the modules needed for OOMMFTools is to use the [Anaconda Distribution](https://www.continuum.io/downloads).
@@ -43,7 +43,7 @@ If you would prefer to install dependencies with pip then you can with:
 
 On windows you may struggle to install numpy and scipy using the usual pip channels. If this is the case, then you may need to install these packages by first downloading pre-compiled whl files.
 
-# OOMMFDecode
+# [OOMMFDecode]
 OOMMFDecode batch-processes vector files (omf, ovf, oef, ohf) into numpy arrays. These can then be pickled, for python users, or saved into MATLAB data files, for MATLAB users.
 
 
@@ -89,7 +89,7 @@ Note that everything is indexed in the OOMMF (first-octant) coordinate system, b
 
 The output .PNP file can be unpickled into a tuple containing two items: first, a 5-D matrix as documented above; second, a dictionary of header values extracted from the OMF file header data. This latter data is useful for looking up the scale of each cell or the simulation time of a particular file.
 
-# OOMMFConvert
+# [OOMMFConvert]
 OOMMFConvert is meant to ease converting OOMMF simulation results into bitmaps and movies, especially for Windows users for whom the console is more unfamiliar or difficult. It uses the existing avf2ppm capability of OOMMF, along with the open-source utility FFmpeg for movie conversion.
 
 
@@ -134,7 +134,7 @@ The rightmost control is the movie magnification, which functions similarly to t
 
 Drag and drop configuration and vector field files here - or anywhere in the program window, but this section is a friendly reminder. Multiple files can be dropped at a time. OMF files are converted to bitmaps using the oommf command line utility avf2ppm and the supplied mmDisp configuration file. If a movie is being made, the batch of simultaneously dropped OMF files is converted to a single movie with the frames in filename order.
 
-# ODTChomp
+# [ODTChomp]
 ODTChomp takes in ODT data tables, simplifies the name scheme to the extent it it possible, and outputs the desired columns into a text file with a given delimeter. The behavior is rather distict from odtcols, which is better at fixed-width rather than fixed-delimitation formatting.
 
 
