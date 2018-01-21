@@ -7,7 +7,17 @@ OOMMFTools is a set of utilities designed to assist OOMMF postprocessing with an
 -OOMMFConvert- Converts OOMMF vector files into bitmaps and movies
 -ODTChomp    - Converts ODT files or subsets thereof into normally-delimited text files
 
-The script has the following dependencies:
+OOMMFTools was original developed by Mark Mascaro [http://web.mit.edu/daigohji/projects/OOMMFTools/]. The version hosted here incorporates some additional code and compatability with recent libraries.
+
+Bug reports and feature requests should logged on github.
+
+# Installation
+Clone this repository to get the latest code:
+
+    >>> git clone -b oommftools_dev https://github.com/deparkes/OOMMFTools.git
+
+## Install Dependencies
+OOMMFTools has the following dependencies:
 
 - Python 2.7
 - wxPython
@@ -17,19 +27,14 @@ The script has the following dependencies:
 - OOMMF [OOMMFConvert]
 - Tcl/Tk [OOMMFConvert]
 
-OOMMFTools was original developed by Mark Mascaro [http://web.mit.edu/daigohji/projects/OOMMFTools/]. The version hosted here incorporates some additional code and compatability with recent libraries.
-
-Bug reports and feature requests should logged on github.
-
-# Installation
-## Anaconda Python Distribution
+### Anaconda Python Distribution
 Probably the easiest way to install the modules needed for OOMMFTools is to use the [Anaconda Distribution](https://www.continuum.io/downloads).
 
     >>> conda install numpy scipy
     >>> conda install -c conda-forge wxpython 
     >>> python Oommftools.py
 
-## Install with Pip Only
+### Pip Install
 If you would prefer to install dependencies with pip then you can with:
 
     >>> pip install numpy
