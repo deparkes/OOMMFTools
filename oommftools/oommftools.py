@@ -89,7 +89,7 @@ class MainFrame(wx.Frame):
 
     def showAbout(self, evt):
         info = wx.adv.AboutDialogInfo()
-        mydesc = ("OOMMFTools is a set of drag-and-drop GUI utilities",
+        mydesc = ("OOMMFTools is a set of drag-and-drop GUI utilities ",
                   "to assist in OOMMF postprocessing, including image",
                   "conversion and vector file manipulation.")
         mylicense = ("OOMMFTools is free software; you can redistribute",
