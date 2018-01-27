@@ -19,6 +19,12 @@ APP = wx.App(None)
 #######
 
 class MainFrame(wx.Frame):
+    """The main oommftools window.
+
+    Creates main window with buttons to open the oommftools sub-
+    tools.
+
+    """
     def __init__(self):
         wx.Frame.__init__(self, None, -1, "OOMMFTools", size=(400, 180))
 
@@ -69,18 +75,26 @@ class MainFrame(wx.Frame):
         self.Show(True)
 
     def makeDecode(self, evt):
+        """Open oommfdecode window
+        """
         if not self.oommfdecode:
             self.oommfdecode = oommfdecode.MainFrame(self)
 
     def makeConvert(self, evt):
+        """Open oommfconvert window
+        """
         if not self.oommfconvert:
             self.oommfconvert = oommfconvert.MainFrame(self)
 
     def makeChomp(self, evt):
+        """Open odtchomp window.
+        """
         if not self.odtchomp:
             self.odtchomp = odtchomp.MainFrame(self)
 
     def droppedWindow(self, window):
+        """Not sure what this does. It's not called by main window.
+        """
         if self.oommfdecode == window:
             self.oommfdecode = None
         elif self.oommfconvert == window:
@@ -89,6 +103,8 @@ class MainFrame(wx.Frame):
             self.odtchomp = None
 
     def showAbout(self, evt):
+        """Show 'About' information
+        """
         info = wx.adv.AboutDialogInfo()
         mydesc = ("OOMMFTools is a set of drag-and-drop GUI utilities ",
                   "to assist in OOMMF postprocessing, including image",
