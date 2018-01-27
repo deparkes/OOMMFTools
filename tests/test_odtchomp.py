@@ -6,7 +6,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
 
 import unittest
-from OOMMFTools import odtchomp
+from oommftools import odtchomp
 import numpy as np
 class Test_headers_prettify(unittest.TestCase):
     def test_headers_prettify(self):

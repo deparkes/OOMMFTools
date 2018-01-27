@@ -4,7 +4,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
 
 import unittest
-from OOMMFTools import fnameutil
+from oommftools import fnameutil
 class Test_fnameutil(unittest.TestCase):
     def test_filterOnExtensions(self):
         '''

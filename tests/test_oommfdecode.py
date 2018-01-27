@@ -6,7 +6,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
 
 import unittest
-from OOMMFTools import oommfdecode
+from oommftools import oommfdecode
 import wx
 class Test_OOMMFSelectiveTarget(unittest.TestCase):
     def setUp(self):
