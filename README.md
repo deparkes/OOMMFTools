@@ -158,4 +158,11 @@ The checkbox just above the Export button enables Batch Mode. Batch Mode is desi
 Once a file has been loaded and data fields have been chosen, any files dragged and dropped onto ODTChomp with Batch Mode enabled will have the specified fields extracted. The output will be placed in the same folder as the dropped file, with the same filename and the ".txt" extension. Currently, dropping directories is not supported and they will not be recursed.
 
 
-
+# Development
+##Running Tests
+$pytest - run all tests
+$pytest -s tests::test_odtchomp.py - run test for one file
+$pytest -s tests::test_odtchomp.py::Test_headers_prettify - run specific test
+ 
+## Running pylint
+pylint --extension-pkg-whitelist=wx --output-format=colorized oommftools/oommftools.py
