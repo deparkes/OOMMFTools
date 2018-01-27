@@ -1,14 +1,16 @@
 #Main GUI that manages singleton instances of the other windows
 
 import wx
-import oommfdecode, oommfconvert, odtchomp
+import oommfdecode
+import oommfconvert
+import odtchomp
 
 ########
 # DECS #
 ########
 
-app = wx.App(None)
-#app = wx.App(redirect=True, filename="oommftools.log")
+APP = wx.App(None)
+#APP = wx.App(redirect=True, filename="oommftools.log")
 
 #######
 # GUI #
@@ -16,7 +18,7 @@ app = wx.App(None)
 
 class MainFrame(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, -1, "OOMMFTools", size=(400,180))
+        wx.Frame.__init__(self, None, -1, "OOMMFTools", size=(400, 180))
 
         self.oommfconvert = None
         self.oommfdecode = None
@@ -36,22 +38,31 @@ class MainFrame(wx.Frame):
 
         mainsizer = wx.FlexGridSizer(3, 2, 8, 12)
 
-        mainsizer.Add(wx.Button(panel, 10, "OOMMFDecode"), 0, wx.EXPAND | wx.ALIGN_CENTER | wx.TOP | wx.LEFT, 20)
-        mainsizer.Add(wx.StaticText(panel, -1, "Create numpy and MATLAB data"), 1, wx.ALIGN_CENTER_VERTICAL | wx.TOP, 20)
+        mainsizer.Add(wx.Button(panel, 10, "OOMMFDecode"),
+                      0, wx.EXPAND | wx.ALIGN_CENTER | wx.TOP | wx.LEFT, 20)
+        mainsizer.Add(wx.StaticText(panel, -1,
+                                    "Create numpy and MATLAB data"),
+                      1, wx.ALIGN_CENTER_VERTICAL | wx.TOP, 20)
         self.Bind(wx.EVT_BUTTON, self.makeDecode, id=10)
-        
-        mainsizer.Add(wx.Button(panel, 20, "OOMMFConvert"), 0, wx.EXPAND | wx.ALIGN_CENTER | wx.LEFT, 20)
-        mainsizer.Add(wx.StaticText(panel, -1, "Create bitmaps and movies"), 1, wx.ALIGN_CENTER_VERTICAL)
+
+        mainsizer.Add(wx.Button(panel, 20, "OOMMFConvert"),
+                      0, wx.EXPAND | wx.ALIGN_CENTER | wx.LEFT, 20)
+        mainsizer.Add(wx.StaticText(panel, -1,
+                                    "Create bitmaps and movies"),
+                      1, wx.ALIGN_CENTER_VERTICAL)
         self.Bind(wx.EVT_BUTTON, self.makeConvert, id=20)
 
-        mainsizer.Add(wx.Button(panel, 30, "ODTChomp"), 0, wx.EXPAND | wx.ALIGN_CENTER | wx.BOTTOM | wx.LEFT, 20)
-        mainsizer.Add(wx.StaticText(panel, -1, "Manage, reduce and convert ODT files"), 1, wx.ALIGN_CENTER_VERTICAL | wx.BOTTOM, 20)
+        mainsizer.Add(wx.Button(panel, 30, "ODTChomp"),
+                      0, wx.EXPAND | wx.ALIGN_CENTER | wx.BOTTOM | wx.LEFT, 20)
+        mainsizer.Add(wx.StaticText(panel, -1,
+                                    "Manage, reduce and convert ODT files"),
+                      1, wx.ALIGN_CENTER_VERTICAL | wx.BOTTOM, 20)
         self.Bind(wx.EVT_BUTTON, self.makeChomp, id=30)
 
-	mainsizer.AddGrowableCol(1,1)
+        mainsizer.AddGrowableCol(1, 1)
 
         panel.SetSizer(mainsizer)
-	panel.Fit()
+        panel.Fit()
         self.Center()
         self.Show(True)
 
@@ -77,12 +88,14 @@ class MainFrame(wx.Frame):
 
     def showAbout(self, evt):
         info = wx.AboutDialogInfo()
-        mydesc = """OOMMFTools is a set of drag-and-drop GUI utilities to assist in OOMMF postprocessing,
-including image conversion and vector file manipulation."""
-        mylicense = """OOMMFTools is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version."""
+        mydesc = ("OOMMFTools is a set of drag-and-drop GUI utilities",
+                  "to assist in OOMMF postprocessing, including image",
+                  "conversion and vector file manipulation.")
+        mylicense = ("OOMMFTools is free software; you can redistribute",
+                     "it and/or modify it under the terms of the GNU ",
+                     "General Public License as published by the Free ",
+                     "Software Foundation, either version 2 of the License,"
+                     "or (at your option) any later version.")
         info.SetName("OOMMFTools")
         info.SetVersion("1.0")
         info.SetDescription(mydesc)
@@ -90,11 +103,11 @@ the Free Software Foundation, either version 2 of the License, or
         info.SetCopyright('(C) 2010 Mark Mascaro')
         info.SetWebSite('http://web.mit.edu/daigohji/projects/OOMMFTools/')
         wx.AboutBox(info)
-    
+
 ########
 # MAIN #
 ########
 
 
 q = MainFrame()
-app.MainLoop()
+APP.MainLoop()
