@@ -114,7 +114,7 @@ class MainFrame(wx.Frame):
                      "General Public License as published by the Free ",
                      "Software Foundation, either version 2 of the License,"
                      "or (at your option) any later version.")
-        info.SetName(("FTools"))
+        info.SetName(("OOMMFTools"))
         info.SetVersion(("1.0"))
         info.SetDescription(''.join(mydesc))
         info.SetLicense(''.join(mylicense))
