@@ -91,7 +91,7 @@ Note that everything is indexed in the OOMMF (first-octant) coordinate system, b
 
 The output .PNP file can be unpickled into a tuple containing two items: first, a 5-D matrix as documented above; second, a dictionary of header values extracted from the OMF file header data. This latter data is useful for looking up the scale of each cell or the simulation time of a particular file.
 
-#OOMMFConvert
+# OOMMFConvert
 OOMMFConvert is meant to ease converting OOMMF simulation results into bitmaps and movies, especially for Windows users for whom the console is more unfamiliar or difficult. It uses the existing avf2ppm capability of OOMMF, along with the open-source utility FFmpeg for movie conversion.
 
 
@@ -136,7 +136,7 @@ The rightmost control is the movie magnification, which functions similarly to t
 
 Drag and drop configuration and vector field files here - or anywhere in the program window, but this section is a friendly reminder. Multiple files can be dropped at a time. OMF files are converted to bitmaps using the oommf command line utility avf2ppm and the supplied mmDisp configuration file. If a movie is being made, the batch of simultaneously dropped OMF files is converted to a single movie with the frames in filename order.
 
-#ODTChomp
+# ODTChomp
 ODTChomp takes in ODT data tables, simplifies the name scheme to the extent it it possible, and outputs the desired columns into a text file with a given delimeter. The behavior is rather distict from odtcols, which is better at fixed-width rather than fixed-delimitation formatting.
 
 
