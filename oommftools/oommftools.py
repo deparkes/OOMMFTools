@@ -1,5 +1,6 @@
-#Main GUI that manages singleton instances of the other windows
-
+"""
+Main GUI that manages singleton instances of the other windows
+"""
 import wx
 from wx import adv
 import oommfdecode
