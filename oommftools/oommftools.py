@@ -1,6 +1,7 @@
 #Main GUI that manages singleton instances of the other windows
 
 import wx
+from wx import adv
 import oommfdecode
 import oommfconvert
 import odtchomp
@@ -87,7 +88,7 @@ class MainFrame(wx.Frame):
             self.odtchomp = None
 
     def showAbout(self, evt):
-        info = wx.AboutDialogInfo()
+        info = wx.adv.AboutDialogInfo()
         mydesc = ("OOMMFTools is a set of drag-and-drop GUI utilities",
                   "to assist in OOMMF postprocessing, including image",
                   "conversion and vector file manipulation.")
@@ -96,13 +97,13 @@ class MainFrame(wx.Frame):
                      "General Public License as published by the Free ",
                      "Software Foundation, either version 2 of the License,"
                      "or (at your option) any later version.")
-        info.SetName("OOMMFTools")
-        info.SetVersion("1.0")
-        info.SetDescription(mydesc)
-        info.SetLicense(mylicense)
-        info.SetCopyright('(C) 2010 Mark Mascaro')
+        info.SetName(("FTools"))
+        info.SetVersion(("1.0"))
+        info.SetDescription(''.join(mydesc))
+        info.SetLicense(''.join(mylicense))
+        info.SetCopyright(('(C) 2010 Mark Mascaro'))
         info.SetWebSite('http://web.mit.edu/daigohji/projects/OOMMFTools/')
-        wx.AboutBox(info)
+        wx.adv.AboutBox(info)
 
 ########
 # MAIN #
