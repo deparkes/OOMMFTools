@@ -7,43 +7,12 @@ sys.path.insert(0, PROJECT_DIR)
 
 import unittest
 from oommftools import oommfconvert
-#class Test_OOMMFConvert(unittest.TestCase):
-#    def setUp(self):
-#        pass
-#       
-#    
-#    def test_OnDropFilesGoodFiles(self):
-#        x = 1
-#        y = 1
-#        self.main.doNumpy.SetValue(True)
-#        filenames = ['test.omf','test.ohf']
-#        self.assertTrue(self.main.dt.OnDropFiles(x,y,filenames))
-#
-#    def test_OnDropFilesBadFile(self):
-#        x = 1
-#        y = 1
-#        filenames = ['test.ozf','test.ohf']
-#        self.main.doNumpy.SetValue(True)
-#        self.assertEqual(self.main.dt.OnDropFiles(x,y,filenames), None)
-#        
-#
-#    def test_groupUnpack(self):
-#        pass
-#        
-#    def test_unpackFile(self):
-#        pass
-#        
-#    def test_textDecode(self):
-#        pass
-#        
-#    def test_binaryDecode(self):
-#        pass
-#        
-#    def test_pickleArray(self):
-#        pass
-#        
-#    def test_matlabifyArray(self):
-#        pass
-#    
-#    def test_slowlyPainfullyMaximize(self):
-#        pass
+class Test_OOMMFConvert(unittest.TestCase):
+    def test_doImages(self):
+        pass
+    def test_resolveConfiguration(self):
+        pass
+    def test_spliceConfig(self):
+        pass
+    def test_doMovies(self):
+        pass
