@@ -7,7 +7,6 @@ sys.path.insert(0, PROJECT_DIR)
 
 import unittest
 from oommftools import oommfdecode
-import wx
 class Test_OOMMFSelectiveTarget(unittest.TestCase):
     def setUp(self):
         app = wx.App(redirect=True, filename="oommfdecode.log")

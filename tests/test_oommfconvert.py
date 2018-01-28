@@ -7,7 +7,6 @@ sys.path.insert(0, PROJECT_DIR)
 
 import unittest
 from oommftools import oommfconvert
-import wx
 #class Test_OOMMFConvert(unittest.TestCase):
 #    def setUp(self):
 #        pass
