@@ -68,7 +68,15 @@ class Test_oommfdecode_binary(unittest.TestCase):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_binary)
         self.assertEqual(extraCaptures, self.extraCaptures_test)
         
-
+class Test_pickleArray(unittest.TestCase):
+    def setUp(self):
+        self.array = np.array([1., 2., 3.]
+        self.headers = {'Name': 'Headers', 'Value': 1}
+        self.extraCaptures = {'Capture1': 1, 'Capture2': 'two'}
+        self.filename = 'test'
+        
+    def test(self):
+        oommftools.pickleArray(self.array, self.headers, self.extraCaptures, self.filename)
         
         
         
