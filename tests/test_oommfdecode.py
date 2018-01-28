@@ -45,24 +45,30 @@ class Test_oommfdecode_text(unittest.TestCase):
 class Test_oommfdecode_binary(unittest.TestCase):
     def setUp(self):
         self.test_files_folder = 'testfiles'
-        self.vector_file_text = os.path.join(TEST_DIR, 
-                                        self.test_files_folder,
-                                        'dw_edgefield_cut_cell4_160.ohf')
         self.vector_file_binary = os.path.join(TEST_DIR, 
                                         self.test_files_folder,
-                                        'h2h_leftedge_40x4.ohf')        
+                                        'h2h_leftedge_40x4.ohf')
+        self.headers_test = {'ystepsize': 1e-08, 'xnodes': 160.0, 'valuemultiplier': 1.0, 'xbase': 5e-09, 'zstepsize': 1e-08, 'znodes': 4.0, 'zbase': 5e-09, 'ynodes': 40.0, 'ybase': 5e-09, 'xstepsize': 1e-08}
+        
+        self.extraCaptures_test =  {'MIFSource': '/local/home/donahue/oommf/app/oxs/examples/h2h_edgefield.mif', 'Iteration': 0.0, 'SimTime': 0.0, 'Stage': 0.0}
+                                        
+        self.targetarray_pickle = os.path.join(TEST_DIR, 
+                                        self.test_files_folder,
+                                        'targetarray_binary.npy')                                        
     def test_unpackFile_binary_targetarray(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_binary)
-        self.assertEqual(targetarray, '1')
+        #np.save(self.targetarray_pickle, targetarray)
+        self.assertEqual(targetarray.all(), np.load(self.targetarray_pickle).all())
         
     def test_unpackFile_binary_headers(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_binary)
-        self.assertEqual(headers, '1')
+        self.assertEqual(headers, self.headers_test)
         
     def test_unpackFile_binary_extraCaptures(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_binary)
-        self.assertEqual(extraCaptures, '1')
+        self.assertEqual(extraCaptures, self.extraCaptures_test)
         
+
         
         
         
