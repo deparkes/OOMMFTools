@@ -100,7 +100,15 @@ class Test_matlabifyArray(unittest.TestCase):
         self.assertEqual(e['Capture1'], np.array([[1]]))
         self.assertEqual(e['GridSize'].all(), np.array([[1., 2., 3.]]).all())
         
-
+class Test_textDecode(unittest.TestCase):
+    def setUp(self):
+        self.output = StringIO.StringIO()
+        self.output.write('First line.\n')
+        self.outArray = np.zeros((3, 3, 3), 3)
+        self.headers = ['one', 'two', 'three']
+        self.extraCaptures = {'a': 1, 'b': 2, 'c': 3}
+    def test_textDecode(self):
+        oommfdecode._textDecode(output, self.outArray, self.extraCaptures)
         
         
         
