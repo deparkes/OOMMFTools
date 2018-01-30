@@ -12,7 +12,8 @@ from oommftools import oommfdecode
 
 import StringIO
 from oommftools.fnameutil import filterOnExtensions
-
+import scipy.io as spio
+import cPickle as pickle
 
 class Test_oommfdecode_text(unittest.TestCase):
     def setUp(self):
@@ -70,13 +71,21 @@ class Test_oommfdecode_binary(unittest.TestCase):
         
 class Test_pickleArray(unittest.TestCase):
     def setUp(self):
-        self.array = np.array([1., 2., 3.]
+        self.array = np.array([1., 2., 3.])
         self.headers = {'Name': 'Headers', 'Value': 1}
         self.extraCaptures = {'Capture1': 1, 'Capture2': 'two'}
-        self.filename = 'test'
+        self.filename = os.path.join(tempfile.gettempdir(),
+                                        'test.npy')
         
-    def test(self):
-        oommftools.pickleArray(self.array, self.headers, self.extraCaptures, self.filename)
+    def test_pickle_array(self):
+        oommfdecode.pickleArray(self.array, self.headers, self.extraCaptures, self.filename)
+        with open(self.filename, "r") as input_file:
+            e = pickle.load(input_file)
+        self.assertEqual(e[0].all(), np.array([1., 2., 3.]).all())
+        self.assertEqual(e[1], dict(self.headers.items() + self.extraCaptures.items()))
+ 
+ 
+
         
         
         
