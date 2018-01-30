@@ -84,7 +84,22 @@ class Test_pickleArray(unittest.TestCase):
         self.assertEqual(e[0].all(), np.array([1., 2., 3.]).all())
         self.assertEqual(e[1], dict(self.headers.items() + self.extraCaptures.items()))
  
- 
+class Test_matlabifyArray(unittest.TestCase):
+    def setUp(self):
+        self.array = np.array([1., 2., 3.])
+        self.headers = {'xstepsize': 1, 'ystepsize': 2, 'zstepsize': 3}
+        self.extraCaptures = {'Capture1': 1, 'Capture2': 'two'}
+        self.filename = os.path.join(tempfile.gettempdir(),
+                                        'test.mat')
+        
+    def test_matlabify_array(self):
+        oommfdecode.matlabifyArray(self.array, self.headers, self.extraCaptures, self.filename)
+        e = spio.loadmat(self.filename)
+        self.assertEqual(e['OOMMFData'].all(), np.array([[1., 2., 3.]]).all())
+        self.assertEqual(e['Capture2'], np.array([u'two']))
+        self.assertEqual(e['Capture1'], np.array([[1]]))
+        self.assertEqual(e['GridSize'].all(), np.array([[1., 2., 3.]]).all())
+        
 
         
         
