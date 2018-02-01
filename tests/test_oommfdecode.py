@@ -112,7 +112,7 @@ class Test_textDecode(unittest.TestCase):
         to_write = '-0.80  0.52  0.00\n-0.35  0.27  0.00\n-0.21  0.17  0.00'
         self.output = StringIO.StringIO(to_write)
         self.outArray = np.zeros((3, 3, 3, 3))
-        self.headers = {'xnodes': 1.0, 'znodes': 1.0, 'ynodes'                   : 3.0, 'valuemultiplier': 2}
+        self.headers = {'xnodes': 1.0, 'znodes': 1.0, 'ynodes'                   : 3.0, 'valuemultiplier': 1}
         self.extraCaptures = {'a': 1, 'b': 2, 'c': 3}
         self.test_array = np.array([[[[-1.6 ,  1.04,  0.  ],
                                      [ 0.  ,  0.  ,  0.  ],
@@ -154,7 +154,7 @@ class Test_textDecode(unittest.TestCase):
     def test_textDecode(self):
         (targetarray, headers, extraCaptures) = oommfdecode._textDecode(self.output, self.outArray, self.headers, self.extraCaptures)
         #self.assertEqual(targetarray.all(), np.array(1))
-        self.assertEqual(targetarray.all(), self.test_array.all())
+        np.testing.assert_array_equal(targetarray, self.test_array)
 
 class Test_binaryDecode(unittest.TestCase):
     def setUp(self):
@@ -162,7 +162,7 @@ class Test_binaryDecode(unittest.TestCase):
         self.headers = {'xnodes': 1.0,
                         'znodes': 1.0,    
                         'ynodes' : 3.0, 
-                        'valuemultiplier': 2}
+                        'valuemultiplier': 1}
         self.extraCaptures = {'a': 1, 'b': 2, 'c': 3}
         self.chunksize_4 = 4
         self.chunksize_8 = 8
@@ -212,7 +212,7 @@ class Test_binaryDecode(unittest.TestCase):
                                   self.outArray, 
                                   self.headers, 
                                   self.extraCaptures)
-        self.assertEqual(targetarray.all(),self.test_array.all())
+        np.testing.assert_array_equal(targetarray,self.test_array)
 
     def test_binaryDecode_big_4(self):
         (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(self.output_big, 
@@ -221,7 +221,7 @@ class Test_binaryDecode(unittest.TestCase):
                                   self.outArray, 
                                   self.headers, 
                                   self.extraCaptures)
-        self.assertEqual(targetarray.all(),self.test_array.all())
+        np.testing.assert_array_equal(targetarray,self.test_array)
 
     def test_binaryDecode_big_8(self):
 
@@ -229,7 +229,7 @@ class Test_binaryDecode(unittest.TestCase):
         filename = os.path.join(TEST_DIR, 
                                         self.test_files_folder,
                                         'h2h_leftedge_40x4_test.ohf')
-        headers = {'xnodes': 160, 'ynodes': 40, 'znodes': 4}
+        headers = {'xnodes': 2, 'ynodes': 2, 'znodes': 2}
         with open(filename, 'rb') as f:
             (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(f, 
                           self.chunksize_8, 
@@ -237,6 +237,6 @@ class Test_binaryDecode(unittest.TestCase):
                           self.outArray, 
                           headers, 
                           self.extraCaptures)
-            print(struct.Struct(">d").unpack(f.read(8)))
+            #print(struct.Struct(">d").unpack(f.read(8)))
 
-        self.assertEqual(targetarray.all(),self.test_array.all())
+        np.testing.assert_array_equal(targetarray,self.test_array)
