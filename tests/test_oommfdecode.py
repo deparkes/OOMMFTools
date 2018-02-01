@@ -154,5 +154,10 @@ class Test_textDecode(unittest.TestCase):
         #self.assertEqual(targetarray.all(), np.array(1))
         self.assertEqual(targetarray.all(), self.test_array.all())
         
-        
+ class Test_textDecode(unittest.TestCase):
+    def setUp():
+    
+    
+    def test_binaryDecode(self):
+        pass
         
