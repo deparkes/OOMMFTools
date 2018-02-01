@@ -38,6 +38,10 @@ class Test_oommfdecode_text(unittest.TestCase):
     def test_unpackFile_text_headers(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_text)
         self.assertEqual(headers, self.headers_test)
+
+    def test_unpackFile_headers_keys(self):
+        (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_text)
+        self.assertEqual(headers.keys().sort(), self.headers_test.keys().sort())
         
     def test_unpackFile_text_extracaptures(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_text)
@@ -68,6 +72,7 @@ class Test_oommfdecode_binary(unittest.TestCase):
     def test_unpackFile_binary_extraCaptures(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_binary)
         self.assertEqual(extraCaptures, self.extraCaptures_test)
+        
         
 class Test_pickleArray(unittest.TestCase):
     def setUp(self):
@@ -102,14 +107,52 @@ class Test_matlabifyArray(unittest.TestCase):
         
 class Test_textDecode(unittest.TestCase):
     def setUp(self):
-        self.output = StringIO.StringIO()
-        self.output.write('First line.\n')
-        self.outArray = np.zeros((3, 3, 3), 3)
-        self.headers = ['one', 'two', 'three']
+        to_write = '-0.80  0.52  0.00\n-0.35  0.27  0.00\n-0.21  0.17  0.00'
+        self.output = StringIO.StringIO(to_write)
+        self.outArray = np.zeros((3, 3, 3, 3))
+        self.headers = {'xnodes': 1.0, 'znodes': 1.0, 'ynodes'                   : 3.0, 'valuemultiplier': 2}
         self.extraCaptures = {'a': 1, 'b': 2, 'c': 3}
+        self.test_array = np.array([[[[-1.6 ,  1.04,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]],
+
+                                    [[-0.7 ,  0.54,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]],
+
+                                    [[-0.42,  0.34,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]]],
+
+
+                                   [[[ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]],
+
+                                    [[ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]],
+
+                                    [[ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]]],
+
+
+                                   [[[ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]],
+
+                                    [[ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]],
+
+                                    [[ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ],
+                                     [ 0.  ,  0.  ,  0.  ]]]])
     def test_textDecode(self):
-        oommfdecode._textDecode(output, self.outArray, self.extraCaptures)
-        
+        (targetarray, headers, extraCaptures) = oommfdecode._textDecode(self.output, self.outArray, self.headers, self.extraCaptures)
+        #self.assertEqual(targetarray.all(), np.array(1))
+        self.assertEqual(targetarray.all(), self.test_array.all())
         
         
         
