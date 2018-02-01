@@ -11,9 +11,11 @@ from oommftools import oommfdecode
 
 
 import StringIO
+import io
 from oommftools.fnameutil import filterOnExtensions
 import scipy.io as spio
 import cPickle as pickle
+import struct
 
 class Test_oommfdecode_text(unittest.TestCase):
     def setUp(self):
@@ -153,11 +155,60 @@ class Test_textDecode(unittest.TestCase):
         (targetarray, headers, extraCaptures) = oommfdecode._textDecode(self.output, self.outArray, self.headers, self.extraCaptures)
         #self.assertEqual(targetarray.all(), np.array(1))
         self.assertEqual(targetarray.all(), self.test_array.all())
-        
- class Test_textDecode(unittest.TestCase):
-    def setUp():
-    
-    
+
+class Test_binaryDecode(unittest.TestCase):
+    def setUp(self):
+        self.outArray = np.zeros((3, 3, 3, 3))
+        self.headers = {'xnodes': 1.0,
+                        'znodes': 1.0,    
+                        'ynodes' : 3.0, 
+                        'valuemultiplier': 2}
+        self.extraCaptures = {'a': 1, 'b': 2, 'c': 3}
+        self.chunksize = 4
+        self.test_array = np.array([[[[-1.6 ,  1.04,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]],
+
+                                [[-0.7 ,  0.54,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]],
+
+                                [[-0.42,  0.34,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]]],
+
+
+                               [[[ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]],
+
+                                [[ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]],
+
+                                [[ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]]],
+
+
+                               [[[ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]],
+
+                                [[ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]],
+
+                                [[ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ],
+                                 [ 0.  ,  0.  ,  0.  ]]]])
+        self.output = io.BytesIO(struct.pack('<%sf' % self.test_array.size, *self.test_array.flatten('F')))
+            
     def test_binaryDecode(self):
-        pass
-        
+        (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(self.output, 
+                                  self.chunksize, 
+                                  struct.Struct("<f"), 
+                                  self.outArray, 
+                                  self.headers, 
+                                  self.extraCaptures)
+        self.assertEqual(targetarray.all(),self.test_array.all())
