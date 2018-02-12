@@ -88,7 +88,7 @@ class Test_pickleArray(unittest.TestCase):
         oommfdecode.pickleArray(self.array, self.headers, self.extraCaptures, self.filename)
         with open(self.filename, "r") as input_file:
             e = pickle.load(input_file)
-        self.assertEqual(e[0].all(), np.array([1., 2., 3.]).all())
+        np.testing.assert_array_equal(e[0], np.array([1., 2., 3.]))
         self.assertEqual(e[1], dict(self.headers.items() + self.extraCaptures.items()))
  
 class Test_matlabifyArray(unittest.TestCase):
