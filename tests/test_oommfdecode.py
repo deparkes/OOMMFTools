@@ -35,7 +35,7 @@ class Test_oommfdecode_text(unittest.TestCase):
     def test_unpackFile_text_targetarray(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_text)
         #np.save(self.targetarray_pickle, targetarray)
-        self.assertEqual(targetarray.all(), np.load(self.targetarray_pickle).all())
+        np.testing.assert_array_equal(targetarray, np.load(self.targetarray_pickle))
         
     def test_unpackFile_text_headers(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_text)
@@ -112,7 +112,7 @@ class Test_textDecode(unittest.TestCase):
         to_write = '-0.80  0.52  0.00\n-0.35  0.27  0.00\n-0.21  0.17  0.00'
         self.output = StringIO.StringIO(to_write)
         self.outArray = np.zeros((3, 3, 3, 3))
-        self.headers = {'xnodes': 1.0, 'znodes': 1.0, 'ynodes'                   : 3.0, 'valuemultiplier': 1}
+        self.headers = {'xnodes': 1.0, 'znodes': 1.0, 'ynodes'                   : 3.0, 'valuemultiplier': 2}
         self.extraCaptures = {'a': 1, 'b': 2, 'c': 3}
         self.test_array = np.array([[[[-1.6 ,  1.04,  0.  ],
                                      [ 0.  ,  0.  ,  0.  ],
