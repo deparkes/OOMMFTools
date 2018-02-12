@@ -65,7 +65,7 @@ class Test_oommfdecode_binary(unittest.TestCase):
     def test_unpackFile_binary_targetarray(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_binary)
         #np.save(self.targetarray_pickle, targetarray)
-        self.assertEqual(targetarray.all(), np.load(self.targetarray_pickle).all())
+        np.testing.assert_array_equal(targetarray, np.load(self.targetarray_pickle))
         
     def test_unpackFile_binary_headers(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_binary)
