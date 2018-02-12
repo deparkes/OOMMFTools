@@ -159,10 +159,10 @@ class Test_textDecode(unittest.TestCase):
 class Test_binaryDecode(unittest.TestCase):
     def setUp(self):
         self.outArray = np.zeros((3, 3, 3, 3))
-        self.headers = {'xnodes': 1.0,
-                        'znodes': 1.0,    
+        self.headers = {'xnodes': 3.0,
+                        'znodes': 3.0,    
                         'ynodes' : 3.0, 
-                        'valuemultiplier': 1}
+                        'valuemultiplier': 2}
         self.extraCaptures = {'a': 1, 'b': 2, 'c': 3}
         self.chunksize_4 = 4
         self.chunksize_8 = 8
@@ -203,8 +203,9 @@ class Test_binaryDecode(unittest.TestCase):
                                 [[ 0.  ,  0.  ,  0.  ],
                                  [ 0.  ,  0.  ,  0.  ],
                                  [ 0.  ,  0.  ,  0.  ]]]])
-        self.output_little = io.BytesIO(struct.pack('<%sf' % self.test_array.size, *self.test_array.flatten('F')))
-        self.output_big = io.BytesIO(struct.pack('>%sf' % self.test_array.size, *self.test_array.flatten('F')))            
+        self.output_little = io.BytesIO(struct.pack('<%sf' % self.test_array.size, *self.test_array.flatten('C')))
+        self.output_big = io.BytesIO(struct.pack('>%sf' % self.test_array.size, *self.test_array.flatten('C')))  
+        
     def test_binaryDecode_little_4(self):
         (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(self.output_little, 
                                   self.chunksize_4, 
@@ -212,7 +213,7 @@ class Test_binaryDecode(unittest.TestCase):
                                   self.outArray, 
                                   self.headers, 
                                   self.extraCaptures)
-        np.testing.assert_array_equal(targetarray,self.test_array)
+        np.testing.assert_array_almost_equal(targetarray,2.0*self.test_array)
 
     def test_binaryDecode_big_4(self):
         (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(self.output_big, 
@@ -221,7 +222,7 @@ class Test_binaryDecode(unittest.TestCase):
                                   self.outArray, 
                                   self.headers, 
                                   self.extraCaptures)
-        np.testing.assert_array_equal(targetarray,self.test_array)
+        np.testing.assert_allclose(targetarray,2.0*self.test_array)
 
     def test_binaryDecode_big_8(self):
 
@@ -239,4 +240,4 @@ class Test_binaryDecode(unittest.TestCase):
                           self.extraCaptures)
             #print(struct.Struct(">d").unpack(f.read(8)))
 
-        np.testing.assert_array_equal(targetarray,self.test_array)
+        np.testing.assert_allclose(targetarray,2.0*self.test_array)
