@@ -244,3 +244,21 @@ class Test_binaryDecode(unittest.TestCase):
                                   headers=self.headers, 
                                   extraCaptures=self.extraCaptures)
         np.testing.assert_allclose(targetarray,2.0*self.test_array)        
+class Test_slowlyPainfullyMaximise(unittest.TestCase):
+    def setUp(self):
+        self.test_files_folder = 'testfiles'
+        self.vector_file_text = os.path.join(TEST_DIR, 
+                                        self.test_files_folder,
+                                        'dw_edgefield_cut_cell4_160.ohf')
+
+        self.vector_file_binary = os.path.join(TEST_DIR, 
+                                        self.test_files_folder,
+                                        'h2h_leftedge_40x4.ohf')
+                                        
+    def test_slowlyPainfullyMaximize_single_file(self):
+        max_mag = oommfdecode.slowlyPainfullyMaximize([self.vector_file_text])
+        np.testing.assert_almost_equal(max_mag, 258967.81743932364)
+        
+    def test_slowlyPainfullyMaximize_multifile(self):
+        max_mag = oommfdecode.slowlyPainfullyMaximize([self.vector_file_text, self.vector_file_binary])
+        np.testing.assert_almost_equal(max_mag, 349370.681891435)
