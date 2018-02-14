@@ -204,7 +204,9 @@ class Test_binaryDecode(unittest.TestCase):
                                  [ 0.  ,  0.  ,  0.  ],
                                  [ 0.  ,  0.  ,  0.  ]]]])
         self.output_little = io.BytesIO(struct.pack('<%sf' % self.test_array.size, *self.test_array.flatten('C')))
-        self.output_big = io.BytesIO(struct.pack('>%sf' % self.test_array.size, *self.test_array.flatten('C')))  
+        self.output_little_8 = io.BytesIO(struct.pack('<%sd' % self.test_array.size, *self.test_array.flatten('C')))
+        self.output_big = io.BytesIO(struct.pack('>%sf' % self.test_array.size, *self.test_array.flatten('C'))) 
+        self.output_big_8 = io.BytesIO(struct.pack('>%sd' % self.test_array.size, *self.test_array.flatten('C')))         
         
     def test_binaryDecode_little_4(self):
         (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(self.output_little, 
@@ -215,6 +217,15 @@ class Test_binaryDecode(unittest.TestCase):
                                   self.extraCaptures)
         np.testing.assert_array_almost_equal(targetarray,2.0*self.test_array)
 
+    def test_binaryDecode_little_8(self):
+        (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(self.output_little_8, 
+                                  self.chunksize_8, 
+                                  struct.Struct("<d"), 
+                                  self.outArray, 
+                                  self.headers, 
+                                  self.extraCaptures)
+        np.testing.assert_array_almost_equal(targetarray,2.0*self.test_array)
+        
     def test_binaryDecode_big_4(self):
         (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(self.output_big, 
                                   self.chunksize_4, 
@@ -223,7 +234,19 @@ class Test_binaryDecode(unittest.TestCase):
                                   self.headers, 
                                   self.extraCaptures)
         np.testing.assert_allclose(targetarray,2.0*self.test_array)
+        
+    def test_binaryDecode_big_8(self):
+        output_big_8 = io.BytesIO(struct.pack('>%sd' % self.test_array.size, *self.test_array.flatten('C')))
+        (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(filehandle=output_big_8, 
+                                  chunksize=self.chunksize_8, 
+                                  decoder=struct.Struct(">d"), 
+                                  targetarray=self.outArray, 
+                                  headers=self.headers, 
+                                  extraCaptures=self.extraCaptures)
+        np.testing.assert_allclose(targetarray,2.0*self.test_array)        
 
+
+"""
     def test_binaryDecode_big_8(self):
 
         self.test_files_folder = 'testfiles'
@@ -241,3 +264,4 @@ class Test_binaryDecode(unittest.TestCase):
             #print(struct.Struct(">d").unpack(f.read(8)))
 
         np.testing.assert_allclose(targetarray,2.0*self.test_array)
+"""
