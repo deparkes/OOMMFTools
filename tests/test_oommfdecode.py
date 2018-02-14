@@ -244,24 +244,3 @@ class Test_binaryDecode(unittest.TestCase):
                                   headers=self.headers, 
                                   extraCaptures=self.extraCaptures)
         np.testing.assert_allclose(targetarray,2.0*self.test_array)        
-
-
-"""
-    def test_binaryDecode_big_8(self):
-
-        self.test_files_folder = 'testfiles'
-        filename = os.path.join(TEST_DIR, 
-                                        self.test_files_folder,
-                                        'h2h_leftedge_40x4_test.ohf')
-        headers = {'xnodes': 2, 'ynodes': 2, 'znodes': 2}
-        with open(filename, 'rb') as f:
-            (targetarray, headers, extraCaptures) = oommfdecode._binaryDecode(f, 
-                          self.chunksize_8, 
-                          struct.Struct(">d"), 
-                          self.outArray, 
-                          headers, 
-                          self.extraCaptures)
-            #print(struct.Struct(">d").unpack(f.read(8)))
-
-        np.testing.assert_allclose(targetarray,2.0*self.test_array)
-"""
