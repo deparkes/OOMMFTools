@@ -166,19 +166,15 @@ pip-log.txt
 *.asv
 *.mat
 
-<<<<<<< HEAD
 #ignore logs
 log.txt
 *.log
-=======
-# Log files
-log.txt
->>>>>>> origin/feature-bmp2avi
+
 
 # OOMMF outputs
-*.omf
-*.odt
-*.ohf
+#*.omf
+#*.odt
+#*.ohf
 
 # Compiled python modules.
 *.pyc
