@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 import time
 from collections import defaultdict
 import cPickle as pickle
+from wx import adv
 import os, wx, struct
 import numpy as np
 import scipy.io as spio
@@ -117,7 +118,7 @@ class MainFrame(wx.Frame):
                     return # the user changed their mind
 
     def showAbout(self, evt):
-        info = wx.AboutDialogInfo()
+        info = wx.adv.AboutDialogInfo()
         mydesc = """OOMMFDecode is an OOMMF postprocessing tool for
 converting OVF files or batches of same into numpy
 arrays or MATLAB data files. Just drag and drop.
@@ -132,7 +133,7 @@ the Free Software Foundation, either version 2 of the License, or
         info.SetLicense(mylicense)
         info.SetCopyright('(C) 2010 Mark Mascaro')
         info.SetWebSite('http://web.mit.edu/daigohji/projects/OOMMFTools/')
-        wx.AboutBox(info)
+        wx.adv.AboutBox(info)
 
     def onClose(self, evt):
 	if self.manager:
