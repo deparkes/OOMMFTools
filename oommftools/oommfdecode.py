@@ -20,13 +20,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
 import time
-import numpy as np
-import scipy as sp
-import scipy.io as spio
-import os, wx, struct
-import cPickle as pickle
-from fnameutil import filterOnExtensions
 from collections import defaultdict
+import cPickle as pickle
+import os, wx, struct
+import numpy as np
+import scipy.io as spio
+from fnameutil import filterOnExtensions
+
+
 
 ########
 # DECS #
