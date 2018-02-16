@@ -38,6 +38,8 @@ PROTECTED_NAMES = ["Exchange"]
 #######
 
 class MainFrame(wx.Frame):
+    """Main frame for odtchomp
+    """
     def __init__(self, manager=None):
         wx.Frame.__init__(self, None, -1, "ODT Chomper 0.9", size=(900, 500))
         self.watching = []
@@ -188,11 +190,15 @@ class MainFrame(wx.Frame):
         self.Show()
 
     def onClose(self, evt):
+        """
+        """
         if self.manager:
             self.manager.droppedWindow(self)
         self.Destroy()
 
     def setDelim(self, evt):
+        """
+        """
         if self.spaceDelim.GetValue():
             self.delim = " "
         elif self.tabDelim.GetValue():
@@ -201,6 +207,8 @@ class MainFrame(wx.Frame):
             self.delim = ","
 
     def fixBatchMode(self, evt):
+        """
+        """
         if self.batchModeCheckbox.GetValue():
             print "Batch mode disable."
             self.importButton.Disable()
@@ -212,6 +220,8 @@ class MainFrame(wx.Frame):
                 self.exportButton.Enable()
 
     def importFile(self, evt):
+        """
+        """
         dlg = wx.FileDialog(self, "Import ODT File",
                             os.getcwd(), "",
                             "OOMMF ODT Data (*.odt)|*.odt",
@@ -221,6 +231,8 @@ class MainFrame(wx.Frame):
             self._importFile(dlg.GetPath())
 
     def _importFile(self, filename):
+        """
+        """
         print "Import enable."
         self.fileLabel.SetLabel("Open: " + filename)
         self.digest = chomp(filename)
@@ -235,10 +247,14 @@ class MainFrame(wx.Frame):
         f.close()
 
     def _lightImportFile(self, filename):
+        """
+        """
         #returns (Interpreter, exportPathname)
         return (chomp(filename), os.path.dirname(filename))
 
     def exportFile(self, evt):
+        """
+        """
         dlg = wx.FileDialog(self,
                             'Export Translated File',
                             self.exportPath, "",
@@ -250,6 +266,8 @@ class MainFrame(wx.Frame):
             write(filename, self.digest, self.delim, self.watching)
 
     def takeData(self, evt):
+        """
+        """
         if self.digest and self.leftbox.GetSelections():
             sel = self.leftbox.GetSelections()[0]
             keys = self.digest.getNames()
@@ -258,22 +276,30 @@ class MainFrame(wx.Frame):
                 self.rightbox.Set(self.watching)
 
     def takeAll(self, evt):
+        """
+        """
         if self.digest:
             self.watching = self.digest.getNames()
             self.rightbox.Set(self.watching)
 
     def puntData(self, evt):
+        """
+        """
         if self.digest and self.rightbox.GetSelections():
             self.watching.pop(self.rightbox.GetSelections()[0])
             self.rightbox.Set(self.watching)
 
     def puntAll(self, evt):
+        """
+        """
         if self.digest:
             self.watching = []
             self.rightbox.Set(self.watching)
             #self.leftbox.Set(self.digest.getNames())
 
     def bumpUp(self, evt):
+        """
+        """
         if self.digest and self.rightbox.GetSelections() and self.rightbox.GetSelections()[0] > 0:
             dex = self.rightbox.GetSelections()[0]
             pull = self.watching.pop(dex)
@@ -282,6 +308,8 @@ class MainFrame(wx.Frame):
             self.rightbox.SetSelection(dex-1)
 
     def bumpDown(self, evt):
+        """
+        """
         if self.digest and self.rightbox.GetSelections() and self.rightbox.GetSelections()[0] < len(self.watching)-1:
             dex = self.rightbox.GetSelections()[0]
             pull = self.watching.pop(dex)
@@ -290,6 +318,8 @@ class MainFrame(wx.Frame):
             self.rightbox.SetSelection(dex+1)
 
     def showAbout(self, evt):
+        """
+        """
         info = wx.AboutDialogInfo()
         mydesc = """ODTChomp is an OOMMF postprocessing tool for
 extracting columns from and unifying delimitation
@@ -312,11 +342,15 @@ the Free Software Foundation, either version 2 of the License, or
 ###########
 
 class ODTDropTarget(wx.FileDropTarget):
+    """
+    """
     def __init__(self, parent):
         wx.FileDropTarget.__init__(self)
         self.parent = parent
 
     def OnDropFiles(self, x, y, filenames):
+        """
+        """
         namepotential = filterOnExtensions(["odt"], filenames)
         if not self.parent.batchModeCheckbox.GetValue() or not self.parent.digest:
             #normal mode
@@ -332,6 +366,8 @@ class ODTDropTarget(wx.FileDropTarget):
 
 
 def write(filename, interpreter, delim, fields):
+    """
+    """
     print "Write out to:", filename
     refdelim = delim
     f = open(filename, "w")
@@ -373,6 +409,8 @@ def resolve(lst, keys):
     return out
 
 def split_densify(a, delim=" "):
+    """
+    """
     rets = []
     for p in a.split(delim):
         if p:
@@ -381,11 +419,15 @@ def split_densify(a, delim=" "):
 
 
 def log(evt):
+    """
+    """
     print evt
 
 
 
 def chomp(odt, parent=None):
+    """
+    """
     retHeaders = []
     retDict = {}
     log("Opening %s" % odt)
@@ -450,6 +492,8 @@ def chomp(odt, parent=None):
     return Interpreter(headers_prettify(retDict), list_prettify(retHeaders))
 
 class Interpreter(object):
+    """
+    """
     def __init__(self, idict, keys=None):
         self.keys = keys
         if not self.keys:
@@ -467,6 +511,8 @@ class Interpreter(object):
         return len(self.dict[self.keys[0]])
 
 def list_prettify(inList):
+    """
+    """
     out = []
     uniquenessCheck = []
     for key in inList:
@@ -479,6 +525,8 @@ def list_prettify(inList):
     return out
 
 def headers_prettify(inDict):
+    """
+    """
     outDict = {}
     uniquenessCheck = []
     for key in inDict.keys():
@@ -585,6 +633,8 @@ def _filterOnPos(inList, item, dex):
     return ret
 
 def prefix_punt(data):
+    """
+    """
     # Drop prefix (with _ separator)
     return data.split("_")[-1]
 
@@ -595,5 +645,3 @@ if __name__ == "__main__":
     app = wx.App(None)
     BigBoss = MainFrame()
     app.MainLoop()
-
-
