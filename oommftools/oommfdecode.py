@@ -23,7 +23,9 @@ import time
 from collections import defaultdict
 import cPickle as pickle
 from wx import adv
-import os, wx, struct
+import os
+import wx
+import struct
 import numpy as np
 import scipy.io as spio
 from fnameutil import filterOnExtensions
@@ -46,8 +48,11 @@ if __name__ == "__main__":
 #######
 
 class MainFrame(wx.Frame):
+    """Main oommfdecode frame
+    """
     def __init__(self, manager=None):
-        wx.Frame.__init__(self, None, -1, "OOMMFDecode 0.8", size=(340,400))
+        
+        wx.Frame.__init__(self, None, -1, "OOMMFDecode 0.8", size=(340, 400))
 
         BigFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, style=wx.NORMAL, weight=wx.FONTWEIGHT_BOLD)
         TinyFont = wx.Font(8, wx.FONTFAMILY_DEFAULT, style=wx.NORMAL, weight=wx.FONTWEIGHT_NORMAL)
@@ -98,10 +103,14 @@ class MainFrame(wx.Frame):
         self.Show()
 
     def gatherData(self, data, headers, extraData):
+        """
+        """
         global LASTPATH
         #Outputs are array, headers, filenam
         if self.doNumpy.GetValue():
-            with wx.FileDialog(self, 'Export Pickled numpy Data', LASTPATH, "", "Pickled Data (*.pnp)|*.pnp", wx.FD_SAVE) as dlg:
+            with wx.FileDialog(self, 'Export Pickled numpy Data',
+                               LASTPATH, "", "Pickled Data (*.pnp)|*.pnp",
+                               wx.FD_SAVE) as dlg:
                 if dlg.ShowModal() == wx.ID_OK and dlg.GetFilename():
                     filename = dlg.GetPath()
                     LASTPATH = os.path.dirname(filename)
@@ -110,7 +119,9 @@ class MainFrame(wx.Frame):
                     return # the user changed their mind
 
         if self.doMATLAB.GetValue():
-            with wx.FileDialog(self, 'Export MATLAB Data', LASTPATH, "", "MATLAB Data (*.mat)|*.mat", wx.FD_SAVE) as dlg:
+            with wx.FileDialog(self, 'Export MATLAB Data', LASTPATH, "",
+                               "MATLAB Data (*.mat)|*.mat",
+                               wx.FD_SAVE) as dlg:
                 if dlg.ShowModal() == wx.ID_OK and dlg.GetFilename():
                     filename = dlg.GetPath()
                     LASTPATH = os.path.dirname(filename)
@@ -119,6 +130,8 @@ class MainFrame(wx.Frame):
                     return # the user changed their mind
 
     def showAbout(self, evt):
+        """
+        """
         info = wx.adv.AboutDialogInfo()
         mydesc = """OOMMFDecode is an OOMMF postprocessing tool for
 converting OVF files or batches of same into numpy
@@ -137,21 +150,29 @@ the Free Software Foundation, either version 2 of the License, or
         wx.adv.AboutBox(info)
 
     def onClose(self, evt):
+        """
+        """
         if self.manager:
             self.manager.droppedWindow(self)
         self.Destroy()
 
 class SupportDialog(wx.ProgressDialog):
+    """
+    """
     def __init__(self, title, message, **kwargs):
         wx.ProgressDialog.__init__(self, title, message, **kwargs)
         self._workDone = 0
         self.workmax = kwargs["maximum"]
 
     def workDone(self, delta, newmsg):
+        """
+        """
         self._workDone += delta
         self.Update(self._workDone, newmsg)
 
     def finish(self):
+        """
+        """
         self.Update(self.workmax, "Done!")
 
 ####################
@@ -159,17 +180,24 @@ class SupportDialog(wx.ProgressDialog):
 ####################
 
 class OOMMFSelectiveTarget(wx.FileDropTarget):
+    """
+    """
     def __init__(self, parent):
         wx.FileDropTarget.__init__(self)
         self.parent = parent
 
     def OnDropFiles(self, x, y, filenames):
-        oommf = filterOnExtensions(["omf","ovf","oef","ohf"], filenames)
+        """
+        """
+        oommf = filterOnExtensions(["omf", "ovf", "oef", "ohf"], filenames)
         if not oommf or not (self.parent.doNumpy.GetValue() or self.parent.doMATLAB.GetValue()):
             return #You got dropped some bad files!
         global LASTPATH
         LASTPATH = os.path.dirname(oommf[0])
-        arrays, headers, extra = groupUnpack(oommf, SupportDialog("Decode in Progress", "Decoding...", maximum=len(oommf)))
+        arrays, headers, extra = groupUnpack(oommf,
+                                             SupportDialog("Decode in Progress",
+                                                           "Decoding...",
+                                                           maximum=len(oommf)))
 
         #One final step before we're done - let's try to sort based on the sim time
         #using a standard decorate-sort-undecorate, with a twist for the variable number of keys
@@ -186,7 +214,9 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
 
         self.parent.gatherData(arrays, headers, extra)
 
-def groupUnpack(targetlist, progdialog = None):
+def groupUnpack(targetlist, progdialog=None):
+    """
+    """
     decodedArrays = []
     headers = {}
     extraData = defaultdict(list)
@@ -214,6 +244,8 @@ def groupUnpack(targetlist, progdialog = None):
     return (np.array(decodedArrays), headers, extraData)
 
 def unpackFile(filename):
+    """
+    """
     with open(filename, 'rb') as f:
         headers = {} #I know valuemultiplier isn't always present. This is checked later.
         extraCaptures = {'SimTime':-1, 'Iteration':-1, 'Stage':-1, "MIFSource":""}
@@ -222,13 +254,24 @@ def unpackFile(filename):
         while not "Begin: Data" in a:
             a = f.readline().strip()
             #Determine if it's actually something we need as header data
-            for key in ["xbase", "ybase", "zbase", "xstepsize", "ystepsize", "zstepsize", "xnodes", "ynodes", "znodes", "valuemultiplier"]:
+            for key in ["xbase",
+                        "ybase",
+                        "zbase",
+                        "xstepsize",
+                        "ystepsize",
+                        "zstepsize",
+                        "xnodes",
+                        "ynodes",
+                        "znodes",
+                        "valuemultiplier"]:
                 if key in a:
                     headers[key] = float(a.split()[2]) #Known position FTW
             #All right, it may also be time data, which we should capture
             if "Total simulation time" in a:
-                #Split on the colon to get the time with units; strip spaces and split on the space to separate time and units
-                #Finally, pluck out the time, stripping defensively (which should be unnecessary).
+                #Split on the colon to get the time with units;
+                #strip spaces and split on the space to separate time and units
+                #Finally, pluck out the time, stripping defensively
+                #(which should be unnecessary).
                 extraCaptures['SimTime'] = float(a.split(":")[-1].strip().split()[0].strip())
             if "Iteration:" in a:
                 #Another tricky split...
@@ -236,7 +279,7 @@ def unpackFile(filename):
             if "Stage:" in a:
                 extraCaptures['Stage'] = float(a.split(":")[2].split(",")[0].strip())
             if "MIF source file" in a:
-                extraCaptures['MIFSource'] = a.split(":",2)[2].strip()
+                extraCaptures['MIFSource'] = a.split(":", 2)[2].strip()
 
 
         #Initialize array to be populated
@@ -280,36 +323,48 @@ def unpackFile(filename):
 
 
 def _textDecode(filehandle, targetarray, headers, extraCaptures):
-    valm = headers.get("valuemultiplier",1)
+    """
+    """
+    valm = headers.get("valuemultiplier", 1)
     for k in range(int(headers["znodes"])):
         for j in range(int(headers["ynodes"])):
             for i in range(int(headers["xnodes"])):
                 #numpy is fantastic - splice in a tuple
                 text = filehandle.readline().strip().split()
-                targetarray[i,j,k] = (float(text[0])*valm, float(text[1])*valm, float(text[2])*valm)
+                targetarray[i, j, k] = (float(text[0])*valm,
+                                        float(text[1])*valm,
+                                        float(text[2])*valm)
     print "Decode complete."
     return (targetarray, headers, extraCaptures)
 
 
 def _binaryDecode(filehandle, chunksize, decoder, targetarray, headers, extraCaptures):
-    valm = headers.get("valuemultiplier",1)
+    """
+    """
+    valm = headers.get("valuemultiplier", 1)
     for k in range(int(headers["znodes"])):
         for j in range(int(headers["ynodes"])):
             for i in range(int(headers["xnodes"])):
                 for coord in range(3): #Slowly populate, coordinate by coordinate
-                    targetarray[i,j,k,coord] = decoder.unpack(filehandle.read(chunksize))[0] * valm
+                    targetarray[i, j, k, coord] = decoder.unpack(filehandle.read(chunksize))[0] * valm
     print "Decode complete."
     return (targetarray, headers, extraCaptures)
 
 def pickleArray(array, headers, extraCaptures, filename):
+    """
+    """
     temp = dict(headers)
     temp.update(extraCaptures)
-    f = open(filename,'w')
-    pickle.dump((array,temp), f)
+    f = open(filename, 'w')
+    pickle.dump((array, temp), f)
     f.close()
 
 def matlabifyArray(array, headers, extraCaptures, filename):
-    GridSize = np.array([float(headers["xstepsize"]), float(headers["ystepsize"]), float(headers["zstepsize"])])
+    """
+    """
+    GridSize = np.array([float(headers["xstepsize"]),
+                         float(headers["ystepsize"]),
+                         float(headers["zstepsize"])])
     OutDict = {"OOMMFData":array, "GridSize":GridSize}
     OutDict.update(extraCaptures)
     spio.savemat(filename, OutDict)
@@ -329,7 +384,7 @@ def slowlyPainfullyMaximize(filenames):
         for k in range(int(headers["znodes"])):
             for j in range(int(headers["ynodes"])):
                 for i in range(int(headers["xnodes"])):
-                    maxmag = max(maxmag, mag(*thisArray[i,j,k]))
+                    maxmag = max(maxmag, mag(*thisArray[i, j, k]))
     return maxmag
 ########
 # MAIN #
