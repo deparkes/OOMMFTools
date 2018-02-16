@@ -92,8 +92,8 @@ class MainFrame(wx.Frame):
         sizer.Add(ins, 0, wx.ALIGN_CENTER | wx.ALIGN_CENTER_VERTICAL | wx.BOTTOM | wx.TOP, 80)
 
         panel.SetSizer(sizer)
-	if self.manager:
-		self.CenterOnParent()
+        if self.manager:
+            self.CenterOnParent()
         panel.Fit()
         self.Show()
 
@@ -137,8 +137,9 @@ the Free Software Foundation, either version 2 of the License, or
         wx.adv.AboutBox(info)
 
     def onClose(self, evt):
-        if self.manager:
-            self.manager.droppedWindow(self)
+	#
+    #if self.manager:
+	#    self.manager.droppedWindow(self)
         self.Destroy()
 
 class SupportDialog(wx.ProgressDialog):
