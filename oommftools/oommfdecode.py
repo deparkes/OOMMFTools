@@ -36,10 +36,10 @@ from fnameutil import filterOnExtensions
 
 LASTPATH = os.getcwd()
 if __name__ == "__main__":
-	#app = wx.App(None)
-	#app = wx.App(None)
-	#app = wx.App(redirect=True)
-	app = wx.App(redirect=True, filename="oommfdecode.log")
+    #app = wx.App(None)
+    #app = wx.App(None)
+    #app = wx.App(redirect=True)
+    app = wx.App(redirect=True, filename="oommfdecode.log")
 
 #######
 # GUI #
@@ -193,24 +193,24 @@ def groupUnpack(targetlist, progdialog = None):
     firstTime = True
     try:
         for target in targetlist:
-                collect = unpackFile(target)
-                if firstTime:
-                     firstTime = False
-                     headers = collect[1]
-                decodedArrays.append(collect[0])
-                #Unpack extra collected data
-                for key, value in collect[2].iteritems():
-                     extraData[key].append(value)
-                if progdialog:
-                     progdialog.workDone(1, "Decoding...")
-                     time.sleep(0.01) #Should facilitate redraw thread coming to life
+            collect = unpackFile(target)
+            if firstTime:
+                firstTime = False
+                headers = collect[1]
+            decodedArrays.append(collect[0])
+            #Unpack extra collected data
+            for key, value in collect[2].iteritems():
+                extraData[key].append(value)
+            if progdialog:
+                progdialog.workDone(1, "Decoding...")
+                time.sleep(0.01) #Should facilitate redraw thread coming to life
 
     except Exception as e:
-            if progdialog: progdialog.finish()
-            wx.MessageBox('Unpacking error: ' + repr(e), "Error")
-            print e
+        if progdialog: progdialog.finish()
+        wx.MessageBox('Unpacking error: ' + repr(e), "Error")
+        print e
     else:
-            if progdialog: progdialog.finish()
+        if progdialog: progdialog.finish()
     return (np.array(decodedArrays), headers, extraData)
 
 def unpackFile(filename):
@@ -330,7 +330,7 @@ def slowlyPainfullyMaximize(filenames):
             for j in range(int(headers["ynodes"])):
                 for i in range(int(headers["xnodes"])):
                     maxmag = max(maxmag, mag(*thisArray[i,j,k]))
-	return maxmag
+    return maxmag
 ########
 # MAIN #
 ########
