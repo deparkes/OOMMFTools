@@ -376,6 +376,8 @@ def slowlyPainfullyMaximize(filenames):
     """
     #There is no nice way to do this.
     def mag(a, b, c):
+        """
+        """
         return np.sqrt(a**2 + b**2 + c**2)
     maxmag = 0
 
