@@ -159,10 +159,11 @@ Once a file has been loaded and data fields have been chosen, any files dragged 
 
 
 # Development
-##Running Tests
+## Running Tests
+```
 $pytest - run all tests
 $pytest tests/test_odtchomp.py - run test for one file
 $pytest tests/test_odtchomp.py::Test_headers_prettify - run specific test
- 
+```
 ## Running pylint
 pylint --extension-pkg-whitelist=wx --output-format=colorized oommftools/oommftools.py
