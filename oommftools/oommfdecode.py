@@ -54,9 +54,9 @@ class MainFrame(wx.Frame):
 
         self.dt = OOMMFSelectiveTarget(self)
         self.SetDropTarget(self.dt)
-	self.manager = manager
+        self.manager = manager
 
-	self.Bind(wx.EVT_CLOSE, self.onClose)
+        self.Bind(wx.EVT_CLOSE, self.onClose)
 
         #A very simple menubar
         menubar = wx.MenuBar()
