@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 
 import os
+from wx import adv
 import wx
 import numpy as np
 from fnameutil import filterOnExtensions
@@ -320,7 +321,7 @@ class MainFrame(wx.Frame):
     def showAbout(self, evt):
         """
         """
-        info = wx.AboutDialogInfo()
+        info = wx.adv.AboutDialogInfo()
         mydesc = """ODTChomp is an OOMMF postprocessing tool for
 extracting columns from and unifying delimitation
 of ODT table files.
@@ -335,7 +336,7 @@ the Free Software Foundation, either version 2 of the License, or
         info.SetLicense(mylicense)
         info.SetCopyright('(C) 2010 Mark Mascaro')
         info.SetWebSite('http://web.mit.edu/daigohji/projects/OOMMFTools/')
-        wx.AboutBox(info)
+        wx.adv.AboutBox(info)
 
 ###########
 # BACKEND #
