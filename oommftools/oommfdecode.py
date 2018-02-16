@@ -37,6 +37,7 @@ from fnameutil import filterOnExtensions
 LASTPATH = os.getcwd()
 if __name__ == "__main__":
 	#app = wx.App(None)
+	#app = wx.App(None)
 	#app = wx.App(redirect=True)
 	app = wx.App(redirect=True, filename="oommfdecode.log")
 
@@ -136,9 +137,9 @@ the Free Software Foundation, either version 2 of the License, or
         wx.adv.AboutBox(info)
 
     def onClose(self, evt):
-	if self.manager:
-	    self.manager.droppedWindow(self)
-	self.Destroy()
+        if self.manager:
+            self.manager.droppedWindow(self)
+        self.Destroy()
 
 class SupportDialog(wx.ProgressDialog):
     def __init__(self, title, message, **kwargs):
@@ -176,12 +177,12 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #Let's start by finding the original indices - making a copy is key
         originalTimeIndex = list(extra["SimTime"])
         if len(set(extra["MIFSource"])) == 1:
-	        if not -1 in extra["SimTime"]:
-	        	extra["SimTime"], arrays = zip(*sorted(zip(originalTimeIndex, arrays)))
-	        	#Sadly, the cleverness ends here - the rest must be bruteforced.
-		        for key in extra:
-		        	if not key == "SimTime": #We did that one.
-		        		junk, extra[key] = zip(*sorted(zip(originalTimeIndex, extra[key])))
+            if not -1 in extra["SimTime"]:
+                extra["SimTime"], arrays = zip(*sorted(zip(originalTimeIndex, arrays)))
+                #Sadly, the cleverness ends here - the rest must be bruteforced.
+                for key in extra:
+                    if not key == "SimTime": #We did that one.
+                        junk, extra[key] = zip(*sorted(zip(originalTimeIndex, extra[key])))
 
         self.parent.gatherData(arrays, headers, extra)
 
@@ -224,18 +225,18 @@ def unpackFile(filename):
             for key in ["xbase", "ybase", "zbase", "xstepsize", "ystepsize", "zstepsize", "xnodes", "ynodes", "znodes", "valuemultiplier"]:
                 if key in a:
                     headers[key] = float(a.split()[2]) #Known position FTW
-    		#All right, it may also be time data, which we should capture
-    		if "Total simulation time" in a:
-    			#Split on the colon to get the time with units; strip spaces and split on the space to separate time and units
-    			#Finally, pluck out the time, stripping defensively (which should be unnecessary).
-    			extraCaptures['SimTime'] = float(a.split(":")[-1].strip().split()[0].strip())
-    		if "Iteration:" in a:
-    			#Another tricky split...
-    			extraCaptures['Iteration'] = float(a.split(":")[2].split(",")[0].strip())
-    		if "Stage:" in a:
-    			extraCaptures['Stage'] = float(a.split(":")[2].split(",")[0].strip())
-    		if "MIF source file" in a:
-    			extraCaptures['MIFSource'] = a.split(":",2)[2].strip()
+            #All right, it may also be time data, which we should capture
+            if "Total simulation time" in a:
+                #Split on the colon to get the time with units; strip spaces and split on the space to separate time and units
+                #Finally, pluck out the time, stripping defensively (which should be unnecessary).
+                extraCaptures['SimTime'] = float(a.split(":")[-1].strip().split()[0].strip())
+            if "Iteration:" in a:
+                #Another tricky split...
+                extraCaptures['Iteration'] = float(a.split(":")[2].split(",")[0].strip())
+            if "Stage:" in a:
+                extraCaptures['Stage'] = float(a.split(":")[2].split(",")[0].strip())
+            if "MIF source file" in a:
+                extraCaptures['MIFSource'] = a.split(":",2)[2].strip()
 
 
         #Initialize array to be populated
@@ -301,11 +302,11 @@ def _binaryDecode(filehandle, chunksize, decoder, targetarray, headers, extraCap
     return (targetarray, headers, extraCaptures)
 
 def pickleArray(array, headers, extraCaptures, filename):
-	temp = dict(headers)
-	temp.update(extraCaptures)
-	f = open(filename,'w')
-	pickle.dump((array,temp), f)
-	f.close()
+    temp = dict(headers)
+    temp.update(extraCaptures)
+    f = open(filename,'w')
+    pickle.dump((array,temp), f)
+    f.close()
 
 def matlabifyArray(array, headers, extraCaptures, filename):
     GridSize = np.array([float(headers["xstepsize"]), float(headers["ystepsize"]), float(headers["zstepsize"])])
@@ -314,25 +315,25 @@ def matlabifyArray(array, headers, extraCaptures, filename):
     spio.savemat(filename, OutDict)
 
 def slowlyPainfullyMaximize(filenames):
-	"""
-	This is a special utility function used by OOMMFConvert to find the single largest-magnitude
-	vector in a set of vector files
-	"""
-	#There is no nice way to do this.
-	def mag(a, b, c):
-		return np.sqrt(a**2 + b**2 + c**2)
-	maxmag = 0
+    """
+    This is a special utility function used by OOMMFConvert to find the single largest-magnitude
+    vector in a set of vector files
+    """
+    #There is no nice way to do this.
+    def mag(a, b, c):
+        return np.sqrt(a**2 + b**2 + c**2)
+    maxmag = 0
 
-	for filename in filenames:
-		thisArray, headers, extraCaps = unpackFile(filename)
-		for k in range(int(headers["znodes"])):
-			for j in range(int(headers["ynodes"])):
-				for i in range(int(headers["xnodes"])):
-					maxmag = max(maxmag, mag(*thisArray[i,j,k]))
+    for filename in filenames:
+        thisArray, headers, extraCaps = unpackFile(filename)
+        for k in range(int(headers["znodes"])):
+            for j in range(int(headers["ynodes"])):
+                for i in range(int(headers["xnodes"])):
+                    maxmag = max(maxmag, mag(*thisArray[i,j,k]))
 	return maxmag
 ########
 # MAIN #
 ########
 if __name__ == "__main__":
-	BigBoss = MainFrame()
-	app.MainLoop()
+    BigBoss = MainFrame()
+    app.MainLoop()
