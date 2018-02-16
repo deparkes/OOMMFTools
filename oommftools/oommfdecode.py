@@ -137,9 +137,8 @@ the Free Software Foundation, either version 2 of the License, or
         wx.adv.AboutBox(info)
 
     def onClose(self, evt):
-	#
-    #if self.manager:
-	#    self.manager.droppedWindow(self)
+        if self.manager:
+            self.manager.droppedWindow(self)
         self.Destroy()
 
 class SupportDialog(wx.ProgressDialog):
