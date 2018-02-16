@@ -38,7 +38,7 @@ PROTECTED_NAMES = ["Exchange"]
 
 class MainFrame(wx.Frame):
     def __init__(self, manager=None):
-        wx.Frame.__init__(self, None, -1, "ODT Chomper 0.9", size=(900,500))
+        wx.Frame.__init__(self, None, -1, "ODT Chomper 0.9", size=(900, 500))
         self.watching = []
         self.delim = " "
 
@@ -48,7 +48,7 @@ class MainFrame(wx.Frame):
             lines = f.readlines()
             f.close()
             lines = [line.strip() for line in lines]
-            self.digest = Interpreter({}, keys = lines)
+            self.digest = Interpreter({}, keys=lines)
         else:
             #No file at all!
             self.digest = None
@@ -93,8 +93,8 @@ class MainFrame(wx.Frame):
         llbsizer = wx.BoxSizer(wx.VERTICAL)
         lefttitle = wx.StaticText(panel, -1, "Available Data Fields", style=wx.ALIGN_CENTER)
         self.leftbox = wx.ListBox(panel, 10, choices=[], style=wx.LB_SINGLE)
-        llbsizer.Add(lefttitle, 0, wx.ALIGN_CENTER )
-        llbsizer.Add(self.leftbox, 1, wx.ALIGN_CENTER | wx.EXPAND | wx.TOP , 10)
+        llbsizer.Add(lefttitle, 0, wx.ALIGN_CENTER)
+        llbsizer.Add(self.leftbox, 1, wx.ALIGN_CENTER | wx.EXPAND | wx.TOP, 10)
         tsizer.Add(llbsizer, 1, wx.ALIGN_CENTER | wx.EXPAND | wx.LEFT | wx.RIGHT, 10)
 
         self.leftbox.Bind(wx.EVT_LEFT_DCLICK, self.takeData)
@@ -129,8 +129,8 @@ class MainFrame(wx.Frame):
 
         midbsizer.Add((-1, 10))
         midbsizer.Add(label, 0, wx.ALIGN_CENTER | wx.BOTTOM | wx.TOP, 10)
-        midbsizer.Add(self.spaceDelim, 0,  wx.LEFT | wx.BOTTOM, 2)
-        midbsizer.Add(self.tabDelim, 0,  wx.LEFT | wx.BOTTOM, 2)
+        midbsizer.Add(self.spaceDelim, 0, wx.LEFT | wx.BOTTOM, 2)
+        midbsizer.Add(self.tabDelim, 0, wx.LEFT | wx.BOTTOM, 2)
         midbsizer.Add(self.commaDelim, 0, wx.LEFT | wx.BOTTOM, 2)
 
         tsizer.Add(midbsizer, 0, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
@@ -139,8 +139,8 @@ class MainFrame(wx.Frame):
         rlbsizer = wx.BoxSizer(wx.VERTICAL)
         righttitle = wx.StaticText(panel, -1, "Exported Data Fields", style=wx.ALIGN_CENTER)
         self.rightbox = wx.ListBox(panel, 11, choices=[], style=wx.LB_SINGLE)
-        rlbsizer.Add(righttitle, 0, wx.ALIGN_CENTER )
-        rlbsizer.Add(self.rightbox, 1, wx.ALIGN_CENTER | wx.EXPAND | wx.TOP , 10)
+        rlbsizer.Add(righttitle, 0, wx.ALIGN_CENTER)
+        rlbsizer.Add(self.rightbox, 1, wx.ALIGN_CENTER | wx.EXPAND | wx.TOP, 10)
         tsizer.Add(rlbsizer, 1, wx.ALIGN_CENTER | wx.EXPAND | wx.LEFT | wx.RIGHT, 10)
 
         self.rightbox.Bind(wx.EVT_LEFT_DCLICK, self.puntData)
@@ -211,7 +211,10 @@ class MainFrame(wx.Frame):
                 self.exportButton.Enable()
 
     def importFile(self, evt):
-        dlg = wx.FileDialog(self, "Import ODT File", os.getcwd(), "", "OOMMF ODT Data (*.odt)|*.odt",wx.FD_OPEN)
+        dlg = wx.FileDialog(self, "Import ODT File",
+                            os.getcwd(), "",
+                            "OOMMF ODT Data (*.odt)|*.odt",
+                            wx.FD_OPEN)
         if dlg.ShowModal() == wx.ID_OK and dlg.GetPath():
             #self.fileLabel.SetLabel("Open: " + os.getcwd() + os.path.sep + dlg.GetFilename())
             self._importFile(dlg.GetPath())
@@ -235,7 +238,11 @@ class MainFrame(wx.Frame):
         return (chomp(filename), os.path.dirname(filename))
 
     def exportFile(self, evt):
-        dlg = wx.FileDialog(self, 'Export Translated File', self.exportPath, "", "Plaintext ODT Data (*.txt)|*.txt", wx.FD_SAVE)
+        dlg = wx.FileDialog(self,
+                            'Export Translated File',
+                            self.exportPath, "",
+                            "Plaintext ODT Data (*.txt)|*.txt",
+                            wx.FD_SAVE)
         if dlg.ShowModal() == wx.ID_OK and dlg.GetPath():
             filename = dlg.GetPath()
             self.exportPath = os.path.dirname(dlg.GetPath())
@@ -364,12 +371,12 @@ def resolve(lst, keys):
         out.append(lst[key])
     return out
 
-def split_densify(a, delim = " "):
-        rets = []
-        for p in a.split(delim):
-            if p:
-                rets.append(p.strip())
-        return rets
+def split_densify(a, delim=" "):
+    rets = []
+    for p in a.split(delim):
+        if p:
+            rets.append(p.strip())
+    return rets
 
 
 def log(evt):
@@ -377,7 +384,7 @@ def log(evt):
 
 
 
-def chomp(odt, parent = None):
+def chomp(odt, parent=None):
     retHeaders = []
     retDict = {}
     log("Opening %s" % odt)
@@ -413,7 +420,7 @@ def chomp(odt, parent = None):
                     else:
                         #Spacesplit match
                         print "In spacesplit match:"
-                        check = line.split(" ",1)
+                        check = line.split(" ", 1)
                         if len(check) == 1:
                             grab = check[0]
                             line = ""
@@ -435,7 +442,7 @@ def chomp(odt, parent = None):
                 InData = True
             #Chew actual data
             fields = split_densify(line)
-            for i,v in enumerate(fields):
+            for i, v in enumerate(fields):
                 fieldname = retHeaders[i]
                 retDict[fieldname] = np.append(retDict[fieldname], float(v))
     f.close()
@@ -503,8 +510,8 @@ def namepolish(name, uniquenessCheck):
 
     Examples
     --------
-    >>> namepolish('evolver:givenName:quantity', 
-                    [['evolver', 'givenName', 'quantity'], 
+    >>> namepolish('evolver:givenName:quantity',
+                    [['evolver', 'givenName', 'quantity'],
                     ['evolver', 'givenName', 'quantity2']])
     'quantity'
     """
@@ -527,7 +534,7 @@ def namepolish(name, uniquenessCheck):
             # filter this output and check for duplicates of the givenName.
             if len(_filterOnPos(_filterOnPos(uniquenessCheck, quantity, 2), givenName, 1)) > 1:
                 # Quantity and givenName are both duplicated. We need to keep
-                # the evolver name to distinguish between fields. 
+                # the evolver name to distinguish between fields.
                 # If the evolver should be protected, put it second.
                 # It's not clear why the evolver should be first or second
                 # position.
@@ -536,14 +543,14 @@ def namepolish(name, uniquenessCheck):
                 # if evolver should not be protected, put it first.
                 else:
                     newname = evolver + " " + givenName + " " + quantity
-            # There is a given name present, but no duplicates found. 
-            # As there are no givenName duplicates, we should be able to 
+            # There is a given name present, but no duplicates found.
+            # As there are no givenName duplicates, we should be able to
             # uniquely identify the fields without the evolver.
-            # We may want to protect the evolver - in this case, include it 
+            # We may want to protect the evolver - in this case, include it
             # after the givenName
             elif protectEvolver:
                 newname = givenName + " " + evolver + " " + quantity
-            # If there are no duplicates in the givenName (the 'quantity' is 
+            # If there are no duplicates in the givenName (the 'quantity' is
             # duplicated), and the evolver is not protected, drop the evolver.
             else:
                 newname = givenName + " " + quantity
@@ -561,10 +568,10 @@ def namepolish(name, uniquenessCheck):
     return newname
 
 def _filterOnPos(inList, item, dex):
-    """Return list (of lists) if a string is found in a particular position in 
+    """Return list (of lists) if a string is found in a particular position in
     that list.
-    
-    If the length of 'ret' is more than 1, it means that there is a 
+
+    If the length of 'ret' is more than 1, it means that there is a
     duplicate of the target item in the indicated position.
     It seems to be called 'filter on pos' as it returns lists only
     if the target value is found in the position specified within
