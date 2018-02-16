@@ -38,11 +38,11 @@ CODECS = {"HuffYUV": (r" -vcodec huffyuv ",".avi", "HuffYUV"),
           "H263+": (r" -vcodec h263p ",".avi","H263+")}
 
 if __name__ == "__main__":
-	app = wx.App(None)
-	#app = wx.App(redirect=True)
-	#app = wx.App(redirect=True, filename="oommfconvert.log")
+    app = wx.App(None)
+    #app = wx.App(redirect=True)
+    #app = wx.App(redirect=True, filename="oommfconvert.log")
 
-	#app.SetOutputWindowAttributes("OOMMF Console Log", (-1,-1), (550, 400))
+    #app.SetOutputWindowAttributes("OOMMF Console Log", (-1,-1), (550, 400))
 
 SETUP_LOAD = 5
 RENDER_LOAD = 10
@@ -242,15 +242,15 @@ class MainFrame(wx.Frame):
         #Cleanup initialization
         panel.SetSizer(sizer)
 
-	if self.manager:
-		self.CenterOnParent()
+        if self.manager:
+            self.CenterOnParent()
         panel.Fit()
         self.Show()
 
     def onClose(self, evt):
-	if self.manager:
-	    self.manager.droppedWindow(self)
-	self.Destroy()
+        if self.manager:
+            self.manager.droppedWindow(self)
+        self.Destroy()
 
     def showAbout(self, evt):
         info = wx.adv.AboutDialogInfo()
