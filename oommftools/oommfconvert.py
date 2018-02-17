@@ -376,8 +376,8 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                 return 1
 
             if self.parent.doImages.GetValue():
-               #Oh well, I guess you're stuck making images. Make them!
-               self.doImages(targets, childstd, dial)
+                #Oh well, I guess you're stuck making images. Make them!
+                self.doImages(targets, childstd, dial)
 
 
             dial.workDone(CLEANUP_LOAD, "All Done!")
