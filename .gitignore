@@ -176,6 +176,8 @@ log.txt
 #*.odt
 #*.ohf
 
+oommf.path
+
 # Compiled python modules.
 *.pyc
 
