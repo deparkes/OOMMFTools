@@ -335,7 +335,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
 
         #Try to save a lot of work - only do magic if OMF-type files were dropped.
         targets = filterOnExtensions(["omf","ovf","oef","ohf"], filenames)
-        if not targets: return
+        if not targets: return 0
 
         #Save more work by verifying that the user actually wants to make some sort of thing.
         if not self.parent.doImages.GetValue() and not self.parent.doMovie.GetValue():
