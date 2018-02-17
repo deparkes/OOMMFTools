@@ -59,7 +59,7 @@ if PY2EXE_COMPENSATION:
 
 class MainFrame(wx.Frame):
     def __init__(self, manager=None):
-        wx.Frame.__init__(self, manager, -1, "OOMMF Bitmap/Movie Converter 0.8", size=(700,680))
+        wx.Frame.__init__(self, manager, -1, "OOMMF Bitmap/Movie Converter 0.8", size=(700,700))
 
         BigFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, style=wx.NORMAL, weight=wx.FONTWEIGHT_BOLD)
         TinyFont = wx.Font(8, wx.FONTFAMILY_DEFAULT, style=wx.NORMAL, weight=wx.FONTWEIGHT_NORMAL)
