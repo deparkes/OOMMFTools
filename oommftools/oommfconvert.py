@@ -331,7 +331,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             self.parent.locateConf(config[-1])
 
         if not (self.parent.config and self.parent.OOMMFPath):
-            return
+            return 0
 
         #Try to save a lot of work - only do magic if OMF-type files were dropped.
         targets = filterOnExtensions(["omf","ovf","oef","ohf"], filenames)
@@ -340,7 +340,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #Save more work by verifying that the user actually wants to make some sort of thing.
         if not self.parent.doImages.GetValue() and not self.parent.doMovie.GetValue():
             #Er... you don't want to do anything?
-            return
+            return 0
 
         #Convince user that everything is OK, and provide me with entertainment.
         #Set up a dialog box that will track progress.
@@ -373,7 +373,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             #Awkward short-circuit - If you made movies and they have the same magnification as the images, you get to keep the images!
             if self.parent.doMovie.GetValue() and self.parent.movieMagnifierSpin.GetValue() == self.parent.magnifierSpin.GetValue():
                 dial.finish()
-                return
+                return 1
 
             if self.parent.doImages.GetValue():
                #Oh well, I guess you're stuck making images. Make them!
@@ -386,6 +386,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             print e
         finally:
             dial.finish()
+            return 1
 
 
     def findStandardIn(self):
