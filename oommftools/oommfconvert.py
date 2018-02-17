@@ -623,6 +623,7 @@ class SupportDialog(wx.ProgressDialog):
 
     def finish(self):
         self.Update(self.workmax, "Done!")
+        self.Destroy()
 ########
 # MAIN #
 ########
