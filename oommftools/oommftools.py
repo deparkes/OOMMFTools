@@ -26,7 +26,7 @@ class MainFrame(wx.Frame):
 
     """
     def __init__(self):
-        wx.Frame.__init__(self, None, -1, "OOMMFTools", size=(400, 180))
+        wx.Frame.__init__(self, None, -1, "OOMMFTools", size=(400, 200))
 
         self.oommfconvert = None
         self.oommfdecode = None
