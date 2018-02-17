@@ -191,7 +191,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         """
         oommf = filterOnExtensions(["omf", "ovf", "oef", "ohf"], filenames)
         if not oommf or not (self.parent.doNumpy.GetValue() or self.parent.doMATLAB.GetValue()):
-            return #You got dropped some bad files!
+            return 0 #You got dropped some bad files!
         global LASTPATH
         LASTPATH = os.path.dirname(oommf[0])
         arrays, headers, extra = groupUnpack(oommf,
@@ -213,6 +213,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                         junk, extra[key] = zip(*sorted(zip(originalTimeIndex, extra[key])))
 
         self.parent.gatherData(arrays, headers, extra)
+        return 1
 
 def groupUnpack(targetlist, progdialog=None):
     """
