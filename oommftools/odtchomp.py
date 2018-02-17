@@ -357,6 +357,7 @@ class ODTDropTarget(wx.FileDropTarget):
             #normal mode
             if namepotential:
                 self.parent._importFile(namepotential[0])
+            return 0
         else:
             #batch mode
             for fname in namepotential:
@@ -364,7 +365,7 @@ class ODTDropTarget(wx.FileDropTarget):
                 outfname = fname.rsplit(os.path.sep, 1)[1].split(".")[0] + ".txt"
                 print outDir, outfname
                 write(outDir + os.path.sep + outfname, interp, self.parent.delim, self.parent.watching)
-
+            return 1
 
 def write(filename, interpreter, delim, fields):
     """
