@@ -352,40 +352,40 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
 
         childstd = self.findStandardIn()
 
-	#We are now in the danger zone where the progress bar can get locked, and we
-	#are going to shield that with some top-level exception handling
+        #We are now in the danger zone where the progress bar can get locked, and we
+        #are going to shield that with some top-level exception handling
 
-	try:
+        try:
 
-		dial.workDone(SETUP_LOAD, "Checking for Movies")
-
-
-		#The first thing to do is try to make movies - in some cases, this process will leave behind
-		#the images we need, and we can skip the image step entirely.
-
-		print "Entering movie mode."
-		if self.parent.doMovie.GetValue():
-		    #Make some movies. This also hands off the progressDialog, so it can be updated.
-		    self.doMovies(targets, childstd, dial)
-		    #Finish making some movies.
-		    dial.workDone(CLEANUP_LOAD, "Doing Images")
-
-		#Awkward short-circuit - If you made movies and they have the same magnification as the images, you get to keep the images!
-		if self.parent.doMovie.GetValue() and self.parent.movieMagnifierSpin.GetValue() == self.parent.magnifierSpin.GetValue():
-		    dial.finish()
-		    return
-
-		if self.parent.doImages.GetValue():
-		   #Oh well, I guess you're stuck making images. Make them!
-		   self.doImages(targets, childstd, dial)
+            dial.workDone(SETUP_LOAD, "Checking for Movies")
 
 
-		dial.workDone(CLEANUP_LOAD, "All Done!")
-	except Exception as e:
-		wx.MessageBox('Unpacking error: ' + repr(e), "Error")
-		print e
-	finally:
-		dial.finish()
+            #The first thing to do is try to make movies - in some cases, this process will leave behind
+            #the images we need, and we can skip the image step entirely.
+
+            print "Entering movie mode."
+            if self.parent.doMovie.GetValue():
+                #Make some movies. This also hands off the progressDialog, so it can be updated.
+                self.doMovies(targets, childstd, dial)
+                #Finish making some movies.
+                dial.workDone(CLEANUP_LOAD, "Doing Images")
+
+            #Awkward short-circuit - If you made movies and they have the same magnification as the images, you get to keep the images!
+            if self.parent.doMovie.GetValue() and self.parent.movieMagnifierSpin.GetValue() == self.parent.magnifierSpin.GetValue():
+                dial.finish()
+                return
+
+            if self.parent.doImages.GetValue():
+               #Oh well, I guess you're stuck making images. Make them!
+               self.doImages(targets, childstd, dial)
+
+
+            dial.workDone(CLEANUP_LOAD, "All Done!")
+        except Exception as e:
+            wx.MessageBox('Unpacking error: ' + repr(e), "Error")
+            print e
+        finally:
+            dial.finish()
 
 
     def findStandardIn(self):
