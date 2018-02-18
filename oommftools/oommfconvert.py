@@ -582,11 +582,8 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             basename = fname
         print(CODECS[self.parent.movieCodec.GetValue()])
         outname = "["+CODECS[self.parent.movieCodec.GetValue()][2]+"]"+ CODECS[self.parent.movieCodec.GetValue()][1]
-        print(outname)
-        print('pathTo' + pathTo)
         command = r'ffmpeg -f image2 -an -y -i ' + moviepath + os.path.sep + r'%0' + str(maxdigits) + r'd.bmp ' + CODECS[self.parent.movieCodec.GetValue()][0]
         command += ' "' + os.path.join(pathTo, outname) + '"'
-        print(command)
         dial.workDone(0, "Rendering Movie")
         print "Movie render mode prepared."
 
