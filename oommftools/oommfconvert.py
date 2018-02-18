@@ -525,6 +525,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         print "Temporary directory obtained."
         #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
         framedupes = int(25 / self.parent.movieFPS.GetValue())
+        print(framedupes)
         maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
 
         #Deal with overload-options by writing a temporary configuration file
@@ -532,10 +533,12 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
 
         dial.workDone(0, "Rendering")
         for i, omf in enumerate(sorted(targetList)):
+            print("working on file %s %s" % (i, omf))
             frameRepeatOffset = 0
             pathTo, fname = omf.rsplit(os.path.sep, 1)
             command = self.parent.TclCall.GetValue() + ' "' + self.parent.OOMMFPath + '" avf2ppm -f -v 2 -format b24 -config "' + confpath + '" "' + omf + '"'
             if os.name == 'nt':
+                print(os.name)
                 if MODE == "basic":
                     os.system(command)
                 elif MODE == "advanced":
@@ -547,8 +550,9 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                         pipe = subprocess.Popen(command, shell=False, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
                     a = pipe.readlines()
                     #*Really*? It's not using stdout?
-                    if a:
-                        for line in a: print line.strip()
+                    #if a:
+                        #print('here a' + str(a))
+                        #for line in a: print line.strip()
             else:
                 if MODE == "basic":
                     os.system(command)
@@ -563,22 +567,31 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             #Copy and duplicate image, placing files in the movie temp directory
             fname = omf.rsplit(".",1)[0] + ".bmp"
             for j in range(framedupes):
+                print('here framedupes')
                 shutil.copy(fname, moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp")
                 j += 1
                 dial.workDone(FRAMEDUPE_LOAD, "Frame Duplicating")
             dial.workDone(0, "Rendering")
-
+            
             #Housecleaning - if not making images, you should clean this up.
             if not self.parent.doImages.GetValue():
                 os.remove(fname)
-
+        print('ready to make movie')
         #Finally, make the actual movie!
         #You know, we should steal the last pathto as a place to put the movie, and perhaps also the basename
         #This is bad use of scoping blah blah
-        basename = fname.rsplit("-",2)[-3]
-        outname = basename +"["+CODECS[self.parent.movieCodec.GetValue()][2]+"]"+ CODECS[self.parent.movieCodec.GetValue()][1]
+        fname = moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp"
+        try:
+            basename = fname.rsplit("-",2)[-3]
+        except:
+            basename = fname
+        print(CODECS[self.parent.movieCodec.GetValue()])
+        outname = "["+CODECS[self.parent.movieCodec.GetValue()][2]+"]"+ CODECS[self.parent.movieCodec.GetValue()][1]
+        print(outname)
+        print('pathTo' + pathTo)
         command = r'ffmpeg -f image2 -an -y -i ' + moviepath + os.path.sep + r'%0' + str(maxdigits) + r'd.bmp ' + CODECS[self.parent.movieCodec.GetValue()][0]
-        command += ' "' + outname + '"'
+        command += ' "' + os.path.join(pathTo, outname) + '"'
+        print(command)
         dial.workDone(0, "Rendering Movie")
         print "Movie render mode prepared."
 
@@ -597,6 +610,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             elif MODE == "advanced":
                 pipe = subprocess.Popen(command, shell=True, stdin = sys.stdin, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
         a = pipe.readlines()
+        print(a)
         #THIS should at least use STDout
         if a:
             for line in a: print line.strip()
