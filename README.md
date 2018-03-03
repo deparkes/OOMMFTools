@@ -1,5 +1,5 @@
 # OOMMFTools
-
+![OOMMFTools Main Window](https://oommftools.github.io/assets/main_window.png)
 # Introduction
 OOMMFTools is a set of utilities designed to assist OOMMF postprocessing with an intuitive, graphical interface. It includes the following subcomponents:
 
@@ -48,6 +48,7 @@ On windows you may struggle to install numpy and scipy using the usual pip chann
 # OOMMFDecode
 OOMMFDecode batch-processes vector files (omf, ovf, oef, ohf) into numpy arrays. These can then be pickled, for python users, or saved into MATLAB data files, for MATLAB users.
 
+![OOMMFTools OOMMFDecode](https://oommftools.github.io/assets/oommfdecode_window.png)
 
 ## 1. UTILIZATION
 
@@ -94,6 +95,8 @@ The output .PNP file can be unpickled into a tuple containing two items: first, 
 # OOMMFConvert
 OOMMFConvert is meant to ease converting OOMMF simulation results into bitmaps and movies, especially for Windows users for whom the console is more unfamiliar or difficult. It uses the existing avf2ppm capability of OOMMF, along with the open-source utility FFmpeg for movie conversion.
 
+![OOMMFTools OOMMFConvert](https://oommftools.github.io/assets/oommfconvert_window.png)
+
 
 ## 1. Utilization
 The GUI is divided into five sections as follows.
@@ -138,6 +141,8 @@ Drag and drop configuration and vector field files here - or anywhere in the pro
 
 # ODTChomp
 ODTChomp takes in ODT data tables, simplifies the name scheme to the extent it it possible, and outputs the desired columns into a text file with a given delimeter. The behavior is rather distict from odtcols, which is better at fixed-width rather than fixed-delimitation formatting.
+
+![OOMMFTools ODTChomp](https://oommftools.github.io/assets/odtchomp_window.png)
 
 
 ## 1. Utilization
