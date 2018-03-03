@@ -18,6 +18,13 @@ Clone this repository to get the latest code:
 
     >>> git clone https://github.com/deparkes/OOMMFTools.git
 
+
+The easiest way to install the modules needed for OOMMFTools is to use the [Anaconda Distribution](https://www.continuum.io/downloads). The OOMMFTools repository contains an environment yaml file with the dependencies it needs.
+
+    >>> conda env create -f environment.yml
+    >>> python oommftools/oommftools.py
+
+    
 ## Install Dependencies
 OOMMFTools has the following dependencies:
 
@@ -29,21 +36,8 @@ OOMMFTools has the following dependencies:
 - OOMMF - needed for [OOMMFConvert](#oommfconvert)
 - Tcl/Tk - needed for [OOMMFConvert](#oommfconvert)
 
-### Anaconda Python Distribution
-Probably the easiest way to install the modules needed for OOMMFTools is to use the [Anaconda Distribution](https://www.continuum.io/downloads).
 
-    >>> conda install numpy scipy
-    >>> conda install -c conda-forge wxpython 
-    >>> python Oommftools.py
 
-### Pip Install
-If you would prefer to install dependencies with pip then you can with:
-
-    >>> pip install numpy
-    >>> pip install scipy
-    >>> pip install wxpython
-
-On windows you may struggle to install numpy and scipy using the usual pip channels. If this is the case, then you may need to install these packages by first downloading pre-compiled whl files.
 
 # OOMMFDecode
 OOMMFDecode batch-processes vector files (omf, ovf, oef, ohf) into numpy arrays. These can then be pickled, for python users, or saved into MATLAB data files, for MATLAB users.
