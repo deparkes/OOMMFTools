@@ -1,5 +1,11 @@
-python=2.7
-numpy
-scipy
-wxpython
+name: oommftools
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=2.7
+- wxpython=4.0.*
+- scipy
+- numpy
+
 
