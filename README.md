@@ -29,7 +29,7 @@ The easiest way to install the modules needed for OOMMFTools is to use the [Anac
 OOMMFTools has the following dependencies:
 
 - Python 2.7
-- wxPython
+- wxPython 4.x
 - numpy
 - scipy
 - FFmpeg - needed for [OOMMFConvert](#oommfconvert)
