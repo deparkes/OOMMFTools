@@ -11,7 +11,8 @@ import odtchomp
 # DECS #
 ########
 
-APP = wx.App(None)
+if __name__ == "__main__":
+    APP = wx.App(None)
 #APP = wx.App(redirect=True, filename="oommftools.log")
 
 #######
@@ -126,6 +127,9 @@ class MainFrame(wx.Frame):
 # MAIN #
 ########
 
-
-q = MainFrame()
-APP.MainLoop()
+########
+# MAIN #
+########
+if __name__ == "__main__":
+    q = MainFrame()
+    APP.MainLoop()
