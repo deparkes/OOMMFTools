@@ -23,6 +23,23 @@ from wx import adv
 import wx, os, sys, subprocess, shutil, tempfile, math, re, time, imp
 from fnameutil import filterOnExtensions
 from oommfdecode import slowlyPainfullyMaximize
+import _about as about
+
+#########
+# About #
+#########
+
+VERSION = about.__version__
+NAME = "OOMMFConvert"
+LICENSE = about.__license__
+COPYRIGHT = about.__copyright__
+WEBSITE = about.__uri__
+DESCRIPTION = """OOMMFConvert is an OOMMF postprocessing tool for
+generating bitmap and movie files from OMF files
+using a simple drag-and-drop interface.
+It uses OOMMF's own avf2ppm utility
+and employs FFmpeg to link images.
+\nOOMMFConvert is part of OOMMFTools."""
 
 ########
 # DECS #
@@ -59,7 +76,7 @@ if PY2EXE_COMPENSATION:
 
 class MainFrame(wx.Frame):
     def __init__(self, manager=None):
-        wx.Frame.__init__(self, manager, -1, "OOMMF Bitmap/Movie Converter 0.8", size=(700,700))
+        wx.Frame.__init__(self, manager, -1, " ".join([NAME, VERSION]), size=(700,700))
 
         BigFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, style=wx.NORMAL, weight=wx.FONTWEIGHT_BOLD)
         TinyFont = wx.Font(8, wx.FONTFAMILY_DEFAULT, style=wx.NORMAL, weight=wx.FONTWEIGHT_NORMAL)
@@ -254,22 +271,14 @@ class MainFrame(wx.Frame):
 
     def showAbout(self, evt):
         info = wx.adv.AboutDialogInfo()
-        mydesc = """OOMMFConvert is an OOMMF postprocessing tool for
-generating bitmap and movie files from OMF files
-using a simple drag-and-drop interface.
-It uses OOMMF's own avf2ppm utility
-and employs FFmpeg to link images.
-\nOOMMFConvert is part of OOMMFTools."""
-        mylicense = """OOMMFConvert is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version."""
-        info.SetName("OOMMF Bitmap/Movie Converter")
-        info.SetVersion("0.8")
-        info.SetDescription(mydesc)
-        info.SetLicense(mylicense)
-        info.SetCopyright('(C) 2010 Mark Mascaro')
-        info.SetWebSite('http://web.mit.edu/daigohji/projects/OOMMFTools/')
+        mydesc = DESCRIPTION
+        mylicense = LICENSE
+        info.SetName(NAME)
+        info.SetVersion(VERSION)
+        info.SetDescription(''.join(mydesc))
+        info.SetLicense(''.join(mylicense))
+        info.SetCopyright(COPYRIGHT)
+        info.SetWebSite(WEBSITE)
         wx.adv.AboutBox(info)
 
     def GUILocateOOMMF(self, evt):

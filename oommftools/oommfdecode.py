@@ -29,7 +29,21 @@ import struct
 import numpy as np
 import scipy.io as spio
 from fnameutil import filterOnExtensions
+import _about as about
 
+#########
+# About #
+#########
+
+VERSION = about.__version__
+NAME = "OOMMFDecode"
+LICENSE = about.__license__
+COPYRIGHT = about.__copyright__
+WEBSITE = about.__uri__
+DESCRIPTION = """OOMMFDecode is an OOMMF postprocessing tool for
+converting OVF files or batches of same into numpy
+arrays or MATLAB data files. Just drag and drop.
+\nOOMMFDecode is part of OOMMFTools."""
 
 
 ########
@@ -52,7 +66,7 @@ class MainFrame(wx.Frame):
     """
     def __init__(self, manager=None):
         
-        wx.Frame.__init__(self, None, -1, "OOMMFDecode 0.8", size=(340, 400))
+        wx.Frame.__init__(self, None, -1, " ".join([NAME, VERSION]), size=(340, 400))
 
         BigFont = wx.Font(16, wx.FONTFAMILY_DEFAULT, style=wx.NORMAL, weight=wx.FONTWEIGHT_BOLD)
         TinyFont = wx.Font(8, wx.FONTFAMILY_DEFAULT, style=wx.NORMAL, weight=wx.FONTWEIGHT_NORMAL)
@@ -133,20 +147,14 @@ class MainFrame(wx.Frame):
         """
         """
         info = wx.adv.AboutDialogInfo()
-        mydesc = """OOMMFDecode is an OOMMF postprocessing tool for
-converting OVF files or batches of same into numpy
-arrays or MATLAB data files. Just drag and drop.
-\nOOMMFConvert is part of OOMMFTools."""
-        mylicense = """OOMMFDecode is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version."""
-        info.SetName("OOMMFDecode")
-        info.SetVersion("0.8")
-        info.SetDescription(mydesc)
-        info.SetLicense(mylicense)
-        info.SetCopyright('(C) 2010 Mark Mascaro')
-        info.SetWebSite('http://web.mit.edu/daigohji/projects/OOMMFTools/')
+        mydesc = DESCRIPTION
+        mylicense = LICENSE
+        info.SetName(NAME)
+        info.SetVersion(VERSION)
+        info.SetDescription(''.join(mydesc))
+        info.SetLicense(''.join(mylicense))
+        info.SetCopyright(COPYRIGHT)
+        info.SetWebSite(WEBSITE)
         wx.adv.AboutBox(info)
 
     def onClose(self, evt):

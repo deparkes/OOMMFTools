@@ -24,6 +24,24 @@ from wx import adv
 import wx
 import numpy as np
 from fnameutil import filterOnExtensions
+import _about as about
+
+
+#########
+# About #
+#########
+
+VERSION = about.__version__
+NAME = "ODTChomp"
+LICENSE = about.__license__
+COPYRIGHT = about.__copyright__
+WEBSITE = about.__uri__
+DESCRIPTION = """ODTChomp is an OOMMF postprocessing tool for
+extracting columns from and unifying delimitation
+of ODT table files.
+\nODTChomp is part of OOMMFTools."""
+
+
 
 ########
 # DECS #
@@ -322,20 +340,14 @@ class MainFrame(wx.Frame):
         """
         """
         info = wx.adv.AboutDialogInfo()
-        mydesc = """ODTChomp is an OOMMF postprocessing tool for
-extracting columns from and unifying delimitation
-of ODT table files.
-\nODTChomp is part of OOMMFTools."""
-        mylicense = """ODTChomp is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version."""
-        info.SetName("ODTChomp")
-        info.SetVersion("0.9")
-        info.SetDescription(mydesc)
-        info.SetLicense(mylicense)
-        info.SetCopyright('(C) 2010 Mark Mascaro')
-        info.SetWebSite('http://web.mit.edu/daigohji/projects/OOMMFTools/')
+        mydesc = DESCRIPTION
+        mylicense = LICENSE
+        info.SetName(NAME)
+        info.SetVersion(VERSION)
+        info.SetDescription("".join(mydesc))
+        info.SetLicense("".join(mylicense))
+        info.SetCopyright(COPYRIGHT)
+        info.SetWebSite(WEBSITE)
         wx.adv.AboutBox(info)
 
 ###########
