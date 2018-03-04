@@ -15,6 +15,19 @@ if __name__ == "__main__":
     APP = wx.App(None)
 #APP = wx.App(redirect=True, filename="oommftools.log")
 
+NAME = "OOMMFTools"
+VERSION = "2.0.0"
+LICENSE = ("OOMMFTools is free software; you can redistribute",
+         "it and/or modify it under the terms of the GNU ",
+         "General Public License as published by the Free ",
+         "Software Foundation, either version 2 of the License,"
+         "or (at your option) any later version.")
+YEAR = "2018"
+COPYRIGHT = '(C) ' + YEAR + ' Mark Mascaro and contributors'
+WEBSITE = 'http://web.mit.edu/daigohji/projects/OOMMFTools/'
+DESC = ("OOMMFTools is a set of drag-and-drop GUI utilities ",
+    "to assist in OOMMF postprocessing, including image",
+    "conversion and vector file manipulation.")
 #######
 # GUI #
 #######
@@ -107,20 +120,14 @@ class MainFrame(wx.Frame):
         """Show 'About' information
         """
         info = wx.adv.AboutDialogInfo()
-        mydesc = ("OOMMFTools is a set of drag-and-drop GUI utilities ",
-                  "to assist in OOMMF postprocessing, including image",
-                  "conversion and vector file manipulation.")
-        mylicense = ("OOMMFTools is free software; you can redistribute",
-                     "it and/or modify it under the terms of the GNU ",
-                     "General Public License as published by the Free ",
-                     "Software Foundation, either version 2 of the License,"
-                     "or (at your option) any later version.")
-        info.SetName(("OOMMFTools"))
-        info.SetVersion(("1.0"))
+        mydesc = (DESC)
+        mylicense = (LICENSE)
+        info.SetName((NAME))
+        info.SetVersion((VERSION))
         info.SetDescription(''.join(mydesc))
         info.SetLicense(''.join(mylicense))
-        info.SetCopyright(('(C) 2010 Mark Mascaro'))
-        info.SetWebSite('http://web.mit.edu/daigohji/projects/OOMMFTools/')
+        info.SetCopyright((COPYRIGHT))
+        info.SetWebSite(WEBSITE)
         wx.adv.AboutBox(info)
 
 ########
