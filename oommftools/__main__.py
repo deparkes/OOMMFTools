@@ -1,0 +1,3 @@
+import oommftools
+
+oommftools.main()

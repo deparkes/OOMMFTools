@@ -12,8 +12,10 @@ import _about as about
 # DECS #
 ########
 
-if __name__ == "__main__":
+def main():
     APP = wx.App(None)
+    q = MainFrame()
+    APP.MainLoop()
 #APP = wx.App(redirect=True, filename="oommftools.log")
 
 __version__ = about.__version__
@@ -134,5 +136,4 @@ class MainFrame(wx.Frame):
 # MAIN #
 ########
 if __name__ == "__main__":
-    q = MainFrame()
-    APP.MainLoop()
+    main()
