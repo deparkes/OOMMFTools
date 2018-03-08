@@ -17,6 +17,7 @@ setup(
    description=''.join(about['__summary__']),
    long_description=long_description,
    author=about['__author__'],
+   maintainer=about['__maintainer__'],
    author_email=about['__email__'],
    url=about['__uri__'],
    packages=['oommftools'],  #same as name

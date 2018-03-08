@@ -14,6 +14,7 @@ __uri__ = 'https://github.com/deparkes/OOMMFTools'
 __version__ = "2.0.0"
 
 __author__ = "Mark Mascaro and Contributors"
+__maintainer__ = "Duncan Parkes"
 __email__ = "deparkes@gmail.com"
 
 __license__ = ("OOMMFTools is free software; you can redistribute",
