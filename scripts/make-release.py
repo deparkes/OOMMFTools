@@ -195,7 +195,7 @@ def main():
 
     set_init_version(version)
     make_git_commit('Bump version number to %s', version)
-    make_git_tag(version)
+    make_git_tag('v'+version)
     build()
     set_init_version(dev_version)
 
