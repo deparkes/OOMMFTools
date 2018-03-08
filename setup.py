@@ -13,7 +13,7 @@ with open("./oommftools/_about.py") as fp:
     
 setup(
    name=about['__title__'].lower(),
-   version=about['__version__']+'dev4',
+   version=about['__version__'],
    description=''.join(about['__summary__']),
    long_description=long_description,
    author=about['__author__'],
