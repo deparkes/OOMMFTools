@@ -3,7 +3,9 @@ __summary__ = ("OOMMFTools is a set of drag-and-drop GUI utilities ",
     "to assist in OOMMF postprocessing, including image",
     "conversion and vector file manipulation.")
 __uri__ = 'https://github.com/deparkes/OOMMFTools'
+__version__ = "2.0.0"
 __version__ = "2.0.1"
+__version__ = "2.0.2"
 __author__ = "Mark Mascaro and Contributors"
 __maintainer__ = "Duncan Parkes"
 __email__ = "deparkes@gmail.com"
