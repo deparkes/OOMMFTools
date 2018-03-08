@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 """
-Copyright © 2010 by the Pallets team.
-Modifications © 2018 by Duncan Parkes
+Copyright (c) 2010 by the Pallets team.
+Modifications (c) 2018 by Duncan Parkes
 
 Some rights reserved.
 
