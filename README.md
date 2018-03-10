@@ -14,16 +14,52 @@ OOMMFTools was original developed by [Mark Mascaro](http://web.mit.edu/daigohji/
 Bug reports and feature requests should logged on github.
 
 # Installation
+## Install With Pip
+### Windows / OSX
+Windows and OSX users can install with pip:
+
+```
+pip install oommftools
+```    
+
+You can then load the oommftools main window with 
+
+```
+python -m oommftools
+```
+ 
+### Linux
+OOMMFTools has a dependency on wxpython and packages for this [are not](https://wxpython.org/blog/2017-08-17-builds-for-linux-with-pip/index.html) (currently) available on PyPI. 
+
+Linux users need to install wxpython 4.x separately before running pip install. You may find a suitable wheel file for your version of linux [here](https://wxpython.org/pages/downloads/index.html) which can be installed with a command like:
+```
+pip install -U \
+    -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 \
+    wxPython
+```
+You can then install OOMMFTools with pip:
+```
+pip install oommftools
+``` 
+You can then load the oommftools main window with 
+```
+python -m oommftools
+```
+## Install With Anaconda
+Installing with the [Anaconda Distribution](https://www.continuum.io/downloads) should not depend on your platform.
+
 Clone this repository to get the latest code:
 
-    >>> git clone https://github.com/deparkes/OOMMFTools.git
+```
+git clone https://github.com/deparkes/OOMMFTools.git
+```
 
+The OOMMFTools repository contains an environment yaml file with the dependencies it needs.
 
-The easiest way to install the modules needed for OOMMFTools is to use the [Anaconda Distribution](https://www.continuum.io/downloads). The OOMMFTools repository contains an environment yaml file with the dependencies it needs.
-
-    >>> conda env create -f environment.yml
-    >>> python oommftools/oommftools.py
-
+```
+conda env create -f environment.yml
+python oommftools/oommftools.py
+```
     
 ## Install Dependencies
 OOMMFTools has the following dependencies:
