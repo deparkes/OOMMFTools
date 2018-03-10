@@ -101,8 +101,6 @@ def set_filename_version(filename, version_number, pattern):
     def inject_version(match):
         before, old, after = match.groups()
         changed.append(True)
-        print(version_number)
-        print(old)
         return before + version_number + after
 
     with open(filename) as f:
@@ -111,8 +109,6 @@ def set_filename_version(filename, version_number, pattern):
             inject_version, f.read(),
             flags=re.DOTALL | re.MULTILINE
         )
-    print(contents)
-    print('here')
     if not changed:
         fail('Could not find %s in %s', pattern, filename)
 
