@@ -1,3 +1,4 @@
+import sys
 from setuptools import setup
 
 try:
@@ -22,5 +23,7 @@ setup(
    author_email=about['__email__'],
    url=about['__uri__'],
    packages=['oommftools'],  #same as name
-   install_requires=['wxpython', 'scipy', 'numpy'], #external packages as dependencies
+   install_requires=['scipy', 'numpy'] + (
+        ["wxpython"] if not sys.platform.startswith("linux") else []
+        ) #external packages as dependencies
 )
