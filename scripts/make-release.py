@@ -126,7 +126,7 @@ def set_init_version(version):
 
 
 def build():
-    cmd = [sys.executable, 'setup.py', 'sdist', 'bdist_wheel']
+    cmd = [sys.executable, 'setup.py', 'release', 'sdist', 'bdist_wheel']
     Popen(cmd).wait()
 
 
