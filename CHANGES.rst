@@ -9,6 +9,7 @@ Released on March 10th 2018.
 - Update install instructions
 - Fix linux pip install wxpython requirement
 - Add licence reference to setup.py
+- Tidy make-release.py script
 
 Version 2.0.1
 -------------
