@@ -1,6 +1,15 @@
 oommftools Changelog
 ====================
 
+Version 2.0.2
+-------------
+
+Released on March 10th 2018.
+
+- Update install instructions
+- Fix linux pip install wxpython requirement
+- Add licence reference to setup.py
+
 Version 2.0.1
 -------------
 
