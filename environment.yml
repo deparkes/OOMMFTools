@@ -7,5 +7,6 @@ dependencies:
 - wxpython=4.0.*
 - scipy
 - numpy
+- pytest
 
 
