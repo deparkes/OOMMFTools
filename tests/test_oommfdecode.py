@@ -1,5 +1,7 @@
+from future import standard_library
+standard_library.install_aliases()
 import sys, os
-import StringIO
+import io
 import tempfile
 import numpy as np
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -10,11 +12,11 @@ import unittest
 from oommftools import oommfdecode
 
 
-import StringIO
+import io
 import io
 from oommftools.fnameutil import filterOnExtensions
 import scipy.io as spio
-import cPickle as pickle
+import pickle as pickle
 import struct
 
 class Test_oommfdecode_text(unittest.TestCase):
@@ -43,7 +45,7 @@ class Test_oommfdecode_text(unittest.TestCase):
 
     def test_unpackFile_headers_keys(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_text)
-        self.assertEqual(headers.keys().sort(), self.headers_test.keys().sort())
+        self.assertEqual(list(headers.keys()).sort(), list(self.headers_test.keys()).sort())
         
     def test_unpackFile_text_extracaptures(self):
         (targetarray, headers, extraCaptures) = oommfdecode.unpackFile(self.vector_file_text)
@@ -89,7 +91,7 @@ class Test_pickleArray(unittest.TestCase):
         with open(self.filename, "r") as input_file:
             e = pickle.load(input_file)
         np.testing.assert_array_equal(e[0], np.array([1., 2., 3.]))
-        self.assertEqual(e[1], dict(self.headers.items() + self.extraCaptures.items()))
+        self.assertEqual(e[1], dict(list(self.headers.items()) + list(self.extraCaptures.items())))
  
 class Test_matlabifyArray(unittest.TestCase):
     def setUp(self):
@@ -110,7 +112,7 @@ class Test_matlabifyArray(unittest.TestCase):
 class Test_textDecode(unittest.TestCase):
     def setUp(self):
         to_write = '-0.80  0.52  0.00\n-0.35  0.27  0.00\n-0.21  0.17  0.00'
-        self.output = StringIO.StringIO(to_write)
+        self.output = io.StringIO(to_write)
         self.outArray = np.zeros((3, 3, 3, 3))
         self.headers = {'xnodes': 1.0, 'znodes': 1.0, 'ynodes'                   : 3.0, 'valuemultiplier': 2}
         self.extraCaptures = {'a': 1, 'b': 2, 'c': 3}

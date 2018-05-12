@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys, os
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))

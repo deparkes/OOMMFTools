@@ -1,5 +1,7 @@
+from future import standard_library
+standard_library.install_aliases()
 import sys, os
-import StringIO
+import io
 import tempfile
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))

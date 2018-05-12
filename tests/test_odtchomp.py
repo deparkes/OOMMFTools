@@ -1,5 +1,9 @@
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 import sys, os
-import StringIO
+import io
 import tempfile
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
@@ -267,7 +271,7 @@ class Test_log(unittest.TestCase):
     to put in some initial tests.
     """
     def test_print_to_console(self):
-        capturedOutput = StringIO.StringIO()          # Create StringIO object
+        capturedOutput = io.StringIO()          # Create StringIO object
         sys.stdout = capturedOutput                   #  and redirect stdout.
         odtchomp.log('test')                          # Call unchanged function.
         self.assertEqual(capturedOutput.getvalue(), 'test\n')
