@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 from setuptools import setup
 
@@ -23,9 +24,11 @@ setup(
    author_email=about['__email__'],
    url=about['__uri__'],
    packages=['oommftools'],  #same as name
-   install_requires=['scipy', 'numpy'] + (
+   setup_requires=['pytest-runner'],
+   install_requires=['scipy', 'numpy', 'future'] + (
         ["wxpython"] if not sys.platform.startswith("linux") else []
         ), #external packages as dependencies
+    tests_require=['pytest'],
     classifiers=[
     'Operating System :: MacOS :: MacOS X',
     'Operating System :: Microsoft :: Windows',
