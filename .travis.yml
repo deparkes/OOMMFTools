@@ -35,4 +35,4 @@ install:
 
 script:
   # Your test script goes here
-  python -m unittest discover
+  python setup.py test
