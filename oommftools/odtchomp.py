@@ -439,6 +439,8 @@ def split_densify(a, delim=" "):
 def log(evt):
     """
     """
+    if not isinstance(evt, unicode):
+        evt = unicode(evt, 'utf-8')
     print(evt)
 
 
