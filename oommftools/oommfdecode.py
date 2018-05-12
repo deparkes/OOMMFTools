@@ -245,7 +245,7 @@ def groupUnpack(targetlist, progdialog=None):
                 headers = collect[1]
             decodedArrays.append(collect[0])
             #Unpack extra collected data
-            for key, value in collect[2].items():
+            for key, value in list(collect[2].items()):
                 extraData[key].append(value)
             if progdialog:
                 progdialog.workDone(1, "Decoding...")
@@ -268,7 +268,8 @@ def unpackFile(filename):
         #Parse headers
         a = ""
         while not "Begin: Data" in a:
-            a = f.readline().strip()
+            
+            a = f.readline().strip().decode()
             #Determine if it's actually something we need as header data
             for key in ["xbase",
                         "ybase",
@@ -371,7 +372,7 @@ def pickleArray(array, headers, extraCaptures, filename):
     """
     temp = dict(headers)
     temp.update(extraCaptures)
-    f = open(filename, 'w')
+    f = open(filename, 'wb')
     pickle.dump((array, temp), f)
     f.close()
 

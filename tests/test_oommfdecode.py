@@ -88,7 +88,7 @@ class Test_pickleArray(unittest.TestCase):
         
     def test_pickle_array(self):
         oommfdecode.pickleArray(self.array, self.headers, self.extraCaptures, self.filename)
-        with open(self.filename, "r") as input_file:
+        with open(self.filename, "rb") as input_file:
             e = pickle.load(input_file)
         np.testing.assert_array_equal(e[0], np.array([1., 2., 3.]))
         self.assertEqual(e[1], dict(list(self.headers.items()) + list(self.extraCaptures.items())))
@@ -105,7 +105,7 @@ class Test_matlabifyArray(unittest.TestCase):
         oommfdecode.matlabifyArray(self.array, self.headers, self.extraCaptures, self.filename)
         e = spio.loadmat(self.filename)
         np.testing.assert_array_equal(e['OOMMFData'], np.array([[1., 2., 3.]]))
-        self.assertEqual(e['Capture2'], np.array([u'two']))
+        self.assertEqual(e['Capture2'], np.array(['two']))
         self.assertEqual(e['Capture1'], np.array([[1]]))
         np.testing.assert_array_equal(e['GridSize'], np.array([[1., 2., 3.]]))
         
