@@ -31,8 +31,8 @@ install:
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy pytest future
   - conda install -c conda-forge -n test-environment wxpython 
   - source activate test-environment
-  #- python setup.py install
+  - python setup.py install
 
 script:
   # Your test script goes here
-  pytest
+  python setup.py test
