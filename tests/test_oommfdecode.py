@@ -111,7 +111,7 @@ class Test_matlabifyArray(unittest.TestCase):
         
 class Test_textDecode(unittest.TestCase):
     def setUp(self):
-        to_write = '-0.80  0.52  0.00\n-0.35  0.27  0.00\n-0.21  0.17  0.00'
+        to_write = u'-0.80  0.52  0.00\n-0.35  0.27  0.00\n-0.21  0.17  0.00'
         self.output = io.StringIO(to_write)
         self.outArray = np.zeros((3, 3, 3, 3))
         self.headers = {'xnodes': 1.0, 'znodes': 1.0, 'ynodes'                   : 3.0, 'valuemultiplier': 2}
