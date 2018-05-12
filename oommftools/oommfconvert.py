@@ -18,12 +18,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 """
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 
+from builtins import str
+from builtins import range
+from past.utils import old_div
 from wx import adv
 import wx, os, sys, subprocess, shutil, tempfile, math, re, time, imp
-from fnameutil import filterOnExtensions
-from oommfdecode import slowlyPainfullyMaximize
-import _about as about
+from .fnameutil import filterOnExtensions
+from .oommfdecode import slowlyPainfullyMaximize
+from . import _about as about
 
 #########
 # About #
@@ -68,7 +74,7 @@ FRAMEDUPE_LOAD = 1
 MOVIE_LOAD = 50
 
 if PY2EXE_COMPENSATION:
-    print "Py2EXE detected. Will perform defensive stdin redirection."
+    print("Py2EXE detected. Will perform defensive stdin redirection.")
 
 ############
 # GUI BODY #
@@ -235,7 +241,7 @@ class MainFrame(wx.Frame):
         joiner.Add(wx.StaticText(panel, -1, "FPS"), 0, wx.ALIGN_CENTER_VERTICAL)
         hsizer.Add(joiner, 0, wx.ALIGN_CENTER)
 
-        self.movieCodec = wx.ComboBox(panel, 200, choices = CODECS.keys(), style=wx.CB_READONLY)
+        self.movieCodec = wx.ComboBox(panel, 200, choices = list(CODECS.keys()), style=wx.CB_READONLY)
         self.movieCodec.SetStringSelection("HuffYUV")
         hsizer.Add(self.movieCodec, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER)
 
@@ -299,7 +305,7 @@ class MainFrame(wx.Frame):
         try:
             self.panel.SendSizeEvent()
         except:
-            print "wx.Panel.SendSizeEvent() missed - probably using old wxPython. Cosmetic bug will result."
+            print("wx.Panel.SendSizeEvent() missed - probably using old wxPython. Cosmetic bug will result.")
 
     def GUILocateConf(self, evt):
         dlg = wx.FileDialog(self, "Select Configuration File", os.getcwd(), "", "mmDisp Config File (*.config)|*.config",wx.FD_OPEN)
@@ -316,7 +322,7 @@ class MainFrame(wx.Frame):
         try:
             self.panel.SendSizeEvent()
         except:
-            print "wx.Panel.SendSizeEvent() missed - probably using old wxPython. Cosmetic bug will result."
+            print("wx.Panel.SendSizeEvent() missed - probably using old wxPython. Cosmetic bug will result.")
 
 
 ###########
@@ -372,7 +378,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             #The first thing to do is try to make movies - in some cases, this process will leave behind
             #the images we need, and we can skip the image step entirely.
 
-            print "Entering movie mode."
+            print("Entering movie mode.")
             if self.parent.doMovie.GetValue():
                 #Make some movies. This also hands off the progressDialog, so it can be updated.
                 self.doMovies(targets, childstd, dial)
@@ -392,7 +398,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             dial.workDone(CLEANUP_LOAD, "All Done!")
         except Exception as e:
             wx.MessageBox('Unpacking error: ' + repr(e), "Error")
-            print e
+            print(e)
         finally:
             dial.finish()
             return 1
@@ -403,16 +409,16 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #correctly grab a handle to a shell-like thing, so we deflect that by redirecting stdin to a file, which will always be empty. "Oops."
         if PY2EXE_COMPENSATION:
             childstd = file('null_data', 'a') #Detection methods unreliable
-            print "Enforced running windows - py2exe mode. Using dump file stdin."
+            print("Enforced running windows - py2exe mode. Using dump file stdin.")
         elif hasattr(sys.stdin, 'fileno'):
             childstd = sys.stdin
-            print "Using standard stdin"
+            print("Using standard stdin")
         elif hasattr(sys.stdin, '_file') and hasattr(sys.stdin._file, 'fileno'):
             childstd = sys.stdin._file
-            print "Using hacked stdin adjustment - probably running Windows."
+            print("Using hacked stdin adjustment - probably running Windows.")
         else:
             childstderr = file('null_data', 'a')
-            print "Definitely using Windows. Using fake stdin."
+            print("Definitely using Windows. Using fake stdin.")
         return childstd
 
     def initializeProgressBar(self, targetList):
@@ -428,7 +434,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                 #Surprise! You get to rerender at a different magnification!
                 workload += RENDER_LOAD * len(targetList) + CLEANUP_LOAD #And cleanup
             #Cost of frameduping
-            workload += FRAMEDUPE_LOAD * (int(25 / self.parent.movieFPS.GetValue()) * len(targetList))
+            workload += FRAMEDUPE_LOAD * (int(old_div(25, self.parent.movieFPS.GetValue())) * len(targetList))
 
         dial = SupportDialog("Render In Progress", "", maximum=workload,parent=self.parent)
         dial.Update(0, "This is a suitably long message to ensure the window title renders correctly") #Because this class lacks a size control!
@@ -438,17 +444,17 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         return dial
 
     def spliceConfig(self, percentMagnitude, checkVectors = False, filenames = []):
-        print checkVectors
+        print(checkVectors)
         #Rewrite the file
         oldconf = open(self.parent.config, "r")
         oldconflines = oldconf.readlines()
         oldconf.close()
-        print "Getting temporary file handle for modconfig."
+        print("Getting temporary file handle for modconfig.")
         oshandle, newconfdir = tempfile.mkstemp(suffix=".tmp", dir=".")
         try:
             os.close(oshandle)
         except:
-            print "Error: Windows failed all over closing the file handle."
+            print("Error: Windows failed all over closing the file handle.")
         newconf = open(newconfdir, "w")
 
         #OK, let's see if we need to recover vectors
@@ -494,7 +500,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             pathTo, fname = omf.rsplit(os.path.sep, 1)
             command = self.parent.TclCall.GetValue() + ' "' + self.parent.OOMMFPath + '" avf2ppm -f -v 2 -format b24 -config "' + confpath + '" "' + omf + '"'
             if os.name == 'nt':
-                print "Watching stdin redirect:", stdinRedirect
+                print("Watching stdin redirect:", stdinRedirect)
                 if MODE == "basic":
                     os.system(command)
                 elif MODE == "advanced":
@@ -506,9 +512,9 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                     a = pipe.readlines()
                     #*Really*? It's not using stdout?
                     if a:
-                        for line in a: print line.strip()
+                        for line in a: print(line.strip())
             else:
-                print "probably posix mode."
+                print("probably posix mode.")
                 if MODE == "basic":
                     os.system(command)
                 elif MODE == "advanced":
@@ -516,7 +522,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                     a = pipe.readlines()
                     #THIS should at least use STDout
                     if a:
-                        for line in a: print line.strip()
+                        for line in a: print(line.strip())
 
             dial.workDone(RENDER_LOAD, "Rendering")
 
@@ -526,14 +532,14 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             try:
                 os.remove(confpath)
             except:
-                print "Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu"
+                print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
 
     def doMovies(self, targetList, stdinRedirect, dial):
         #Make temporary directory
         moviepath = tempfile.mkdtemp()
-        print "Temporary directory obtained."
+        print("Temporary directory obtained.")
         #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
-        framedupes = int(25 / self.parent.movieFPS.GetValue())
+        framedupes = int(old_div(25, self.parent.movieFPS.GetValue()))
         maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
 
         #Deal with overload-options by writing a temporary configuration file
@@ -557,7 +563,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                     a = pipe.readlines()
                     #*Really*? It's not using stdout?
                     if a:
-                        for line in a: print line.strip()
+                        for line in a: print(line.strip())
             else:
                 if MODE == "basic":
                     os.system(command)
@@ -566,7 +572,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                     a = pipe.readlines()
                     #*Really*? It's not using stdout?
                     if a:
-                        for line in a: print line.strip()
+                        for line in a: print(line.strip())
             dial.workDone(RENDER_LOAD, "Frame Duplicating")
 
             #Copy and duplicate image, placing files in the movie temp directory
@@ -594,7 +600,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         command = r'ffmpeg -f image2 -an -y -i ' + moviepath + os.path.sep + r'%0' + str(maxdigits) + r'd.bmp ' + CODECS[self.parent.movieCodec.GetValue()][0]
         command += ' "' + os.path.join(pathTo, outname) + '"'
         dial.workDone(0, "Rendering Movie")
-        print "Movie render mode prepared."
+        print("Movie render mode prepared.")
 
         if os.name == 'nt':
             if MODE == "basic":
@@ -613,7 +619,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         a = pipe.readlines()
         #THIS should at least use STDout
         if a:
-            for line in a: print line.strip()
+            for line in a: print(line.strip())
 
         dial.workDone(MOVIE_LOAD, "Cleaning")
         #Clean up temporaries
@@ -622,7 +628,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             try:
                 os.remove(confpath)
             except:
-                print "Can't let go for some reason... you should probably tell doublemark@mit.edu"
+                print("Can't let go for some reason... you should probably tell doublemark@mit.edu")
         return None
 
 

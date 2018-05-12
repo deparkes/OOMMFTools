@@ -18,13 +18,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 """
+from __future__ import print_function
+from __future__ import absolute_import
 
+from builtins import str
+from builtins import object
 import os
 from wx import adv
 import wx
 import numpy as np
-from fnameutil import filterOnExtensions
-import _about as about
+from .fnameutil import filterOnExtensions
+from . import _about as about
 
 
 #########
@@ -229,11 +233,11 @@ class MainFrame(wx.Frame):
         """
         """
         if self.batchModeCheckbox.GetValue():
-            print "Batch mode disable."
+            print("Batch mode disable.")
             self.importButton.Disable()
             self.exportButton.Disable()
         else:
-            print "Batch mode enable."
+            print("Batch mode enable.")
             self.importButton.Enable()
             if self.exportButton._secondLevelEnable:
                 self.exportButton.Enable()
@@ -252,7 +256,7 @@ class MainFrame(wx.Frame):
     def _importFile(self, filename):
         """
         """
-        print "Import enable."
+        print("Import enable.")
         self.fileLabel.SetLabel("Open: " + filename)
         self.digest = chomp(filename)
         self.leftbox.Set(self.digest.getNames())
@@ -375,14 +379,14 @@ class ODTDropTarget(wx.FileDropTarget):
             for fname in namepotential:
                 interp, outDir = self.parent._lightImportFile(fname)
                 outfname = fname.rsplit(os.path.sep, 1)[1].split(".")[0] + ".txt"
-                print outDir, outfname
+                print(outDir, outfname)
                 write(outDir + os.path.sep + outfname, interp, self.parent.delim, self.parent.watching)
             return 1
 
 def write(filename, interpreter, delim, fields):
     """
     """
-    print "Write out to:", filename
+    print("Write out to:", filename)
     refdelim = delim
     f = open(filename, "w")
     #Do keys
@@ -435,7 +439,7 @@ def split_densify(a, delim=" "):
 def log(evt):
     """
     """
-    print evt
+    print(evt)
 
 
 
@@ -476,7 +480,7 @@ def chomp(odt, parent=None):
                         log("Matching title field by symbol: %s" % grab)
                     else:
                         #Spacesplit match
-                        print "In spacesplit match:"
+                        print("In spacesplit match:")
                         check = line.split(" ", 1)
                         if len(check) == 1:
                             grab = check[0]
@@ -543,9 +547,9 @@ def headers_prettify(inDict):
     """
     outDict = {}
     uniquenessCheck = []
-    for key in inDict.keys():
+    for key in list(inDict.keys()):
         uniquenessCheck.append(key.split(":"))
-    for key in inDict.keys():
+    for key in list(inDict.keys()):
         fixedkey = namepolish(key, uniquenessCheck)
         if fixedkey in outDict:
             log("Uh-oh, you might have caused a key collision! This should be impossible.")

@@ -18,18 +18,25 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 """
+from __future__ import print_function
+from __future__ import absolute_import
 
+from future import standard_library
+standard_library.install_aliases()
+from builtins import hex
+from builtins import zip
+from builtins import range
 import time
 from collections import defaultdict
-import cPickle as pickle
+import pickle as pickle
 from wx import adv
 import os
 import wx
 import struct
 import numpy as np
 import scipy.io as spio
-from fnameutil import filterOnExtensions
-import _about as about
+from .fnameutil import filterOnExtensions
+from . import _about as about
 
 #########
 # About #
@@ -214,11 +221,11 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         originalTimeIndex = list(extra["SimTime"])
         if len(set(extra["MIFSource"])) == 1:
             if not -1 in extra["SimTime"]:
-                extra["SimTime"], arrays = zip(*sorted(zip(originalTimeIndex, arrays)))
+                extra["SimTime"], arrays = list(zip(*sorted(zip(originalTimeIndex, arrays))))
                 #Sadly, the cleverness ends here - the rest must be bruteforced.
                 for key in extra:
                     if not key == "SimTime": #We did that one.
-                        junk, extra[key] = zip(*sorted(zip(originalTimeIndex, extra[key])))
+                        junk, extra[key] = list(zip(*sorted(zip(originalTimeIndex, extra[key]))))
 
         self.parent.gatherData(arrays, headers, extra)
         return 1
@@ -238,7 +245,7 @@ def groupUnpack(targetlist, progdialog=None):
                 headers = collect[1]
             decodedArrays.append(collect[0])
             #Unpack extra collected data
-            for key, value in collect[2].iteritems():
+            for key, value in collect[2].items():
                 extraData[key].append(value)
             if progdialog:
                 progdialog.workDone(1, "Decoding...")
@@ -247,7 +254,7 @@ def groupUnpack(targetlist, progdialog=None):
     except Exception as e:
         if progdialog: progdialog.finish()
         wx.MessageBox('Unpacking error: ' + repr(e), "Error")
-        print e
+        print(e)
     else:
         if progdialog: progdialog.finish()
     return (np.array(decodedArrays), headers, extraData)
@@ -298,7 +305,7 @@ def unpackFile(filename):
                              3))
 
         #Determine decoding mode and use that to populate the array
-        print "Data indicator:", a
+        print("Data indicator:", a)
         decode = a.split()
         if decode[3] == "Text":
             return _textDecode(f, outArray, headers, extraCaptures)
@@ -306,10 +313,10 @@ def unpackFile(filename):
             #Determine endianness
             endianflag = f.read(4)
             if struct.unpack(">f", endianflag)[0] == 1234567.0:
-                print "Big-endian 4-byte detected."
+                print("Big-endian 4-byte detected.")
                 dc = struct.Struct(">f")
             elif struct.unpack("<f", endianflag)[0] == 1234567.0:
-                print "Little-endian 4-byte detected."
+                print("Little-endian 4-byte detected.")
                 dc = struct.Struct("<f")
             else:
                 raise Exception("Can't decode 4-byte byte order mark: " + hex(endianflag))
@@ -318,10 +325,10 @@ def unpackFile(filename):
             #Determine endianness
             endianflag = f.read(8)
             if struct.unpack(">d", endianflag)[0] == 123456789012345.0:
-                print "Big-endian 8-byte detected."
+                print("Big-endian 8-byte detected.")
                 dc = struct.Struct(">d")
             elif struct.unpack("<d", endianflag)[0] == 123456789012345.0:
-                print "Little-endian 8-byte detected."
+                print("Little-endian 8-byte detected.")
                 dc = struct.Struct("<d")
             else:
                 raise Exception("Can't decode 8-byte byte order mark: " + hex(endianflag))
@@ -343,7 +350,7 @@ def _textDecode(filehandle, targetarray, headers, extraCaptures):
                 targetarray[i, j, k] = (float(text[0])*valm,
                                         float(text[1])*valm,
                                         float(text[2])*valm)
-    print "Decode complete."
+    print("Decode complete.")
     return (targetarray, headers, extraCaptures)
 
 
@@ -356,7 +363,7 @@ def _binaryDecode(filehandle, chunksize, decoder, targetarray, headers, extraCap
             for i in range(int(headers["xnodes"])):
                 for coord in range(3): #Slowly populate, coordinate by coordinate
                     targetarray[i, j, k, coord] = decoder.unpack(filehandle.read(chunksize))[0] * valm
-    print "Decode complete."
+    print("Decode complete.")
     return (targetarray, headers, extraCaptures)
 
 def pickleArray(array, headers, extraCaptures, filename):
