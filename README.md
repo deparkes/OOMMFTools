@@ -58,13 +58,13 @@ The OOMMFTools repository contains an environment yaml file with the dependencie
 
 ```
 conda env create -f environment.yml
-python oommftools/oommftools.py
+python -m oommftools
 ```
     
 ## Install Dependencies
 OOMMFTools has the following dependencies:
 
-- Python 2.7
+- Python 2.7/3.6
 - wxPython 4.x
 - numpy
 - scipy
