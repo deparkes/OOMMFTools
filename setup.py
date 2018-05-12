@@ -25,7 +25,7 @@ setup(
    packages=['oommftools'],  #same as name
    install_requires=['scipy', 'numpy'] + (
         ["wxpython"] if not sys.platform.startswith("linux") else []
-        ) #external packages as dependencies
+        ), #external packages as dependencies
     classifiers=[
     'Operating System :: MacOS :: MacOS X',
     'Operating System :: Microsoft :: Windows',
