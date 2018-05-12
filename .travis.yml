@@ -6,7 +6,7 @@ python:
  # - "3.3"
  # - "3.4"
  # - "3.5"
- - "3.6"
+ # - "3.6"
 
 install:
   - sudo apt-get update
@@ -31,8 +31,8 @@ install:
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy
   - conda install -c conda-forge -n test-environment wxpython 
   - source activate test-environment
-  - python setup.py install
+  #- python setup.py install
 
 script:
   # Your test script goes here
-  python setup.py test
+  python -m unittest discover
