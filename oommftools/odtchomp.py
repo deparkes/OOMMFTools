@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 from __future__ import print_function
 from __future__ import absolute_import
 
+
+
 from builtins import str
 from builtins import object
 import os
@@ -439,10 +441,12 @@ def split_densify(a, delim=" "):
 def log(evt):
     """
     """
-    if not isinstance(evt, unicode):
-        evt = unicode(evt, 'utf-8')
+    try:
+        evt = unicode(evt)
+    except:
+        evt = str(evt)
+    
     print(evt)
-
 
 
 def chomp(odt, parent=None):
