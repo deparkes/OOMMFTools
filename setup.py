@@ -25,7 +25,7 @@ setup(
    url=about['__uri__'],
    packages=['oommftools'],  #same as name
    setup_requires=['pytest-runner'],
-   install_requires=['scipy', 'numpy', 'future'] + (
+   install_requires=['scipy', 'numpy', 'future', 'pytest'] + (
         ["wxpython"] if not sys.platform.startswith("linux") else []
         ), #external packages as dependencies
     tests_require=['pytest'],
