@@ -429,44 +429,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         return dial
 
     def spliceConfig(self, percentMagnitude, checkVectors = False, filenames = []):
-        print(checkVectors)
-        #Rewrite the file
-        oldconf = open(self.parent.config, "r")
-        oldconflines = oldconf.readlines()
-        oldconf.close()
-        print("Getting temporary file handle for modconfig.")
-        oshandle, newconfdir = tempfile.mkstemp(suffix=".tmp", dir=".")
-        try:
-            os.close(oshandle)
-        except:
-            print("Error: Windows failed all over closing the file handle.")
-        newconf = open(newconfdir, "w")
-
-        #OK, let's see if we need to recover vectors
-
-        for line in oldconflines:
-            #Only one data point for line. Let's deal with our cases.
-            if "misc,datascale" in line and checkVectors:
-                newMax = slowlyPainfullyMaximize(filenames)
-                newconf.write("    misc,datascale " + str(newMax)+ "\n")
-            elif not percentMagnitude == 100:
-                if "misc,zoom" in line:
-    		#newconf.write(line)
-    		#Don't stop clobbering zoom!
-                    newconf.write("    misc,zoom 0\n")
-                elif "misc,default" in line:
-    		#This was not nearly as true as I'd hoped
-                    pass #Just in case this ever looks at the viewport, clobber the viewport.
-                elif "misc,height" in line:
-                    newval = int(re.findall(r"[0-9]+", line)[0]) * percentMagnitude / 100.0
-                    newconf.write("    misc,height " + str(newval) + "\n")
-                elif "misc,width" in line:
-                    newval = int(re.findall(r"[0-9]+", line)[0]) * percentMagnitude / 100.0
-                    newconf.write("    misc,width " + str(newval) + "\n")
-                else:
-                    newconf.write(line)
-        newconf.close()
-        return newconfdir
+        return oommfconvert.spliceConfig(percentMagnitude, checkVectors, filenames, self.parent)
 
     def resolveConfiguration(self, filenames, config_parent):
         if config_parent.magnifierSpin.GetValue() != 100 or config_parent.autoMaxVectors.GetValue():
