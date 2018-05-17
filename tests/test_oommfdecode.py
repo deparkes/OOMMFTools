@@ -3,21 +3,19 @@ standard_library.install_aliases()
 import sys, os
 import io
 import tempfile
-import numpy as np
+
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.abspath(os.path.join(TEST_DIR, os.pardir))
 sys.path.insert(0, PROJECT_DIR)
 
 import unittest
-from oommftools import oommfdecode
-
-
-import io
-import io
 from oommftools.fnameutil import filterOnExtensions
 import scipy.io as spio
 import pickle as pickle
 import struct
+import numpy as np
+import oommftools.core.oommfdecode as oommfdecode
+
 
 class Test_oommfdecode_text(unittest.TestCase):
     def setUp(self):
