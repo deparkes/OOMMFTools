@@ -28,7 +28,7 @@ from past.utils import old_div
 from wx import adv
 import wx, os, sys, subprocess, shutil, tempfile, math, re, time, imp
 from .fnameutil import filterOnExtensions
-from .oommfdecode import slowlyPainfullyMaximize
+from .core.oommfdecode import slowlyPainfullyMaximize
 from . import _about as about
 
 #########
