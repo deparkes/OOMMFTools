@@ -1,6 +1,18 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
+
+import numpy as np
+
+########
+# DECS #
+########
+
+#Readability magic below
+ALWAYS_CLEAR = ["Oxs_"]
+
+PROTECTED_NAMES = ["Exchange"]
+
 def write(filename, interpreter, delim, fields):
     """
     """
