@@ -431,17 +431,8 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
     def spliceConfig(self, percentMagnitude, checkVectors = False, filenames = []):
         return oommfconvert.spliceConfig(percentMagnitude, checkVectors, filenames, self.parent)
 
-    def resolveConfigurationCore(self, filenames, config_parent):
-        if config_parent.magnifierSpin.GetValue() != 100 or config_parent.autoMaxVectors.GetValue():
-            confpath = oommfconvert.spliceConfig(config_parent.magnifierSpin.GetValue(), config_parent.autoMaxVectors.GetValue(), filenames, config_parent)
-            cleanconfig = True
-        else:
-            cleanconfig = False
-            confpath = config_parent.config
-        return (confpath, cleanconfig)       
-
     def resolveConfiguration(self, filenames):
-        return self.resolveConfigurationCore(filenames, self.parent)
+        return oommfconvert.resolveConfiguration(filenames, self.parent)
     
     def doImages(self, targetList, stdinRedirect, dial):
         confpath, cleanconfig = self.resolveConfiguration(targetList)
