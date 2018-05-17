@@ -450,32 +450,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             except:
                 print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
 
-    def makeMovieFromImages(self, moviepath, pathTo, framedupes, maxdigits, movieCodec, stdinRedirect):
-        print(CODECS[movieCodec])
-        outname = "["+CODECS[movieCodec][2]+"]"+ CODECS[movieCodec][1]
-        command = r'ffmpeg -f image2 -an -y -i ' + moviepath + os.path.sep + r'%0' + str(maxdigits) + r'd.bmp ' + CODECS[movieCodec][0]
-        command += ' "' + os.path.join(pathTo, outname) + '"'
-        print('moviepath: : ', moviepath)
-        print("Movie render mode prepared.")
-
-        if os.name == 'nt':
-            if MODE == "basic":
-                os.system(command)
-            elif MODE == "advanced":
-                if not r":\\" in pathTo:
-                    pipe = subprocess.Popen(command, shell=True, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-                else:
-                    #Avoid network stupidity.
-                    pipe = subprocess.Popen(command, shell=False, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-        else:
-            if MODE == "basic":
-                os.system(command)
-            elif MODE == "advanced":
-                pipe = subprocess.Popen(command, shell=True, stdin = sys.stdin, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-        a = pipe.readlines()
-        #THIS should at least use STDout
-        if a:
-            for line in a: print(line.strip())
+    
 
 
     def doMovies(self, targetList, stdinRedirect, dial):
@@ -514,7 +489,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #You know, we should steal the last pathto as a place to put the movie, and perhaps also the basename
         #This is bad use of scoping blah blah
         dial.workDone(0, "Rendering Movie")
-        self.makeMovieFromImages(moviepath, pathTo[0], framedupes, maxdigits, self.parent.movieCodec.GetValue(), stdinRedirect )
+        oommfconvert.makeMovieFromImages(moviepath, pathTo[0], framedupes, maxdigits, self.parent.movieCodec.GetValue(), stdinRedirect, CODECS )
         dial.workDone(MOVIE_LOAD, "Cleaning")
         #Clean up temporaries
         shutil.rmtree(moviepath)
