@@ -450,24 +450,19 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             except:
                 print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
 
-    def makeMovieFromImages(self, moviepath, pathTo, framedupes, maxdigits, movieCodec):
-        fname = moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp"
-        try:
-            basename = fname.rsplit("-",2)[-3]
-        except:
-            basename = fname
+    def makeMovieFromImages(self, moviepath, pathTo, framedupes, maxdigits, movieCodec, stdinRedirect):
         print(CODECS[movieCodec])
         outname = "["+CODECS[movieCodec][2]+"]"+ CODECS[movieCodec][1]
         command = r'ffmpeg -f image2 -an -y -i ' + moviepath + os.path.sep + r'%0' + str(maxdigits) + r'd.bmp ' + CODECS[movieCodec][0]
         command += ' "' + os.path.join(pathTo, outname) + '"'
-
+        print('moviepath: : ', moviepath)
         print("Movie render mode prepared.")
 
         if os.name == 'nt':
             if MODE == "basic":
                 os.system(command)
             elif MODE == "advanced":
-                if not r":\\" in omf:
+                if not r":\\" in pathTo:
                     pipe = subprocess.Popen(command, shell=True, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
                 else:
                     #Avoid network stupidity.
@@ -495,12 +490,15 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         confpath, cleanconfig = self.resolveConfiguration(targetList)
 
         dial.workDone(0, "Rendering")
+        pathTo = targetList[0].rsplit(os.path.sep, 1)
+        print('pathTo = ', pathTo)
         for i, omf in enumerate(sorted(targetList)):
             frameRepeatOffset = 0
             oommfconvert.convertOmfToImage(omf, self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect)
             dial.workDone(RENDER_LOAD, "Frame Duplicating")
 
             #Copy and duplicate image, placing files in the movie temp directory
+            print('copying files to temp directory')
             fname = omf.rsplit(".",1)[0] + ".bmp"
             for j in range(framedupes):
                 shutil.copy(fname, moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp")
@@ -516,7 +514,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #You know, we should steal the last pathto as a place to put the movie, and perhaps also the basename
         #This is bad use of scoping blah blah
         dial.workDone(0, "Rendering Movie")
-        self.makeMovieFromImages(moviepath, pathTo, framedupes, maxdigits, self.parent.movieCodec.GetValue())
+        self.makeMovieFromImages(moviepath, pathTo[0], framedupes, maxdigits, self.parent.movieCodec.GetValue(), stdinRedirect )
         dial.workDone(MOVIE_LOAD, "Cleaning")
         #Clean up temporaries
         shutil.rmtree(moviepath)
