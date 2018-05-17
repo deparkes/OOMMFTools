@@ -451,23 +451,6 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
                 print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
 
 
-    def createTempImagesForMovie(self, targetList, moviepath, framedupes, maxdigits, tclCall, OOMMFPath, confpath, stdinRedirect):
-        print("Temporary directory obtained.")
-
-        for i, omf in enumerate(sorted(targetList)):
-            frameRepeatOffset = 0
-            oommfconvert.convertOmfToImage(omf, tclCall, OOMMFPath, confpath, stdinRedirect)
-            #Copy and duplicate image, placing files in the movie temp directory
-            print('copying files to temp directory')
-            fname = omf.rsplit(".",1)[0] + ".bmp"
-            for j in range(framedupes):
-                shutil.copy(fname, moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp")
-                j += 1
-            #Housecleaning - if not making images, you should clean this up.
-            if not self.parent.doImages.GetValue():
-                os.remove(fname)
-
-
     def doMovies(self, targetList, stdinRedirect, dial):
         #Make temporary directory
         moviepath = tempfile.mkdtemp()
@@ -478,7 +461,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
         framedupes = int(old_div(25, self.parent.movieFPS.GetValue()))
         maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
-        oommfconvert.createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits,self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect)
+        oommfconvert.createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits,self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect, self.parent.doImages.GetValue())
         dial.workDone(0, "Rendering")
         pathTo = targetList[0].rsplit(os.path.sep, 1)
         #Finally, make the actual movie!
