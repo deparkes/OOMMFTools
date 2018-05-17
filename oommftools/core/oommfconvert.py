@@ -147,3 +147,15 @@ def createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCa
         #Housecleaning - if not making images, you should clean this up.
         if not removeImages:
             os.remove(fname)
+
+def doImages(targetList, stdinRedirect, config_parent, tclCall, OOMMFPath):
+    confpath, cleanconfig = resolveConfiguration(targetList, config_parent)
+
+    for i, omf in enumerate(sorted(targetList)):
+        convertOmfToImage(omf, tclCall, OOMMFPath, confpath, stdinRedirect)
+    #Clean up temporaries
+    if cleanconfig:
+        try:
+            os.remove(confpath)
+        except:
+            print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
