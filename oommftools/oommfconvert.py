@@ -30,6 +30,7 @@ import wx, os, sys, subprocess, shutil, tempfile, math, re, time, imp
 from .fnameutil import filterOnExtensions
 from .core.oommfdecode import slowlyPainfullyMaximize
 from . import _about as about
+from .core import oommfconvert as oommfconvert
 
 #########
 # About #
@@ -92,23 +93,7 @@ class MainFrame(wx.Frame):
         self.config = None
         self.manager = manager
         self.Bind(wx.EVT_CLOSE, self.onClose)
-
-        #Check if we have a saved OOMMF path to use as config data
-        if os.path.exists("." + os.path.sep + "oommf.path"):
-            f = open("." + os.path.sep + "oommf.path")
-            lines = f.readlines()
-            f.close()
-            path = lines[-1].strip()
-            #But we also have to validate the path on this particular computer
-            if os.path.exists(path) and path.rsplit(".")[-1] == "tcl":
-                self.OOMMFPath = path
-            else:
-                self.OOMMFPath = None
-                #Cleanup bogus config file
-                os.remove("." + os.path.sep + "oommf.path")
-        else:
-            #No file at all!
-            self.OOMMFPath = None
+        self.OOMMFPath = oommfconvert.getOOMMFPath("." + os.path.sep + "oommf.path")
 
         #A very simple menubar
         menubar = wx.MenuBar()
