@@ -159,3 +159,28 @@ def doImages(targetList, stdinRedirect, config_parent, tclCall, OOMMFPath):
             os.remove(confpath)
         except:
             print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
+
+def doMovies(self, targetList, stdinRedirect, movieCodec, movieFPS, tclCall, OOMMFPath, doImages):
+    #Make temporary directory
+    moviepath = tempfile.mkdtemp()
+    #Deal with overload-options by writing a temporary configuration file
+    confpath, cleanconfig = resolveConfiguration(targetList)
+    #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
+    framedupes = int(old_div(25, movieFPS))
+    maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
+    oommfconvert.createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCall, OOMMFPath, confpath, stdinRedirect, doImages)
+    
+    pathTo = targetList[0].rsplit(os.path.sep, 1)
+    #Finally, make the actual movie!
+    #You know, we should steal the last pathto as a place to put the movie, and perhaps also the basename
+    #This is bad use of scoping blah blah
+
+    oommfconvert.makeMovieFromImages(moviepath, pathTo[0], framedupes, maxdigits, movieCodec, stdinRedirect, CODECS )
+    #Clean up temporaries
+    shutil.rmtree(moviepath)
+    if cleanconfig:
+        try:
+            os.remove(confpath)
+        except:
+            print("Can't let go for some reason... you should probably tell doublemark@mit.edu")
+    
