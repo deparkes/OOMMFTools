@@ -441,8 +441,9 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         dial.workDone(0, "Cleaning Up")
 
     def doMovies(self, targetList, stdinRedirect, dial):
+        print('in the movie function (not core)')
         dial.workDone(0, "Rendering")
-        oommfconvert.doMovies(targetList, stdinRedirect, self.parent.movieCodec.GetValue(), self.parent.movieFPS.GetValue(), self.parent.TclCall.GetValue(), self.parent.OOMMFPath, self.parent.doImages.GetValue())
+        oommfconvert.doMovies(targetList, stdinRedirect, self.parent,self.parent.movieCodec.GetValue(), self.parent.movieFPS.GetValue(), self.parent.TclCall.GetValue(), self.parent.OOMMFPath, self.parent.doImages.GetValue(), CODECS)
         dial.workDone(0, "Rendering Movie")
         dial.workDone(MOVIE_LOAD, "Cleaning")
         return None

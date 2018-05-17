@@ -1,6 +1,9 @@
 import os
 import subprocess
 import shutil
+import tempfile
+import math
+from past.utils import old_div
 from .oommfdecode import slowlyPainfullyMaximize
 def getOOMMFPath(pathFileToCheck):
     #Check if we have a saved OOMMF path to use as config data
@@ -160,22 +163,22 @@ def doImages(targetList, stdinRedirect, config_parent, tclCall, OOMMFPath):
         except:
             print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
 
-def doMovies(self, targetList, stdinRedirect, movieCodec, movieFPS, tclCall, OOMMFPath, doImages):
+def doMovies(targetList, stdinRedirect, config_parent, movieCodec, movieFPS, tclCall, OOMMFPath, doImages, codecs):
     #Make temporary directory
     moviepath = tempfile.mkdtemp()
     #Deal with overload-options by writing a temporary configuration file
-    confpath, cleanconfig = resolveConfiguration(targetList)
+    confpath, cleanconfig = resolveConfiguration(targetList, config_parent)
     #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
     framedupes = int(old_div(25, movieFPS))
     maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
-    oommfconvert.createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCall, OOMMFPath, confpath, stdinRedirect, doImages)
+    createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCall, OOMMFPath, confpath, stdinRedirect, doImages)
     
     pathTo = targetList[0].rsplit(os.path.sep, 1)
     #Finally, make the actual movie!
     #You know, we should steal the last pathto as a place to put the movie, and perhaps also the basename
     #This is bad use of scoping blah blah
 
-    oommfconvert.makeMovieFromImages(moviepath, pathTo[0], framedupes, maxdigits, movieCodec, stdinRedirect, CODECS )
+    makeMovieFromImages(moviepath, pathTo[0], framedupes, maxdigits, movieCodec, stdinRedirect, codecs )
     #Clean up temporaries
     shutil.rmtree(moviepath)
     if cleanconfig:
