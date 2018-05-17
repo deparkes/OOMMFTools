@@ -450,41 +450,37 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             except:
                 print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
 
-    
 
-
-    def doMovies(self, targetList, stdinRedirect, dial):
-        #Make temporary directory
-        moviepath = tempfile.mkdtemp()
+    def createTempImagesForMovie(self, targetList, moviepath, framedupes, maxdigits, tclCall, OOMMFPath, confpath, stdinRedirect):
         print("Temporary directory obtained.")
-        #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
-        framedupes = int(old_div(25, self.parent.movieFPS.GetValue()))
-        maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
 
-        #Deal with overload-options by writing a temporary configuration file
-        confpath, cleanconfig = self.resolveConfiguration(targetList)
-
-        dial.workDone(0, "Rendering")
-        pathTo = targetList[0].rsplit(os.path.sep, 1)
-        print('pathTo = ', pathTo)
         for i, omf in enumerate(sorted(targetList)):
             frameRepeatOffset = 0
-            oommfconvert.convertOmfToImage(omf, self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect)
-            dial.workDone(RENDER_LOAD, "Frame Duplicating")
-
+            oommfconvert.convertOmfToImage(omf, tclCall, OOMMFPath, confpath, stdinRedirect)
             #Copy and duplicate image, placing files in the movie temp directory
             print('copying files to temp directory')
             fname = omf.rsplit(".",1)[0] + ".bmp"
             for j in range(framedupes):
                 shutil.copy(fname, moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp")
                 j += 1
-                dial.workDone(FRAMEDUPE_LOAD, "Frame Duplicating")
-            dial.workDone(0, "Rendering")
-
             #Housecleaning - if not making images, you should clean this up.
             if not self.parent.doImages.GetValue():
                 os.remove(fname)
 
+
+    def doMovies(self, targetList, stdinRedirect, dial):
+        #Make temporary directory
+        moviepath = tempfile.mkdtemp()
+
+        #Deal with overload-options by writing a temporary configuration file
+        confpath, cleanconfig = self.resolveConfiguration(targetList)
+
+        #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
+        framedupes = int(old_div(25, self.parent.movieFPS.GetValue()))
+        maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
+        self.createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits,self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect)
+        dial.workDone(0, "Rendering")
+        pathTo = targetList[0].rsplit(os.path.sep, 1)
         #Finally, make the actual movie!
         #You know, we should steal the last pathto as a place to put the movie, and perhaps also the basename
         #This is bad use of scoping blah blah
