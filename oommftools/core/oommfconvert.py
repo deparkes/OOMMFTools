@@ -1,5 +1,6 @@
 import os
 import subprocess
+import shutil
 from .oommfdecode import slowlyPainfullyMaximize
 def getOOMMFPath(pathFileToCheck):
     #Check if we have a saved OOMMF path to use as config data
@@ -129,3 +130,20 @@ def makeMovieFromImages(moviepath, pathTo, framedupes, maxdigits, movieCodec, st
     #THIS should at least use STDout
     if a:
         for line in a: print(line.strip())
+
+
+def createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCall, OOMMFPath, confpath, stdinRedirect, removeImages=False):
+    print("Temporary directory obtained.")
+
+    for i, omf in enumerate(sorted(targetList)):
+        frameRepeatOffset = 0
+        convertOmfToImage(omf, tclCall, OOMMFPath, confpath, stdinRedirect)
+        #Copy and duplicate image, placing files in the movie temp directory
+        print('copying files to temp directory')
+        fname = omf.rsplit(".",1)[0] + ".bmp"
+        for j in range(framedupes):
+            shutil.copy(fname, moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp")
+            j += 1
+        #Housecleaning - if not making images, you should clean this up.
+        if not removeImages:
+            os.remove(fname)

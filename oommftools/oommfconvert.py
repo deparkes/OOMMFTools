@@ -478,7 +478,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
         framedupes = int(old_div(25, self.parent.movieFPS.GetValue()))
         maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
-        self.createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits,self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect)
+        oommfconvert.createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits,self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect)
         dial.workDone(0, "Rendering")
         pathTo = targetList[0].rsplit(os.path.sep, 1)
         #Finally, make the actual movie!
