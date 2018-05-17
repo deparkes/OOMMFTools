@@ -434,22 +434,24 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
     def resolveConfiguration(self, filenames):
         return oommfconvert.resolveConfiguration(filenames, self.parent)
     
-    def doImages(self, targetList, stdinRedirect, dial):
-        confpath, cleanconfig = oommfconvert.resolveConfiguration(targetList, self.parent)
+    def doImagesCore(self, targetList, stdinRedirect, config_parent):
+        confpath, cleanconfig = oommfconvert.resolveConfiguration(targetList, config_parent)
 
-        dial.workDone(0, "Rendering")
         for i, omf in enumerate(sorted(targetList)):
             oommfconvert.convertOmfToImage(omf, self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect)
-            dial.workDone(RENDER_LOAD, "Rendering")
-
         #Clean up temporaries
-        dial.workDone(0, "Cleaning Up")
         if cleanconfig:
             try:
                 os.remove(confpath)
             except:
                 print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
 
+
+    def doImages(self, targetList, stdinRedirect, dial):
+        dial.workDone(0, "Rendering")
+        self.doImagesCore(targetList, stdinRedirect, self.parent)
+        dial.workDone(RENDER_LOAD, "Rendering")
+        dial.workDone(0, "Cleaning Up")
 
     def doMovies(self, targetList, stdinRedirect, dial):
         #Make temporary directory
