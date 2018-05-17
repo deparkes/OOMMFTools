@@ -1,6 +1,6 @@
 import os
 import subprocess
-
+from .oommfdecode import slowlyPainfullyMaximize
 def getOOMMFPath(pathFileToCheck):
     #Check if we have a saved OOMMF path to use as config data
     if os.path.exists(pathFileToCheck):
