@@ -450,72 +450,17 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             except:
                 print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
 
-    def doMovies(self, targetList, stdinRedirect, dial):
-        #Make temporary directory
-        moviepath = tempfile.mkdtemp()
-        print("Temporary directory obtained.")
-        #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
-        framedupes = int(old_div(25, self.parent.movieFPS.GetValue()))
-        maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
-
-        #Deal with overload-options by writing a temporary configuration file
-        confpath, cleanconfig = self.resolveConfiguration(targetList)
-
-        dial.workDone(0, "Rendering")
-        for i, omf in enumerate(sorted(targetList)):
-            frameRepeatOffset = 0
-            pathTo, fname = omf.rsplit(os.path.sep, 1)
-            command = self.parent.TclCall.GetValue() + ' "' + self.parent.OOMMFPath + '" avf2ppm -f -v 2 -format b24 -config "' + confpath + '" "' + omf + '"'
-            if os.name == 'nt':
-                if MODE == "basic":
-                    os.system(command)
-                elif MODE == "advanced":
-                    if not r":\\" in omf:
-                        #Non-networked
-                        pipe = subprocess.Popen(command, shell=True, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-                    else:
-                        #Avoid network stupidity.
-                        pipe = subprocess.Popen(command, shell=False, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-                    a = pipe.readlines()
-                    #*Really*? It's not using stdout?
-                    if a:
-                        for line in a: print(line.strip())
-            else:
-                if MODE == "basic":
-                    os.system(command)
-                elif MODE == "advanced":
-                    pipe = subprocess.Popen(command, shell=True, stdin = sys.stdin, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-                    a = pipe.readlines()
-                    #*Really*? It's not using stdout?
-                    if a:
-                        for line in a: print(line.strip())
-            dial.workDone(RENDER_LOAD, "Frame Duplicating")
-
-            #Copy and duplicate image, placing files in the movie temp directory
-            fname = omf.rsplit(".",1)[0] + ".bmp"
-            for j in range(framedupes):
-                shutil.copy(fname, moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp")
-                j += 1
-                dial.workDone(FRAMEDUPE_LOAD, "Frame Duplicating")
-            dial.workDone(0, "Rendering")
-
-            #Housecleaning - if not making images, you should clean this up.
-            if not self.parent.doImages.GetValue():
-                os.remove(fname)
-
-        #Finally, make the actual movie!
-        #You know, we should steal the last pathto as a place to put the movie, and perhaps also the basename
-        #This is bad use of scoping blah blah
+    def makeMovieFromImages(self, moviepath, pathTo, framedupes, maxdigits, movieCodec):
         fname = moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp"
         try:
             basename = fname.rsplit("-",2)[-3]
         except:
             basename = fname
-        print(CODECS[self.parent.movieCodec.GetValue()])
-        outname = "["+CODECS[self.parent.movieCodec.GetValue()][2]+"]"+ CODECS[self.parent.movieCodec.GetValue()][1]
-        command = r'ffmpeg -f image2 -an -y -i ' + moviepath + os.path.sep + r'%0' + str(maxdigits) + r'd.bmp ' + CODECS[self.parent.movieCodec.GetValue()][0]
+        print(CODECS[movieCodec])
+        outname = "["+CODECS[movieCodec][2]+"]"+ CODECS[movieCodec][1]
+        command = r'ffmpeg -f image2 -an -y -i ' + moviepath + os.path.sep + r'%0' + str(maxdigits) + r'd.bmp ' + CODECS[movieCodec][0]
         command += ' "' + os.path.join(pathTo, outname) + '"'
-        dial.workDone(0, "Rendering Movie")
+
         print("Movie render mode prepared.")
 
         if os.name == 'nt':
@@ -537,6 +482,41 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         if a:
             for line in a: print(line.strip())
 
+
+    def doMovies(self, targetList, stdinRedirect, dial):
+        #Make temporary directory
+        moviepath = tempfile.mkdtemp()
+        print("Temporary directory obtained.")
+        #Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
+        framedupes = int(old_div(25, self.parent.movieFPS.GetValue()))
+        maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
+
+        #Deal with overload-options by writing a temporary configuration file
+        confpath, cleanconfig = self.resolveConfiguration(targetList)
+
+        dial.workDone(0, "Rendering")
+        for i, omf in enumerate(sorted(targetList)):
+            frameRepeatOffset = 0
+            oommfconvert.convertOmfToImage(omf, self.parent.TclCall.GetValue(), self.parent.OOMMFPath, confpath, stdinRedirect)
+            dial.workDone(RENDER_LOAD, "Frame Duplicating")
+
+            #Copy and duplicate image, placing files in the movie temp directory
+            fname = omf.rsplit(".",1)[0] + ".bmp"
+            for j in range(framedupes):
+                shutil.copy(fname, moviepath+os.path.sep +str(framedupes*i + j).rjust(maxdigits,"0") +".bmp")
+                j += 1
+                dial.workDone(FRAMEDUPE_LOAD, "Frame Duplicating")
+            dial.workDone(0, "Rendering")
+
+            #Housecleaning - if not making images, you should clean this up.
+            if not self.parent.doImages.GetValue():
+                os.remove(fname)
+
+        #Finally, make the actual movie!
+        #You know, we should steal the last pathto as a place to put the movie, and perhaps also the basename
+        #This is bad use of scoping blah blah
+        dial.workDone(0, "Rendering Movie")
+        self.makeMovieFromImages(moviepath, pathTo, framedupes, maxdigits, self.parent.movieCodec.GetValue())
         dial.workDone(MOVIE_LOAD, "Cleaning")
         #Clean up temporaries
         shutil.rmtree(moviepath)
