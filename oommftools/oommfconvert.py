@@ -431,20 +431,20 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
     def spliceConfig(self, percentMagnitude, checkVectors = False, filenames = []):
         return oommfconvert.spliceConfig(percentMagnitude, checkVectors, filenames, self.parent)
 
-    def resolveConfiguration(self, filenames, config_parent):
+    def resolveConfigurationCore(self, filenames, config_parent):
         if config_parent.magnifierSpin.GetValue() != 100 or config_parent.autoMaxVectors.GetValue():
-            confpath = self.spliceConfig(config_parent.magnifierSpin.GetValue(), config_parent.autoMaxVectors.GetValue(), filenames)
+            confpath = oommfconvert.spliceConfig(config_parent.magnifierSpin.GetValue(), config_parent.autoMaxVectors.GetValue(), filenames, config_parent)
             cleanconfig = True
         else:
             cleanconfig = False
             confpath = config_parent.config
         return (confpath, cleanconfig)       
 
-    def resolveConfigurationGui(self, filenames):
-        return self.resolveConfiguration(filenames, self.parent)
+    def resolveConfiguration(self, filenames):
+        return self.resolveConfigurationCore(filenames, self.parent)
     
     def doImages(self, targetList, stdinRedirect, dial):
-        confpath, cleanconfig = self.resolveConfiguration(targetList, self.parent)
+        confpath, cleanconfig = self.resolveConfiguration(targetList)
 
         dial.workDone(0, "Rendering")
         for i, omf in enumerate(sorted(targetList)):
