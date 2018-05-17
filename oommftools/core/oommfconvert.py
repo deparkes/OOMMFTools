@@ -1,5 +1,5 @@
 import os
-
+import subprocess
 
 def getOOMMFPath(pathFileToCheck):
     #Check if we have a saved OOMMF path to use as config data
@@ -69,3 +69,33 @@ def resolveConfiguration(filenames, config_parent):
         cleanconfig = False
         confpath = config_parent.config
     return (confpath, cleanconfig) 
+
+
+def convertOmfToImage(omf, tclCall, oommfPath, confpath, stdinRedirect, mode='advanced'):
+    MODE = mode
+    pathTo, fname = omf.rsplit(os.path.sep, 1)
+    command = tclCall + ' "' + oommfPath + '" avf2ppm -f -v 2 -format b24 -config "' + confpath + '" "' + omf + '"'
+    if os.name == 'nt':
+        print("Watching stdin redirect:", stdinRedirect)
+        if MODE == "basic":
+            os.system(command)
+        elif MODE == "advanced":
+            if not r":\\" in omf:
+                pipe = subprocess.Popen(command, shell=True, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
+            else:
+                #Avoid network stupidity.
+                pipe = subprocess.Popen(command, shell=False, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
+            a = pipe.readlines()
+            #*Really*? It's not using stdout?
+            if a:
+                for line in a: print(line.strip())
+    else:
+        print("probably posix mode.")
+        if MODE == "basic":
+            os.system(command)
+        elif MODE == "advanced":
+            pipe = subprocess.Popen(command, shell=True, stdin = sys.stdin, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
+            a = pipe.readlines()
+            #THIS should at least use STDout
+            if a:
+                for line in a: print(line.strip())
