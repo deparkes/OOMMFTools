@@ -76,15 +76,18 @@ def resolveConfiguration(filenames, config_parent):
 
 
 def convertOmfToImage(omf, tclCall, oommfPath, confpath, stdinRedirect, mode='advanced'):
-    MODE = mode
     pathTo, fname = omf.rsplit(os.path.sep, 1)
     command = tclCall + ' "' + oommfPath + '" avf2ppm -f -v 2 -format b24 -config "' + confpath + '" "' + omf + '"'
+    runSubProcess(command, stdinRedirect, mode, omf)
+
+def runSubProcess(command, stdinRedirect, mode, checkPath):    
+    MODE = mode
     if os.name == 'nt':
         print("Watching stdin redirect:", stdinRedirect)
         if MODE == "basic":
             os.system(command)
         elif MODE == "advanced":
-            if not r":\\" in omf:
+            if not r":\\" in checkPath:
                 pipe = subprocess.Popen(command, shell=True, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
             else:
                 #Avoid network stupidity.
