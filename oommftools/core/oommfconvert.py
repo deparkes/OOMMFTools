@@ -158,10 +158,7 @@ def doImages(targetList, stdinRedirect, config_parent, tclCall, OOMMFPath):
         convertOmfToImage(omf, tclCall, OOMMFPath, confpath, stdinRedirect)
     #Clean up temporaries
     if cleanconfig:
-        try:
-            os.remove(confpath)
-        except:
-            print("Uh, failed to let conf go for some reason... you should probably tell doublemark@mit.edu")
+        cleanupConfig(confpath)
 
 def doMovies(targetList, stdinRedirect, config_parent, movieCodec, movieFPS, tclCall, OOMMFPath, doImages, codecs):
     #Make temporary directory
@@ -182,8 +179,11 @@ def doMovies(targetList, stdinRedirect, config_parent, movieCodec, movieFPS, tcl
     #Clean up temporaries
     shutil.rmtree(moviepath)
     if cleanconfig:
-        try:
-            os.remove(confpath)
-        except:
-            print("Can't let go for some reason... you should probably tell doublemark@mit.edu")
+        cleanupConfig(confpath)
+
+def cleanupConfig(configPath):
+    try:
+        os.remove(configPath)
+    except:
+        print("Can't let go for some reason... you should probably tell doublemark@mit.edu")
     
