@@ -26,10 +26,10 @@ def getOOMMFPath(pathFileToCheck):
         return None
 
 
-def spliceConfig(percentMagnitude, checkVectors=False, filenames=[], configParent=None):
+def spliceConfig(percentMagnitude, checkVectors=False, filenames=[], configPath=None):
     print(checkVectors)
     # Rewrite the file
-    oldconf = open(configParent.config, "r")
+    oldconf = open(configPath, "r")
     oldconflines = oldconf.readlines()
     oldconf.close()
     print("Getting temporary file handle for modconfig.")
@@ -73,13 +73,13 @@ def spliceConfig(percentMagnitude, checkVectors=False, filenames=[], configParen
 def resolveConfiguration(filenames, config_parent):
     magnifierSpin = config_parent.magnifierSpin.GetValue()
     autoMaxVectors = config_parent.autoMaxVectors.GetValue()
+    configPath = config_parent.config
     if magnifierSpin != 100 or autoMaxVectors:
-        confpath = spliceConfig(magnifierSpin, autoMaxVectors, filenames, config_parent)
+        configPath = spliceConfig(magnifierSpin, autoMaxVectors, filenames, configPath)
         cleanconfig = True
     else:
         cleanconfig = False
-        confpath = config_parent.config
-    return (confpath, cleanconfig)
+    return (configPath, cleanconfig)
 
 
 def convertOmfToImage(omf, tclCall, oommfPath, confpath, stdinRedirect, mode='advanced'):
