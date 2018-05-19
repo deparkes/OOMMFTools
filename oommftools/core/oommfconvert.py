@@ -70,12 +70,10 @@ def spliceConfig(percentMagnitude, checkVectors=False, filenames=[], configPath=
     return newconfdir
 
 
-def resolveConfiguration(filenames, config_parent):
-    magnifierSpin = config_parent.magnifierSpin.GetValue()
-    autoMaxVectors = config_parent.autoMaxVectors.GetValue()
-    configPath = config_parent.config
+def resolveConfiguration(filenames, magnifierSpin, autoMaxVectors, configPath):
     if magnifierSpin != 100 or autoMaxVectors:
-        configPath = spliceConfig(magnifierSpin, autoMaxVectors, filenames, configPath)
+        configPath = spliceConfig(
+            magnifierSpin, autoMaxVectors, filenames, configPath)
         cleanconfig = True
     else:
         cleanconfig = False
@@ -153,7 +151,10 @@ def createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCa
 
 
 def doImages(targetList, stdinRedirect, config_parent, tclCall, OOMMFPath):
-    confpath, cleanconfig = resolveConfiguration(targetList, config_parent)
+    confpath, cleanconfig = resolveConfiguration(targetList, 
+                                                 config_parent.magnifierSpin.GetValue(),
+                                                 config_parent.autoMaxVectors.GetValue(),
+                                                 config_parent.config)
 
     for i, omf in enumerate(sorted(targetList)):
         convertOmfToImage(omf, tclCall, OOMMFPath, confpath, stdinRedirect)
@@ -166,7 +167,10 @@ def doMovies(targetList, stdinRedirect, config_parent, movieCodec, movieFPS, tcl
     # Make temporary directory
     moviepath = tempfile.mkdtemp()
     # Deal with overload-options by writing a temporary configuration file
-    confpath, cleanconfig = resolveConfiguration(targetList, config_parent)
+    confpath, cleanconfig = resolveConfiguration(targetList, 
+                                                 config_parent.magnifierSpin.GetValue(),
+                                                 config_parent.autoMaxVectors.GetValue(),
+                                                 config_parent.config)
     # Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
     framedupes = int(old_div(25, movieFPS))
     maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
