@@ -109,7 +109,6 @@ def runSubProcess(command, stdinRedirect, mode, checkPath):
                 
 
 def makeMovieFromImages(moviepath, pathTo, framedupes, maxdigits, movieCodec, stdinRedirect, codecs, mode='advanced'):
-    MODE = mode
     CODECS = codecs
     print(CODECS[movieCodec])
     outname = "["+CODECS[movieCodec][2]+"]"+ CODECS[movieCodec][1]
@@ -117,26 +116,7 @@ def makeMovieFromImages(moviepath, pathTo, framedupes, maxdigits, movieCodec, st
     command += ' "' + os.path.join(pathTo, outname) + '"'
     print('moviepath: : ', moviepath)
     print("Movie render mode prepared.")
-
-    if os.name == 'nt':
-        if MODE == "basic":
-            os.system(command)
-        elif MODE == "advanced":
-            if not r":\\" in pathTo:
-                pipe = subprocess.Popen(command, shell=True, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-            else:
-                #Avoid network stupidity.
-                pipe = subprocess.Popen(command, shell=False, stdin = stdinRedirect, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-    else:
-        if MODE == "basic":
-            os.system(command)
-        elif MODE == "advanced":
-            pipe = subprocess.Popen(command, shell=True, stdin = sys.stdin, stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-    a = pipe.readlines()
-    #THIS should at least use STDout
-    if a:
-        for line in a: print(line.strip())
-
+    runSubProcess(command, stdinRedirect, mode, pathTo)
 
 def createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCall, OOMMFPath, confpath, stdinRedirect, removeImages=False):
     print("Temporary directory obtained.")
