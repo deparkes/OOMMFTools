@@ -93,15 +93,16 @@ def runSubProcess(command, stdinRedirect, mode, checkPath):
     elif mode == 'advanced':
         pipe = subprocess.Popen(command, **getSubProcessArgs(command,
                                                     stdinRedirect, 
-                                                    checkPath)).stdout
+                                                    checkPath,
+                                                    os.name)).stdout
         a = pipe.readlines()
         # THIS should at least use STDout
         if a:
             for line in a:
                 print(line.strip())
 
-def getSubProcessArgs(command, stdinRedirect, checkPath):
-    if os.name == 'nt':
+def getSubProcessArgs(command, stdinRedirect, checkPath, osName='nt'):
+    if osName == 'nt':
         print("Watching stdin redirect:", stdinRedirect)
         if not r":\\" in checkPath:
             subProcessArgs = {
