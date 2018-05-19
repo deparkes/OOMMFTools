@@ -88,49 +88,44 @@ def convertOmfToImage(omf, tclCall, oommfPath, confpath, stdinRedirect, mode='ad
 
 
 def runSubProcess(command, stdinRedirect, mode, checkPath):
-    pipe = subprocess.Popen(command, **getSubProcessArgs(command,
-                                                stdinRedirect, 
-                                                mode, 
-                                                checkPath)).stdout
-    a = pipe.readlines()
-    # THIS should at least use STDout
-    if a:
-        for line in a:
-            print(line.strip())
+    if mode == "basic":
+        os.system(command)
+    elif mode == 'advanced':
+        pipe = subprocess.Popen(command, **getSubProcessArgs(command,
+                                                    stdinRedirect, 
+                                                    checkPath)).stdout
+        a = pipe.readlines()
+        # THIS should at least use STDout
+        if a:
+            for line in a:
+                print(line.strip())
 
-def getSubProcessArgs(command, stdinRedirect, mode, checkPath):
-    MODE = mode
+def getSubProcessArgs(command, stdinRedirect, checkPath):
     if os.name == 'nt':
         print("Watching stdin redirect:", stdinRedirect)
-        if MODE == "basic":
-            os.system(command)
-        elif MODE == "advanced":
-            if not r":\\" in checkPath:
-                subProcessArgs = {
-                                  'shell': True,
-                                  'stdin': stdinRedirect,
-                                  'stdout': subprocess.PIPE,
-                                  'stderr': subprocess.STDOUT
-                                  }
-            else:
-                # Avoid network stupidity.
-                subProcessArgs = {
-                                  'shell': False,
-                                  'stdin': stdinRedirect,
-                                  'stdout': subprocess.PIPE,
-                                  'stderr': subprocess.STDOUT
-                                  }
+        if not r":\\" in checkPath:
+            subProcessArgs = {
+                                'shell': True,
+                                'stdin': stdinRedirect,
+                                'stdout': subprocess.PIPE,
+                                'stderr': subprocess.STDOUT
+                                }
+        else:
+            # Avoid network stupidity.
+            subProcessArgs = {
+                                'shell': False,
+                                'stdin': stdinRedirect,
+                                'stdout': subprocess.PIPE,
+                                'stderr': subprocess.STDOUT
+                                }
     else:
         print("probably posix mode.")
-        if MODE == "basic":
-            os.system(command)
-        elif MODE == "advanced":
-            subProcessArgs = {
-                              'shell': True,
-                              'stdin': sys.stdin,
-                              'stdout': subprocess.PIPE,
-                              'stderr':subprocess.STDOUT
-                             }
+        subProcessArgs = {
+                            'shell': True,
+                            'stdin': sys.stdin,
+                            'stdout': subprocess.PIPE,
+                            'stderr':subprocess.STDOUT
+                            }
     
     return subProcessArgs
 
