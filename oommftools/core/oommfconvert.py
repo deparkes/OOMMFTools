@@ -148,13 +148,20 @@ def createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCa
         print('copying files to temp directory')
         fname = omf.rsplit(".", 1)[0] + ".bmp"
         for j in range(framedupes):
-            shutil.copy(fname, moviepath+os.path.sep +
-                        str(framedupes*i + j).rjust(maxdigits, "0") + ".bmp")
+            shutil.copy(*buildShutilSourceDestination(fname,
+                                                      moviepath, 
+                                                      framedupes*i + j, 
+                                                      maxdigits,
+                                                      ))
             j += 1
         # Housecleaning - if not making images, you should clean this up.
         if not removeImages:
             os.remove(fname)
 
+
+def buildShutilSourceDestination(fname, moviepath, framedupes, maxdigits, i, j):
+    return (fname, moviepath+os.path.sep + 
+                        str(framedupes).rjust(maxdigits, "0") + ".bmp")
 
 def doImages(targetList, stdinRedirect, config_parent, tclCall, OOMMFPath):
     confpath, cleanconfig = resolveConfiguration(targetList, 
