@@ -82,10 +82,12 @@ def resolveConfiguration(filenames, magnifierSpin, autoMaxVectors, configPath):
 
 def convertOmfToImage(omf, tclCall, oommfPath, confpath, stdinRedirect, mode='advanced'):
     pathTo, fname = omf.rsplit(os.path.sep, 1)
-    command = tclCall + ' "' + oommfPath + \
-        '" avf2ppm -f -v 2 -format b24 -config "' + confpath + '" "' + omf + '"'
+    command = build_avf2ppm_command(tclCall, oommfPath, confpath, omf)
     runSubProcess(command, stdinRedirect, mode, omf)
 
+def build_avf2ppm_command(tclCall, oommfPath, confPath, omf):
+    return tclCall + ' "' + oommfPath + \
+        '" avf2ppm -f -v 2 -format b24 -config "' + confPath + '" "' + omf + '"'
 
 def runSubProcess(command, stdinRedirect, mode, checkPath):
     if mode == "basic":
