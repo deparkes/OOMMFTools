@@ -120,7 +120,7 @@ def runSubProcess(command, stdinRedirect, mode, checkPath):
                     print(line.strip())
 
 
-def makeMovieFromImages(moviepath, pathTo, framedupes, maxdigits, movieCodec, stdinRedirect, codecs, mode='advanced'):
+def makeMovieFromImages(moviepath, pathTo, maxdigits, movieCodec, stdinRedirect, codecs, mode='advanced'):
     CODECS = codecs
     print(CODECS[movieCodec])
     outname = "["+CODECS[movieCodec][2]+"]" + CODECS[movieCodec][1]
@@ -183,7 +183,7 @@ def doMovies(targetList, stdinRedirect, config_parent, movieCodec, movieFPS, tcl
     # This is bad use of scoping blah blah
 
     makeMovieFromImages(
-        moviepath, pathTo[0], framedupes, maxdigits, movieCodec, stdinRedirect, codecs)
+        moviepath, pathTo[0], maxdigits, movieCodec, stdinRedirect, codecs)
     # Clean up temporaries
     shutil.rmtree(moviepath)
     if cleanconfig:
