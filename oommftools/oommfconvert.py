@@ -438,7 +438,10 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
     def doMovies(self, targetList, stdinRedirect, dial):
         print('in the movie function (not core)')
         dial.workDone(0, "Rendering")
-        oommfconvert.doMovies(targetList, stdinRedirect, self.parent,self.parent.movieCodec.GetValue(), self.parent.movieFPS.GetValue(), self.parent.TclCall.GetValue(), self.parent.OOMMFPath, self.parent.doImages.GetValue(), CODECS)
+        imageConfig = {'magnifierSpin': self.parent.magnifierSpin.GetValue(),
+                       'autoMaxVectors': self.parent.autoMaxVectors.GetValue(),
+                       'config': self.parent.config}
+        oommfconvert.doMovies(targetList, stdinRedirect, imageConfig,self.parent.movieCodec.GetValue(), self.parent.movieFPS.GetValue(), self.parent.TclCall.GetValue(), self.parent.OOMMFPath, self.parent.doImages.GetValue(), CODECS)
         dial.workDone(0, "Rendering Movie")
         dial.workDone(MOVIE_LOAD, "Cleaning")
         return None

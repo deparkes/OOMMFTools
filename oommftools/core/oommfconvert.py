@@ -81,7 +81,6 @@ def resolveConfiguration(filenames, magnifierSpin, autoMaxVectors, configPath):
 
 
 def convertOmfToImage(omf, tclCall, oommfPath, confpath, stdinRedirect, mode='advanced'):
-    pathTo, fname = omf.rsplit(os.path.sep, 1)
     command = build_avf2ppm_command(tclCall, oommfPath, confpath, omf)
     runSubProcess(command, stdinRedirect, mode, omf)
 
@@ -178,10 +177,9 @@ def buildShutilSourceDestination(fname, moviepath, framedupes, maxdigits):
 
 def doImages(targetList, stdinRedirect, config_parent, tclCall, OOMMFPath):
     confpath, cleanconfig = resolveConfiguration(targetList, 
-                                                 config_parent.magnifierSpin.GetValue(),
-                                                 config_parent.autoMaxVectors.GetValue(),
-                                                 config_parent.config)
-
+                                                 config_parent['magnifierSpin'],
+                                                 config_parent['autoMaxVectors'],
+                                                 config_parent['config'])
     for i, omf in enumerate(sorted(targetList)):
         convertOmfToImage(omf, tclCall, OOMMFPath, confpath, stdinRedirect)
     # Clean up temporaries
@@ -194,9 +192,9 @@ def doMovies(targetList, stdinRedirect, config_parent, movieCodec, movieFPS, tcl
     moviepath = tempfile.mkdtemp()
     # Deal with overload-options by writing a temporary configuration file
     confpath, cleanconfig = resolveConfiguration(targetList, 
-                                                 config_parent.magnifierSpin.GetValue(),
-                                                 config_parent.autoMaxVectors.GetValue(),
-                                                 config_parent.config)
+                                                 config_parent['magnifierSpin'],
+                                                 config_parent['autoMaxVectors'],
+                                                 config_parent['config'])
     # Identify filename length, and perform AWFUL HACK to sidestep ffmpeg restrictions
     framedupes = int(old_div(25, movieFPS))
     maxdigits = int(math.ceil(math.log10(len(targetList) * framedupes)))
