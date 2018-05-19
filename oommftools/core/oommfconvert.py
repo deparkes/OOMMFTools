@@ -120,16 +120,22 @@ def runSubProcess(command, stdinRedirect, mode, checkPath):
                     print(line.strip())
 
 
-def makeMovieFromImages(moviepath, pathTo, maxdigits, movieCodec, stdinRedirect, codecs, mode='advanced'):
-    CODECS = codecs
-    print(CODECS[movieCodec])
-    outname = "["+CODECS[movieCodec][2]+"]" + CODECS[movieCodec][1]
-    command = r'ffmpeg -f image2 -an -y -i ' + moviepath + os.path.sep + \
-        r'%0' + str(maxdigits) + r'd.bmp ' + CODECS[movieCodec][0]
-    command += ' "' + os.path.join(pathTo, outname) + '"'
-    print('moviepath: : ', moviepath)
-    print("Movie render mode prepared.")
+def makeMovieFromImages(moviePath, pathTo, maxDigits, movieCodec, stdinRedirect, codecs, mode='advanced'):
+    command = buildMovieCommand(moviePath, pathTo, maxDigits, codecs[movieCodec])
     runSubProcess(command, stdinRedirect, mode, pathTo)
+
+
+def buildMovieCommand(moviePath, pathTo, maxDigits, movieCodec):
+    """Build movie command.
+
+    CODECS[movieCodec]:
+    "MPEG4": (r" -sameq ",".mp4","MPEG4")
+    """
+    outname = "["+movieCodec[2]+"]" + movieCodec[1]
+    command = r'ffmpeg -f image2 -an -y -i ' + moviePath + os.path.sep + \
+        r'%0' + str(maxDigits) + r'd.bmp ' + movieCodec[0]
+    command += ' "' + os.path.join(pathTo, outname) + '"'
+    return command
 
 
 def createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCall, OOMMFPath, confpath, stdinRedirect, removeImages=False):
