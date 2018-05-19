@@ -174,7 +174,7 @@ def createTempImagesForMovie(targetList, moviepath, framedupes, maxdigits, tclCa
             os.remove(fname)
 
 
-def buildShutilSourceDestination(fname, moviepath, framedupes, maxdigits, i, j):
+def buildShutilSourceDestination(fname, moviepath, framedupes, maxdigits):
     return (fname, moviepath+os.path.sep + 
                         str(framedupes).rjust(maxdigits, "0") + ".bmp")
 
