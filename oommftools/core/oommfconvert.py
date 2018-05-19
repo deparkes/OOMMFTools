@@ -88,6 +88,17 @@ def convertOmfToImage(omf, tclCall, oommfPath, confpath, stdinRedirect, mode='ad
 
 
 def runSubProcess(command, stdinRedirect, mode, checkPath):
+    pipe = subprocess.Popen(command, **getSubProcessArgs(command,
+                                                stdinRedirect, 
+                                                mode, 
+                                                checkPath)).stdout
+    a = pipe.readlines()
+    # THIS should at least use STDout
+    if a:
+        for line in a:
+            print(line.strip())
+
+def getSubProcessArgs(command, stdinRedirect, mode, checkPath):
     MODE = mode
     if os.name == 'nt':
         print("Watching stdin redirect:", stdinRedirect)
@@ -95,29 +106,33 @@ def runSubProcess(command, stdinRedirect, mode, checkPath):
             os.system(command)
         elif MODE == "advanced":
             if not r":\\" in checkPath:
-                pipe = subprocess.Popen(command, shell=True, stdin=stdinRedirect,
-                                        stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
+                subProcessArgs = {
+                                  'shell': True,
+                                  'stdin': stdinRedirect,
+                                  'stdout': subprocess.PIPE,
+                                  'stderr': subprocess.STDOUT
+                                  }
             else:
                 # Avoid network stupidity.
-                pipe = subprocess.Popen(command, shell=False, stdin=stdinRedirect,
-                                        stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-            a = pipe.readlines()
-            # *Really*? It's not using stdout?
-            if a:
-                for line in a:
-                    print(line.strip())
+                subProcessArgs = {
+                                  'shell': False,
+                                  'stdin': stdinRedirect,
+                                  'stdout': subprocess.PIPE,
+                                  'stderr': subprocess.STDOUT
+                                  }
     else:
         print("probably posix mode.")
         if MODE == "basic":
             os.system(command)
         elif MODE == "advanced":
-            pipe = subprocess.Popen(command, shell=True, stdin=sys.stdin,
-                                    stdout=subprocess.PIPE,  stderr=subprocess.STDOUT).stdout
-            a = pipe.readlines()
-            # THIS should at least use STDout
-            if a:
-                for line in a:
-                    print(line.strip())
+            subProcessArgs = {
+                              'shell': True,
+                              'stdin': sys.stdin,
+                              'stdout': subprocess.PIPE,
+                              'stderr':subprocess.STDOUT
+                             }
+    
+    return subProcessArgs
 
 
 def makeMovieFromImages(moviePath, pathTo, maxDigits, movieCodec, stdinRedirect, codecs, mode='advanced'):
