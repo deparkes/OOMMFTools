@@ -2,6 +2,7 @@ import numpy as np
 import struct
 import pickle
 import scipy.io as spio
+from collections import defaultdict
 
 def groupUnpack(targetlist, progdialog=None):
     """

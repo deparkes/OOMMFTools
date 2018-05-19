@@ -210,7 +210,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
             return 0 #You got dropped some bad files!
         global LASTPATH
         LASTPATH = os.path.dirname(oommf[0])
-        arrays, headers, extra = oommfdecode.groupUnpack(oommf,
+        arrays, headers, extra = self.groupUnpack(oommf,
                                              SupportDialog("Decode in Progress",
                                                            "Decoding...",
                                                            maximum=len(oommf)))
@@ -219,6 +219,8 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         #using a standard decorate-sort-undecorate, with a twist for the variable number of keys
 
         #Let's start by finding the original indices - making a copy is key
+
+
         originalTimeIndex = list(extra["SimTime"])
         if len(set(extra["MIFSource"])) == 1:
             if not -1 in extra["SimTime"]:
@@ -230,6 +232,35 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
 
         self.parent.gatherData(arrays, headers, extra)
         return 1
+
+    def groupUnpack(self, targetlist, progdialog=None):
+        """
+        """
+        decodedArrays = []
+        headers = {}
+        extraData = defaultdict(list)
+        firstTime = True
+        try:
+            for target in targetlist:
+                collect = oommfdecode.unpackFile(target)
+                if firstTime:
+                    firstTime = False
+                    headers = collect[1]
+                decodedArrays.append(collect[0])
+                #Unpack extra collected data
+                for key, value in list(collect[2].items()):
+                    extraData[key].append(value)
+                if progdialog:
+                    progdialog.workDone(1, "Decoding...")
+                    time.sleep(0.01) #Should facilitate redraw thread coming to life
+
+        except Exception as e:
+            if progdialog: progdialog.finish()
+            wx.MessageBox('Unpacking error: ' + repr(e), "Error")
+            print(e)
+        else:
+            if progdialog: progdialog.finish()
+        return (np.array(decodedArrays), headers, extraData)
 
 ########
 # MAIN #
