@@ -428,12 +428,7 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         dial.CenterOnParent()
         return dial
 
-    def spliceConfig(self, percentMagnitude, checkVectors = False, filenames = []):
-        return oommfconvert.spliceConfig(percentMagnitude, checkVectors, filenames, self.parent)
-
-    def resolveConfiguration(self, filenames):
-        return oommfconvert.resolveConfiguration(filenames, self.parent)
-    
+   
     def doImages(self, targetList, stdinRedirect, dial):
         dial.workDone(0, "Rendering")
         oommfconvert.doImages(targetList, stdinRedirect, self.parent, self.parent.TclCall.GetValue(), self.parent.OOMMFPath)
