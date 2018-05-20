@@ -5,7 +5,7 @@ import tempfile
 import math
 from past.utils import old_div
 from .oommfdecode import slowlyPainfullyMaximize
-
+import re
 
 def getOOMMFPath(pathFileToCheck):
     # Check if we have a saved OOMMF path to use as config data
@@ -38,20 +38,30 @@ def spliceConfig(percentMagnitude, checkVectors=False, filenames=[], configPath=
         os.close(oshandle)
     except:
         print("Error: Windows failed all over closing the file handle.")
-    newconf = open(newconfdir, "w")
+    newMax = slowlyPainfullyMaximize(filenames)
+    newconf = replaceConfigLines(oldconflines, 
+                                 newMax, 
+                                 percentMagnitude,
+                                 checkVectors)
+    
+    with open(newconfdir, 'w') as confFile:
+        for line in newconf:
+            confFile.write("%s" % line)
 
-    # OK, let's see if we need to recover vectors
+    return newconfdir
 
+
+def replaceConfigLines(oldconflines, newMax, percentMagnitude, checkVectors):
+    newconf = []
     for line in oldconflines:
         # Only one data point for line. Let's deal with our cases.
         if "misc,datascale" in line and checkVectors:
-            newMax = slowlyPainfullyMaximize(filenames)
-            newconf.write("    misc,datascale " + str(newMax) + "\n")
+            newconf.append("    misc,datascale " + str(newMax) + "\n")
         elif not percentMagnitude == 100:
             if "misc,zoom" in line:
                 # newconf.write(line)
                 # Don't stop clobbering zoom!
-                newconf.write("    misc,zoom 0\n")
+                newconf.append("    misc,zoom 0\n")
             elif "misc,default" in line:
                 # This was not nearly as true as I'd hoped
                 # Just in case this ever looks at the viewport, clobber the viewport.
@@ -59,16 +69,15 @@ def spliceConfig(percentMagnitude, checkVectors=False, filenames=[], configPath=
             elif "misc,height" in line:
                 newval = int(re.findall(r"[0-9]+", line)
                              [0]) * percentMagnitude / 100.0
-                newconf.write("    misc,height " + str(newval) + "\n")
+                newconf.append("    misc,height " + str(newval) + "\n")
             elif "misc,width" in line:
                 newval = int(re.findall(r"[0-9]+", line)
                              [0]) * percentMagnitude / 100.0
-                newconf.write("    misc,width " + str(newval) + "\n")
+                newconf.append("    misc,width " + str(newval) + "\n")
             else:
-                newconf.write(line)
-    newconf.close()
-    return newconfdir
-
+                newconf.append(line)
+    return newconf
+        
 
 def resolveConfiguration(filenames, magnifierSpin, autoMaxVectors, configPath):
     if magnifierSpin != 100 or autoMaxVectors:
