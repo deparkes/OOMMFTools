@@ -431,7 +431,10 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
    
     def doImages(self, targetList, stdinRedirect, dial):
         dial.workDone(0, "Rendering")
-        oommfconvert.doImages(targetList, stdinRedirect, self.parent, self.parent.TclCall.GetValue(), self.parent.OOMMFPath)
+        imageConfig = {'magnifierSpin': self.parent.magnifierSpin.GetValue(),
+                       'autoMaxVectors': self.parent.autoMaxVectors.GetValue(),
+                       'config': self.parent.config}
+        oommfconvert.doImages(targetList, stdinRedirect, imageConfig, self.parent.TclCall.GetValue(), self.parent.OOMMFPath)
         dial.workDone(RENDER_LOAD, "Rendering")
         dial.workDone(0, "Cleaning Up")
 
