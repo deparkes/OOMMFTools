@@ -76,6 +76,9 @@ def replaceConfigLines(oldconflines, newMax, percentMagnitude, checkVectors):
                 newconf.append("    misc,width " + str(newval) + "\n")
             else:
                 newconf.append(line)
+        else:
+            newconf.append(line)
+
     return newconf
         
 
