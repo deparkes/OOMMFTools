@@ -13,9 +13,14 @@ from oommftools.core import oommfconvert as oommfconvert
 
 class Test_getOOMMFPath(unittest.TestCase):
     def setUp(self):
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.tcl') as self.tcl_path:
+            # Create dummy oommf.path file
+            self.tcl_path.write('tcl file'.encode())
+            self.tcl_path.flush()
+
         with tempfile.NamedTemporaryFile(delete=False) as self.valid_file:
             # Create dummy oommf.path file
-            self.valid_file.write(r'C:\oommf-1.2a5bis\oommf.tcl'.encode())
+            self.valid_file.write(self.tcl_path.name.encode())
             self.valid_file.flush()
 
         with tempfile.NamedTemporaryFile(delete=False) as self.invalid_path:
@@ -25,7 +30,7 @@ class Test_getOOMMFPath(unittest.TestCase):
 
     def test_valid_path(self):
         path = oommfconvert.getOOMMFPath(self.valid_file.name)
-        self.assertEqual(path, r'C:\oommf-1.2a5bis\oommf.tcl')
+        self.assertEqual(path, self.tcl_path.name)
 
     def test_invalid_path(self):
         path = oommfconvert.getOOMMFPath(self.invalid_path.name)
