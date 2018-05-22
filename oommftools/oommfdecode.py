@@ -220,18 +220,12 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
 
         #Let's start by finding the original indices - making a copy is key
 
-
-        originalTimeIndex = list(extra["SimTime"])
-        if len(set(extra["MIFSource"])) == 1:
-            if not -1 in extra["SimTime"]:
-                extra["SimTime"], arrays = list(zip(*sorted(zip(originalTimeIndex, arrays))))
-                #Sadly, the cleverness ends here - the rest must be bruteforced.
-                for key in extra:
-                    if not key == "SimTime": #We did that one.
-                        junk, extra[key] = list(zip(*sorted(zip(originalTimeIndex, extra[key]))))
+        arrays, extra = oommfdecode.sortBySimTime(extra, arrays)
 
         self.parent.gatherData(arrays, headers, extra)
         return 1
+
+
 
     def groupUnpack(self, targetlist, progdialog=None):
         """

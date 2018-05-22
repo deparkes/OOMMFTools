@@ -150,3 +150,15 @@ def slowlyPainfullyMaximize(filenames):
                 for i in range(int(headers["xnodes"])):
                     maxmag = max(maxmag, mag(*thisArray[i, j, k]))
     return maxmag
+
+
+def sortBySimTime(extra, arrays):
+    originalTimeIndex = list(extra["SimTime"])
+    if len(set(extra["MIFSource"])) == 1:
+        if not -1 in extra["SimTime"]:
+            extra["SimTime"], arrays = list(zip(*sorted(zip(originalTimeIndex, arrays))))
+            #Sadly, the cleverness ends here - the rest must be bruteforced.
+            for key in extra:
+                if not key == "SimTime": #We did that one.
+                    junk, extra[key] = list(zip(*sorted(zip(originalTimeIndex, extra[key]))))
+    return arrays, extra
