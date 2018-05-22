@@ -262,3 +262,51 @@ class Test_slowlyPainfullyMaximise(unittest.TestCase):
     def test_slowlyPainfullyMaximize_multifile(self):
         max_mag = oommfdecode.slowlyPainfullyMaximize([self.vector_file_text, self.vector_file_binary])
         np.testing.assert_almost_equal(max_mag, 349370.681891435)
+
+
+class Test_sortBySimTime(unittest.TestCase):
+
+    def test_sortBySimTime_basic_operation(self):
+        self.arrays = [[1,1,1], [2,2,2]]
+        self.extra = {'SimTime': [1, 2], 'MIFSource': [2], 'c': [3]}
+        arrays, extra = oommfdecode.sortBySimTime(self.extra, self.arrays)
+        self.assertEqual(arrays, ([1,1,1], [2,2,2]))
+        self.assertEqual(extra, {'SimTime': (1, 2), 'MIFSource': (2,), 'c': (3,)})
+
+    def test_sortBySimTime_reverse_order(self):
+        self.arrays = [[1,1,1], [2,2,2]]
+        self.extra = {'SimTime': [2, 1], 'MIFSource': [2], 'c': [3]}
+        arrays, extra = oommfdecode.sortBySimTime(self.extra, self.arrays)
+        self.assertEqual(arrays, ([2,2,2], [1,1,1]))
+        self.assertEqual(extra, {'SimTime': (1, 2), 'MIFSource': (2,), 'c': (3,)})
+
+    def test_sortBySimTime_no_extra_keys(self):
+        self.arrays = [[1,1,1], [2,2,2]]
+        self.extra = {'SimTime': [2, 1], 'MIFSource': [2]}
+        arrays, extra = oommfdecode.sortBySimTime(self.extra, self.arrays)
+        self.assertEqual(arrays, ([2,2,2], [1,1,1]))
+        self.assertEqual(extra, {'SimTime': (1, 2), 'MIFSource': (2,)})
+
+    def test_sortBySimTime_len_mif_source_not_one(self):
+        self.arrays = ([1,1,1], [2,2,2])
+        self.extra = {'SimTime': (2, 1), 'MIFSource': (1, 2)}
+        arrays, extra = oommfdecode.sortBySimTime(self.extra, self.arrays)
+        self.assertEqual(arrays, ([1,1,1], [2,2,2]))
+        self.assertEqual(extra, {'SimTime': (2, 1), 'MIFSource': (1, 2)})
+
+    def test_sortBySimTime_sim_time_minus_one(self):
+        self.arrays = ([1,1,1], [2,2,2])
+        self.extra = {'SimTime': (2, -1), 'MIFSource': (1, 1)}
+        arrays, extra = oommfdecode.sortBySimTime(self.extra, self.arrays)
+        self.assertEqual(arrays, ([1,1,1], [2,2,2]))
+        self.assertEqual(extra, {'SimTime': (2, -1), 'MIFSource': (1, 1)})
+
+    def test_sortBySimTime_extra_keys(self):
+        self.arrays = ([1,1,1], [2,2,2])
+        self.extra = {'SimTime': (2, -1), 
+                      'MIFSource': (1, 1),
+                      'Extra1': (1, 2),
+                      'Extra2': ('1')}
+        arrays, extra = oommfdecode.sortBySimTime(self.extra, self.arrays)
+        self.assertEqual(arrays, ([1,1,1], [2,2,2]))
+        self.assertEqual(extra, {'SimTime': (2, -1), 'MIFSource': (1, 1), 'Extra1': (1,2), 'Extra2':'1'})
