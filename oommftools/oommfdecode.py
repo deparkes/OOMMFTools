@@ -225,36 +225,38 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         self.parent.gatherData(arrays, headers, extra)
         return 1
 
-
-
-    def groupUnpack(self, targetlist, progdialog=None):
-        """
-        """
+    def groupUnpackCore(self, targetList):
         decodedArrays = []
         headers = {}
         extraData = defaultdict(list)
         firstTime = True
-        try:
-            for target in targetlist:
-                collect = oommfdecode.unpackFile(target)
-                if firstTime:
-                    firstTime = False
-                    headers = collect[1]
-                decodedArrays.append(collect[0])
-                #Unpack extra collected data
-                for key, value in list(collect[2].items()):
-                    extraData[key].append(value)
-                if progdialog:
-                    progdialog.workDone(1, "Decoding...")
-                    time.sleep(0.01) #Should facilitate redraw thread coming to life
+        for target in targetList:
+            collect = oommfdecode.unpackFile(target)
+            if firstTime:
+                firstTime = False
+                headers = collect[1]
+            decodedArrays.append(collect[0])
+            #Unpack extra collected data
+            for key, value in list(collect[2].items()):
+                extraData[key].append(value)
 
+        return (np.array(decodedArrays), headers, extraData)
+
+    def groupUnpack(self, targetlist, progdialog=None):
+        """
+        """
+        try:
+            (decodedArrays, headers, extraData) = self.groupUnpackCore(targetlist)
+            if progdialog:
+                progdialog.workDone(1, "Decoding...")
+                time.sleep(0.01) #Should facilitate redraw thread coming to life
         except Exception as e:
             if progdialog: progdialog.finish()
             wx.MessageBox('Unpacking error: ' + repr(e), "Error")
             print(e)
         else:
             if progdialog: progdialog.finish()
-        return (np.array(decodedArrays), headers, extraData)
+        return (decodedArrays, headers, extraData)
 
 ########
 # MAIN #
