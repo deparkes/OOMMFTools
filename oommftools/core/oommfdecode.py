@@ -162,3 +162,21 @@ def sortBySimTime(extra, arrays):
                 if not key == "SimTime": #We did that one.
                     junk, extra[key] = list(zip(*sorted(zip(originalTimeIndex, extra[key]))))
     return arrays, extra
+
+
+def groupUnpack(targetList):
+    decodedArrays = []
+    headers = {}
+    extraData = defaultdict(list)
+    firstTime = True
+    for target in targetList:
+        collect = unpackFile(target)
+        if firstTime:
+            firstTime = False
+            headers = collect[1]
+        decodedArrays.append(collect[0])
+        #Unpack extra collected data
+        for key, value in list(collect[2].items()):
+            extraData[key].append(value)
+
+    return (np.array(decodedArrays), headers, extraData)

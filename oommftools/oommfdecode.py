@@ -225,28 +225,12 @@ class OOMMFSelectiveTarget(wx.FileDropTarget):
         self.parent.gatherData(arrays, headers, extra)
         return 1
 
-    def groupUnpackCore(self, targetList):
-        decodedArrays = []
-        headers = {}
-        extraData = defaultdict(list)
-        firstTime = True
-        for target in targetList:
-            collect = oommfdecode.unpackFile(target)
-            if firstTime:
-                firstTime = False
-                headers = collect[1]
-            decodedArrays.append(collect[0])
-            #Unpack extra collected data
-            for key, value in list(collect[2].items()):
-                extraData[key].append(value)
-
-        return (np.array(decodedArrays), headers, extraData)
 
     def groupUnpack(self, targetlist, progdialog=None):
         """
         """
         try:
-            (decodedArrays, headers, extraData) = self.groupUnpackCore(targetlist)
+            (decodedArrays, headers, extraData) = oommfdecode.groupUnpack(targetlist)
             if progdialog:
                 progdialog.workDone(1, "Decoding...")
                 time.sleep(0.01) #Should facilitate redraw thread coming to life
