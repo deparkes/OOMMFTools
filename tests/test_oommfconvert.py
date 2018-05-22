@@ -1,6 +1,7 @@
 from future import standard_library
 standard_library.install_aliases()
-import sys, os
+import sys
+import os
 import io
 import tempfile
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -44,12 +45,16 @@ class Test_getOOMMFPath(unittest.TestCase):
 class Test_OOMMFConvert(unittest.TestCase):
     def test_doImages(self):
         pass
+
     def test_resolveConfiguration(self):
         pass
+
     def test_spliceConfig(self):
         pass
+
     def test_doMovies(self):
         pass
+
 
 class Test_replaceConfigLines(unittest.TestCase):
     def test_basic_operation(self):
@@ -58,9 +63,9 @@ class Test_replaceConfigLines(unittest.TestCase):
         percentMagnitude = 90
         checkVectors = True
         newConfig = oommfconvert.replaceConfigLines(oldConfigLines,
-                                                   newMax,
-                                                   percentMagnitude,
-                                                   checkVectors)
+                                                    newMax,
+                                                    percentMagnitude,
+                                                    checkVectors)
         self.assertEqual(newConfig, oldConfigLines)
 
     def test_misc_datascale(self):
@@ -69,9 +74,9 @@ class Test_replaceConfigLines(unittest.TestCase):
         percentMagnitude = 90
         checkVectors = True
         newConfig = oommfconvert.replaceConfigLines(oldConfigLines,
-                                                   newMax,
-                                                   percentMagnitude,
-                                                   checkVectors)
+                                                    newMax,
+                                                    percentMagnitude,
+                                                    checkVectors)
         expectedNewline = '    misc,datascale 10\n'
         self.assertEqual(newConfig, [expectedNewline,  '\n', 'line2\n'])
 
@@ -81,12 +86,11 @@ class Test_replaceConfigLines(unittest.TestCase):
         percentMagnitude = 90
         checkVectors = False
         newConfig = oommfconvert.replaceConfigLines(oldConfigLines,
-                                                   newMax,
-                                                   percentMagnitude,
-                                                   checkVectors)
+                                                    newMax,
+                                                    percentMagnitude,
+                                                    checkVectors)
         expectedNewline = 'misc,datascale 10\n'
         self.assertEqual(newConfig, [expectedNewline,  '\n', 'line2\n'])
-
 
     def test_misc_datascale_clobber_zoom(self):
         oldConfigLines = ['misc,zoom 10\n', '\n', 'line2\n']
@@ -94,12 +98,11 @@ class Test_replaceConfigLines(unittest.TestCase):
         percentMagnitude = 90
         checkVectors = False
         newConfig = oommfconvert.replaceConfigLines(oldConfigLines,
-                                                   newMax,
-                                                   percentMagnitude,
-                                                   checkVectors)
+                                                    newMax,
+                                                    percentMagnitude,
+                                                    checkVectors)
         expectedNewline = "    misc,zoom 0\n"
         self.assertEqual(newConfig, [expectedNewline,  '\n', 'line2\n'])
-
 
     def test_misc_datascale_misc_height(self):
         oldConfigLines = ['misc,height 20\n', '\n', 'line2\n']
@@ -107,9 +110,9 @@ class Test_replaceConfigLines(unittest.TestCase):
         percentMagnitude = 90
         checkVectors = False
         newConfig = oommfconvert.replaceConfigLines(oldConfigLines,
-                                                   newMax,
-                                                   percentMagnitude,
-                                                   checkVectors)
+                                                    newMax,
+                                                    percentMagnitude,
+                                                    checkVectors)
         expectedNewline = "    misc,height 18.0\n"
         self.assertEqual(newConfig, [expectedNewline,  '\n', 'line2\n'])
 
@@ -119,23 +122,25 @@ class Test_replaceConfigLines(unittest.TestCase):
         percentMagnitude = 90
         checkVectors = False
         newConfig = oommfconvert.replaceConfigLines(oldConfigLines,
-                                                   newMax,
-                                                   percentMagnitude,
-                                                   checkVectors)
+                                                    newMax,
+                                                    percentMagnitude,
+                                                    checkVectors)
         expectedNewline = "    misc,width 72.0\n"
         self.assertEqual(newConfig, [expectedNewline,  '\n', 'line2\n'])
 
     def test_misc_datascale_with_comment(self):
-        oldConfigLines = ['#with comment\n', 'misc,width 80\n', '\n', 'line2\n']
+        oldConfigLines = ['#with comment\n',
+                          'misc,width 80\n', '\n', 'line2\n']
         newMax = 10
         percentMagnitude = 90
         checkVectors = False
         newConfig = oommfconvert.replaceConfigLines(oldConfigLines,
-                                                   newMax,
-                                                   percentMagnitude,
-                                                   checkVectors)
+                                                    newMax,
+                                                    percentMagnitude,
+                                                    checkVectors)
         expectedNewline = "    misc,width 72.0\n"
-        self.assertEqual(newConfig, ['#with comment\n', expectedNewline,  '\n', 'line2\n'])
+        self.assertEqual(
+            newConfig, ['#with comment\n', expectedNewline,  '\n', 'line2\n'])
 
     def test_misc_datascale_with_braces(self):
         oldConfigLines = ['{\n', 'misc,width 80\n', '\n', '}', 'line2\n']
@@ -143,8 +148,9 @@ class Test_replaceConfigLines(unittest.TestCase):
         percentMagnitude = 90
         checkVectors = False
         newConfig = oommfconvert.replaceConfigLines(oldConfigLines,
-                                                   newMax,
-                                                   percentMagnitude,
-                                                   checkVectors)
+                                                    newMax,
+                                                    percentMagnitude,
+                                                    checkVectors)
         expectedNewline = "    misc,width 72.0\n"
-        self.assertEqual(newConfig, ['{\n', expectedNewline,  '\n', '}', 'line2\n'])
+        self.assertEqual(
+            newConfig, ['{\n', expectedNewline,  '\n', '}', 'line2\n'])
