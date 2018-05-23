@@ -153,11 +153,17 @@ def slowlyPainfullyMaximize(filenames):
 
 
 def sortBySimTime(extra, arrays):
+
+    # We do some enumeration later on that needs 'arrays'
+    # to be an iterable.
     if len(arrays) < 1:
         arrays = (arrays,)
     originalTimeIndex = list(extra["SimTime"])
     if len(set(extra["MIFSource"])) == 1:
         if not -1 in extra["SimTime"]:
+            # Rather than sort / zip the arrays themselves
+            # we do it with indices. This is because python
+            # didn't like sorting / zipping numpy arrays.
             array_indices = [i for i,j in enumerate(arrays)]
             sorted_arrays = []
             zipped = zip(originalTimeIndex, array_indices)
