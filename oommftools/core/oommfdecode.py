@@ -153,14 +153,24 @@ def slowlyPainfullyMaximize(filenames):
 
 
 def sortBySimTime(extra, arrays):
+    if len(arrays) < 1:
+        arrays = (arrays,)
     originalTimeIndex = list(extra["SimTime"])
     if len(set(extra["MIFSource"])) == 1:
         if not -1 in extra["SimTime"]:
-            extra["SimTime"], arrays = list(zip(*sorted(zip(originalTimeIndex, arrays))))
+            array_indices = [i for i,j in enumerate(arrays)]
+            sorted_arrays = []
+            zipped = zip(originalTimeIndex, array_indices)
+            sorted_zipped = sorted(zipped) # problem here
+            zipped_sorted_zipped = zip(*sorted_zipped)
+            extra["SimTime"], array_order = list(zipped_sorted_zipped)
             #Sadly, the cleverness ends here - the rest must be bruteforced.
             for key in extra:
                 if not key == "SimTime": #We did that one.
                     junk, extra[key] = list(zip(*sorted(zip(originalTimeIndex, extra[key]))))
+            for count, array in enumerate(arrays):
+                sorted_arrays.append(arrays[array_order[count]])
+            arrays = tuple(sorted_arrays)
     return arrays, extra
 
 
