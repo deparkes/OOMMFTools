@@ -1,38 +1,72 @@
-language: python
-python:
-  # We don't actually use the Travis Python, but this keeps it organized.
- # - "2.6"
-  - "2.7"
- # - "3.3"
- # - "3.4"
- # - "3.5"
- # - "3.6"
+# ref : Anaconda Inc., Using conda with Travis CI, Conda documentation, https://conda.io/docs/user-guide/tasks/use-conda-with-travis-ci.html
+#       CodeChat, .travis.yml - Travis CI configuration, https://pythonhosted.org/CodeChat/.travis.yml.html
+#       Travis CI, Python example (unsupported languages), https://docs.travis-ci.com/user/multi-os/#python-example-unsupported-languages
+#       Kalderimis & Nagy, Windows is Available (Early Release), Oct 10 2018, https://blog.travis-ci.com/2018-10-11-windows-early-release
+#       Miniconda (Python 3) 4.5.11, Chocolatey Gallery, https://chocolatey.org/packages/miniconda3
+#       The Windows Build Environment, https://docs.travis-ci.com/user/reference/windows/
+#       Minimal .travis.yml file to run the current Python 3.7 on Linux, macOS, and Windows, https://github.com/cclauss/Travis-CI-Python-on-three-OSes
+# https://github.com/kangwonlee/travis-yml-conda-posix-nt/blob/master/.travis.yml
+language : shell
+
+env:
+  - CONDA_PYTHON=3.6
+
+os:
+  - linux
+  - windows
+  - osx
+
+before_install:
+  # set conda path info
+  - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then
+      MINICONDA_PATH=$HOME/miniconda;
+      MINICONDA_SUB_PATH=$MINICONDA_PATH/bin;
+    elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      MINICONDA_PATH=/c/tools/miniconda3/;
+      MINICONDA_PATH_WIN=`cygpath --windows $MINICONDA_PATH`;
+      MINICONDA_SUB_PATH=$MINICONDA_PATH/Scripts;
+    fi;
+  # obtain miniconda installer
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    elif  [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+    fi;
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    sudo add-apt-repository -y ppa:deadsnakes/ppa;
+    sudo apt-get update;
+    sudo apt-get install -y python3.6;
+    sudo apt-get install -y python3.6-dev;
+    fi;
 
 install:
-  - sudo apt-get update
-  # You may want to periodically update this, although the conda update
-  # conda line below will keep everything up-to-date.  We do this
-  # conditionally because it saves us some downloading if the version is
-  # the same.
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  # Useful for debugging any issues with conda
-  - conda info -a
-
-  # Replace dep1 dep2 ... with your dependencies
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
-  - conda install -c conda-forge -n test-environment wxpython 
-  - source activate test-environment
+  # install miniconda
+  # pip and conda will also need OpenSSL for Windows
+  - if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then
+      bash miniconda.sh -b -p $HOME/miniconda;
+    elif  [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      choco install openssl.light;
+      choco install miniconda3 --params="'/AddToPath:1 /D:$MINICONDA_PATH_WIN'";
+    fi;
+  - export PATH="$MINICONDA_PATH:$MINICONDA_SUB_PATH:$PATH";
+  # for conda version 4.4 or later
+  - source $MINICONDA_PATH/etc/profile.d/conda.sh;
+  - hash -r;
+  - conda config --set always_yes yes --set changeps1 no;
+  - conda update -q conda;
+  - echo "Python $CONDA_PYTHON running on $TRAVIS_OS_NAME";
+  - conda create --name test-environment python=$CONDA_PYTHON
+  - conda install -c conda-forge -n test-environment wxpython
+  - conda activate test-environment;
   - python setup.py install
 
 script:
   # Your test script goes here
   python setup.py test
+
+after_success:
+  - cd oommftools
+  - pip install --user codecov
+  - codecov
+  - pip install pyinstaller
+  - python -m PyInstaller oommftools.py --noconsole --onefile --windowed

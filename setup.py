@@ -28,7 +28,7 @@ setup(
     install_requires=['scipy', 'numpy', 'future', 'pytest'] + (
             ["wxpython"] if not sys.platform.startswith("linux") else []
             ),  # external packages as dependencies
-    tests_require=['pytest'],
+    tests_require=['pytest', 'pytest-cov'],
     classifiers=[
                  'Operating System :: MacOS :: MacOS X',
                  'Operating System :: Microsoft :: Windows',

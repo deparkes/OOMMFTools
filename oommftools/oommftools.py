@@ -4,10 +4,10 @@ Main GUI that manages singleton instances of the other windows
 from __future__ import absolute_import
 import wx
 from wx import adv
-from . import oommfdecode
-from . import oommfconvert
-from . import odtchomp
-from . import _about as about
+import oommfdecode
+import oommfconvert
+import odtchomp
+import _about as about
 
 ########
 # DECS #
