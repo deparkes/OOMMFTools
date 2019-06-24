@@ -27,10 +27,10 @@ from builtins import range
 from past.utils import old_div
 from wx import adv
 import wx, os, sys, subprocess, shutil, tempfile, math, re, time, imp
-from .fnameutil import filterOnExtensions
-from .core.oommfdecode import slowlyPainfullyMaximize
-from . import _about as about
-from .core import oommfconvert as oommfconvert
+from fnameutil import filterOnExtensions
+from core.oommfdecode import slowlyPainfullyMaximize
+import _about as about
+from core import oommfconvert as oommfconvert
 
 #########
 # About #

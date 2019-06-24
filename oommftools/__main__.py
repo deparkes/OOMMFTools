@@ -1,3 +1,3 @@
-from . import oommftools
+import oommftools
 
 oommftools.main()

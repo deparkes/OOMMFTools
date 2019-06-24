@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/deparkes/oommftools.png?branch=master)](https://travis-ci.org/deparkes/oommftools) [![Maintainability](https://api.codeclimate.com/v1/badges/7a692b4b22724e08c9ec/maintainability)](https://codeclimate.com/github/deparkes/OOMMFTools/maintainability)  [![codecov](https://codecov.io/gh/deparkes/oommftools/branch/master/graph/badge.svg)](https://codecov.io/gh/deparkes/oommftools)
 # OOMMFTools
 ![OOMMFTools Main Window](https://oommftools.github.io/assets/main_window.png)
 # Introduction
