@@ -1,8 +1,6 @@
 import wx
 
-import odtchomp
-import oommfconvert
-import oommfdecode
+from user_interfaces.gui import odtchomp, oommfconvert, oommfdecode
 import _about as about
 
 __version__ = about.__version__
