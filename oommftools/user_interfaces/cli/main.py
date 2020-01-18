@@ -14,8 +14,8 @@ def cli_main():
     # Add the arguments
     subparsers = main_parser.add_subparsers(dest='tool_selection', help='Tools Available')
     decode_parser = subparsers.add_parser("decode")
-    decode_parser.add_argument('--pickle', dest="pickle", action='store_true')
-    decode_parser.add_argument('--matlab', dest="matlab", action='store_true')
+    decode_parser.add_argument('--pickle', '-p', dest="pickle", action='store_true')
+    decode_parser.add_argument('--matlab', '-m', dest="matlab", action='store_true')
     decode_parser.add_argument("files", help="Input file", nargs="+")
     decode_parser.add_argument("--output", "-o", help="Output filename", nargs="+")
     convert_parser = subparsers.add_parser("convert")
