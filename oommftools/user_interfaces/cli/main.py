@@ -17,7 +17,7 @@ def cli_main():
     decode_parser.add_argument('--pickle', '-p', dest="pickle", action='store_true')
     decode_parser.add_argument('--matlab', '-m', dest="matlab", action='store_true')
     decode_parser.add_argument("files", help="Input file", nargs="+")
-    decode_parser.add_argument("--output", "-o", help="Output filename", nargs="+")
+    decode_parser.add_argument("--output", "-o", help="Output filename", nargs=1)
     convert_parser = subparsers.add_parser("convert")
     chomp_parser = subparsers.add_parser("chomp")
 
