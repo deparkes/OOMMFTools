@@ -17,6 +17,7 @@ def cli_main():
     decode_parser.add_argument('--pickle', dest="pickle", action='store_true')
     decode_parser.add_argument('--matlab', dest="matlab", action='store_true')
     decode_parser.add_argument("files", help="Input file", nargs="+")
+    decode_parser.add_argument("--output", "-o", help="Output filename", nargs="+")
     convert_parser = subparsers.add_parser("convert")
     chomp_parser = subparsers.add_parser("chomp")
 
@@ -25,7 +26,10 @@ def cli_main():
 
     if args.tool_selection == 'decode':
         for filename in args.files:
-            basename = os.path.basename(os.path.splitext(filename)[0])
+            if not args.output:
+                basename = os.path.basename(os.path.splitext(filename)[0])
+            else:
+                basename = args.output[0]
             array, headers, extraCaptures = oommfdecode.unpackFile(filename)
             if args.pickle is True:
                 oommfdecode.pickleArray(array, headers, extraCaptures, basename + '.pkl')
