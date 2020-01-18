@@ -26,10 +26,11 @@ def cli_main():
 
     if args.tool_selection == 'decode':
         for filename in args.files:
-            if not args.output:
-                basename = os.path.basename(os.path.splitext(filename)[0])
-            else:
+            if args.output:
                 basename = args.output[0]
+            else:
+                basename = os.path.basename(os.path.splitext(filename)[0])
+
             array, headers, extraCaptures = oommfdecode.unpackFile(filename)
             if args.pickle is True:
                 oommfdecode.pickleArray(array, headers, extraCaptures, basename + '.pkl')
