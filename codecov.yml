@@ -1,0 +1,3 @@
+ignore:
+  - "oommftools/_about.py"
+  - "oommftools/user_interfaces"
