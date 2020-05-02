@@ -58,7 +58,9 @@ git clone https://github.com/deparkes/OOMMFTools.git
 The OOMMFTools repository contains an environment yaml file with the dependencies it needs.
 
 ```
+cd OOMMFTools
 conda env create -f environment.yml
+cd oommftools
 python -m oommftools
 ```
     
