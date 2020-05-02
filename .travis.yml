@@ -63,6 +63,7 @@ install:
 script:
   # Your test script goes here
   python setup.py test
+  python -m oommftools --help
 
 after_success:
   - cd oommftools
