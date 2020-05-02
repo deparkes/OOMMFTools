@@ -29,9 +29,9 @@ import os
 from wx import adv
 import wx
 import numpy as np
-from fnameutil import filterOnExtensions
-import _about as about
-from core import odtchomp
+from ...fnameutil import filterOnExtensions
+from ... import _about as about
+from ...core import odtchomp
 
 #########
 # About #

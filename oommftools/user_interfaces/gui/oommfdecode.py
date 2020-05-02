@@ -35,9 +35,9 @@ import wx
 import struct
 import numpy as np
 import scipy.io as spio
-from fnameutil import filterOnExtensions
-import _about as about
-from core import oommfdecode
+from ...fnameutil import filterOnExtensions
+from ... import _about as about
+from ...core import oommfdecode
 
 #########
 # About #

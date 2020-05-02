@@ -1,4 +1,4 @@
-from core import oommfdecode
+from ...core import oommfdecode
 import os
 import argparse
 
