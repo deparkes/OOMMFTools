@@ -61,7 +61,7 @@ The OOMMFTools repository contains an environment yaml file with the dependencie
 cd OOMMFTools
 conda env create -f environment.yml
 cd oommftools
-python -m oommftools
+python oommftools
 ```
     
 ## Install Dependencies
